@@ -1,5 +1,21 @@
+import { initNewsletterForms, updateConfig } from './newsletter.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const scene = document.getElementById('parallax-scene');
+  const bubbleCanvas = document.getElementById('bubble-canvas');
+
+  // Initialize newsletter forms with Buttondown integration
+  // IMPORTANT: Replace 'YOUR_BUTTONDOWN_API_KEY' with your actual API key
+  // For production, consider using a serverless function to proxy API calls
+  updateConfig({
+    apiKey: 'YOUR_BUTTONDOWN_API_KEY', // Replace with your actual key
+    subscriberType: 'regular', // 'regular' = skip double opt-in, 'unactivated' = require confirmation
+    tags: ['website-signup', 'executive-algorithm'],
+    utmSource: 'website',
+    utmMedium: 'signup-form',
+    utmCampaign: 'executive-algorithm'
+  });
+  initNewsletterForms();
 
   const mulberry32 = (seed) => {
     let t = seed;
@@ -36,45 +52,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rng = mulberry32(1337);
 
+    // Single featured (bottom) row: include everyone.
+    // Order matters for the collage "story" as it loops.
+    // Make Satya + Jensen spaced apart as centerpieces, with smaller faces between/around them.
     const featured = [
       { src: '/hero/people/jensen.png' },
+      { src: '/hero/people/demmy.png' },
+      { src: '/hero/people/brian.png' },
+      { src: '/hero/people/karp.png' },
       { src: '/hero/people/satya.png' },
       { src: '/hero/people/sammy.png' },
-      { src: '/hero/people/braddy.png' }
+      { src: '/hero/people/braddy.png' },
+      { src: '/hero/people/bill.png' },
+      { src: '/hero/people/zuckerberg.png' }
     ];
 
-    const isFeatured = new Set(featured.map((p) => p.src));
-    const secondary = people.filter((p) => !isFeatured.has(p.src));
-
-    const ledgeBottom = '14%';
-    const ledgeHeightPx = 56;
+    const featuredBottomOffsetPx = 28; // tweak 0–50 to taste
 
     const featuredStyleBySrc = {
-      '/hero/people/jensen.png': { heightMul: 1.02, scale: 1.0 },
-      '/hero/people/satya.png': { heightMul: 1.12, scale: 1.02 },
-      '/hero/people/sammy.png': { heightMul: 1.06, scale: 1.0 },
-      '/hero/people/braddy.png': { heightMul: 1.16, scale: 1.04, y: 140 }
+      // Centerpieces
+      '/hero/people/jensen.png': { heightMul: 1.22, scale: 1.06, shiftX: -10 },
+      '/hero/people/satya.png': { heightMul: 1.24, scale: 1.06, shiftX: 10 },
+      // Smaller supporting faces
+      '/hero/people/sammy.png': { heightMul: 0.92, scale: 0.92, shiftX: 0 },
+      // Lower Karp slightly to crop the bottom edge visually.
+      '/hero/people/karp.png': { heightMul: 1.14, scale: 1.03, y: 25, shiftX: -10 },
+      '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 },
+      // Keep Braddy's bottom artifacts out of view.
+      '/hero/people/braddy.png': { heightMul: 1.14, scale: 1.02, y: 140, shiftX: 0 }
     };
 
-    const secondaryBaselineOffsetBySrc = {
-      '/hero/people/bill.png': 18,
-      '/hero/people/demmy.png': 18
+    // Create extra breathing room around centerpieces without loosening the whole carousel.
+    const featuredExtraGapAfterBySrc = {
+      '/hero/people/jensen.png': 140,
+      '/hero/people/satya.png': 140
     };
+
+    const hashToUnit = (str) => {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0) / 4294967296;
+    };
+
+    const lerp = (a, b, t) => a + (b - a) * t;
 
     const lanes = [
       {
-        id: 'secondary',
-        bottom: `calc(${ledgeBottom} + ${ledgeHeightPx}px)`,
-        duration: 140,
-        direction: 'normal',
-        depth: 0.72,
-        size: 'md',
-        zIndex: 3,
-        items: secondary
-      },
-      {
         id: 'featured',
-        bottom: '-4%',
+        bottom: `-${featuredBottomOffsetPx}px`,
         duration: 115,
         direction: 'normal',
         depth: 0.55,
@@ -113,17 +141,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const itemStates = laneItems.map((person) => {
         const featuredStyle = featuredStyleBySrc[person.src];
-        const y =
-          laneConfig.id === 'secondary'
-            ? secondaryBaselineOffsetBySrc[person.src] ?? 0
-            : laneConfig.id === 'featured'
-              ? featuredStyle?.y ?? 0
-              : 0;
+        const unit = hashToUnit(person.src);
+        const defaultY = Math.round(lerp(-12, 22, unit));
+        const defaultScale = Number(lerp(0.84, 1.12, unit).toFixed(3));
+        const defaultHeightMul = Number(lerp(0.9, 1.2, unit).toFixed(3));
+        const defaultShiftX = Math.round(lerp(-60, 20, unit));
+
+        const y = featuredStyle?.y ?? defaultY;
         const rotate = 0;
         const scale =
           laneConfig.id === 'featured' && featuredStyle
             ? featuredStyle.scale
-            : sizePreset.scaleMin + rng() * (sizePreset.scaleMax - sizePreset.scaleMin);
+            : defaultScale;
         const heightBase =
           laneConfig.id === 'featured'
             ? sizePreset.heightMax
@@ -131,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const height =
           laneConfig.id === 'featured' && featuredStyle
             ? Math.round(heightBase * featuredStyle.heightMul)
-            : Math.round(heightBase);
+            : Math.round(heightBase * defaultHeightMul);
 
         const wrapper = document.createElement('div');
         wrapper.className = 'hero-person';
@@ -151,7 +180,15 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(img);
         track.appendChild(wrapper);
 
-        return { el: wrapper, img, x: 0, width: 0, baseX: 0 };
+        return {
+          src: person.src,
+          el: wrapper,
+          img,
+          x: 0,
+          width: 0,
+          baseX: 0,
+          shiftX: featuredStyle?.shiftX ?? defaultShiftX
+        };
       });
 
       lane.appendChild(track);
@@ -172,12 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     };
 
-    const ledge = document.createElement('div');
-    ledge.className = 'hero-ledge';
-    ledge.style.bottom = ledgeBottom;
-    ledge.style.height = `${ledgeHeightPx}px`;
-    scene.appendChild(ledge);
-
     const laneStates = lanes.map((laneConfig, laneIndex) =>
       createLane(laneConfig, laneIndex, laneConfig.items ?? [])
     );
@@ -189,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
 
       laneState.items.forEach((item) => {
-        let x = (item.baseX ?? 0) + laneState.offset;
+        let x = (item.baseX ?? 0) + (item.shiftX ?? 0) + laneState.offset;
 
         while (x + item.width < -buffer) x += total;
         while (x > viewportW + buffer) x -= total;
@@ -202,18 +233,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const layoutLane = (laneState) => {
       const isFeaturedLane = laneState.lane.dataset.lane === 'featured';
       const gap = isFeaturedLane
-        ? Math.round(clamp(window.innerWidth * 0.06, 95, 130))
+        ? Math.round(clamp(window.innerWidth * 0.02, 28, 60))
         : Math.round(clamp(window.innerWidth * 0.09, 105, 155));
       laneState.gap = gap;
 
-      const slotW = isFeaturedLane ? Math.round(clamp(window.innerWidth * 0.34, 320, 480)) : null;
+      const maxW = isFeaturedLane ? Math.round(clamp(window.innerWidth * 0.28, 260, 420)) : null;
       let x = Math.round(clamp(window.innerWidth * 0.03, 18, 44));
 
       laneState.items.forEach((item) => {
-        if (slotW) item.el.style.width = `${slotW}px`;
-        item.width = (slotW ?? Math.ceil(item.el.getBoundingClientRect().width)) || 280;
+        if (maxW) item.el.style.maxWidth = `${maxW}px`;
+        item.width = Math.ceil(item.el.getBoundingClientRect().width) || 280;
         item.baseX = x;
-        x += item.width + gap;
+        const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
+        x += item.width + gap + extraGap;
       });
 
       laneState.total = Math.max(1, x);
@@ -316,6 +348,403 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   initHeroCarousel();
+
+  const initBubbleWorld = () => {
+    if (!(bubbleCanvas instanceof HTMLCanvasElement)) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const ctx = bubbleCanvas.getContext('2d');
+    if (!ctx) return;
+
+    const rng = mulberry32(909090);
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+    const palette = {
+      glow: 'rgba(110, 190, 255, 0.18)',
+      stroke: 'rgba(255,255,255,0.14)',
+      fill: 'rgba(255,255,255,0.03)',
+      fillStrong: 'rgba(255,255,255,0.06)',
+      text: 'rgba(255,255,255,0.78)',
+      textMuted: 'rgba(255,255,255,0.55)',
+      line: 'rgba(160, 200, 255, 0.32)',
+      lineStrong: 'rgba(200, 230, 255, 0.55)'
+    };
+
+    const nodes = [
+      { id: 'OpenAI', label: 'OpenAI', kind: 'lab', size: 'lg' },
+      { id: 'DeepMind', label: 'DeepMind', kind: 'lab', size: 'lg' },
+      { id: 'Anthropic', label: 'Anthropic', kind: 'lab', size: 'md' },
+      { id: 'NVIDIA', label: 'NVIDIA', kind: 'platform', size: 'lg' },
+      { id: 'Microsoft', label: 'Microsoft', kind: 'platform', size: 'md' },
+      { id: 'Google', label: 'Google', kind: 'platform', size: 'md' },
+      { id: 'Meta', label: 'Meta', kind: 'platform', size: 'md' },
+      { id: 'Amazon', label: 'Amazon', kind: 'platform', size: 'sm' },
+      { id: 'Apple', label: 'Apple', kind: 'platform', size: 'sm' },
+      { id: 'Anduril', label: 'Anduril', kind: 'defense', size: 'md' },
+      { id: 'Neuralink', label: 'Neuralink', kind: 'frontier', size: 'sm' },
+      { id: 'CRISPR', label: 'CRISPR', kind: 'frontier', size: 'sm' },
+      { id: 'Longevity', label: 'Longevity', kind: 'frontier', size: 'sm' },
+      { id: 'Robotics', label: 'Robotics', kind: 'frontier', size: 'sm' },
+      { id: 'Sequoia', label: 'Sequoia', kind: 'capital', size: 'md' },
+      { id: 'a16z', label: 'a16z', kind: 'capital', size: 'md' },
+      { id: 'Benchmark', label: 'Benchmark', kind: 'capital', size: 'sm' },
+      { id: 'Norges', label: 'Norges', kind: 'capital', size: 'sm' },
+      { id: 'Demis', label: 'Demis', kind: 'person', size: 'sm' },
+      { id: 'Noam Brown', label: 'Noam Brown', kind: 'person', size: 'sm' },
+      { id: 'Sam Altman', label: 'Sam Altman', kind: 'person', size: 'sm' },
+      { id: 'Dario Amodei', label: 'Dario Amodei', kind: 'person', size: 'sm' },
+      { id: 'Jensen Huang', label: 'Jensen', kind: 'person', size: 'sm' },
+      { id: 'Satya Nadella', label: 'Satya', kind: 'person', size: 'sm' },
+      { id: 'Sundar Pichai', label: 'Sundar', kind: 'person', size: 'sm' },
+      { id: 'Mark Zuckerberg', label: 'Zuck', kind: 'person', size: 'sm' },
+      { id: 'Palmer Luckey', label: 'Palmer', kind: 'person', size: 'sm' },
+      { id: 'Cursor', label: 'Cursor', kind: 'builder', size: 'sm' },
+      { id: 'ElevenLabs', label: 'ElevenLabs', kind: 'builder', size: 'sm' },
+      { id: 'Scale AI', label: 'Scale', kind: 'builder', size: 'sm' },
+      { id: 'Databricks', label: 'Databricks', kind: 'builder', size: 'sm' },
+      { id: 'Regulation', label: 'Regulation', kind: 'institution', size: 'sm' },
+      { id: 'Labor', label: 'Labor', kind: 'institution', size: 'sm' },
+      { id: 'Government', label: 'Government', kind: 'institution', size: 'sm' }
+    ];
+
+    // Add filler unlabeled bubbles to keep density up without annotating everything.
+    const fillerCount = 18;
+    for (let i = 0; i < fillerCount; i++) {
+      nodes.push({ id: `f-${i}`, label: '', kind: 'filler', size: rng() < 0.18 ? 'md' : 'sm' });
+    }
+
+    const links = new Map([
+      ['OpenAI', ['Noam Brown', 'Sam Altman', 'Microsoft', 'NVIDIA', 'Sequoia', 'a16z']],
+      ['DeepMind', ['Demis', 'Google', 'NVIDIA', 'CRISPR', 'Robotics']],
+      ['Anthropic', ['Dario Amodei', 'Amazon', 'Google', 'a16z']],
+      ['NVIDIA', ['Jensen Huang', 'OpenAI', 'DeepMind', 'Microsoft', 'Amazon']],
+      ['Microsoft', ['Satya Nadella', 'OpenAI', 'NVIDIA']],
+      ['Google', ['Sundar Pichai', 'DeepMind']],
+      ['Meta', ['Mark Zuckerberg', 'Scale AI', 'Databricks']],
+      ['Anduril', ['Palmer Luckey', 'Sequoia', 'Government']],
+      ['Sequoia', ['OpenAI', 'Anduril', 'Cursor']],
+      ['a16z', ['OpenAI', 'Anthropic', 'ElevenLabs']]
+    ]);
+
+    const byId = new Map();
+
+    const sizeToRadius = (size) => {
+      if (size === 'lg') return 66 + rng() * 10;
+      if (size === 'md') return 38 + rng() * 8;
+      return 18 + rng() * 7;
+    };
+
+    const kindTint = (kind) => {
+      if (kind === 'capital') return [110, 160, 255];
+      if (kind === 'platform') return [140, 200, 255];
+      if (kind === 'lab') return [120, 210, 255];
+      if (kind === 'builder') return [170, 230, 255];
+      if (kind === 'defense') return [120, 170, 230];
+      if (kind === 'institution') return [120, 120, 140];
+      if (kind === 'person') return [210, 235, 255];
+      return [160, 190, 220];
+    };
+
+    const state = {
+      w: 0,
+      h: 0,
+      dpr: 1,
+      rafId: 0,
+      t: 0,
+      hoveredId: null,
+      pointer: { x: 0, y: 0, inside: false }
+    };
+
+    const bodies = nodes.map((n) => {
+      const r = sizeToRadius(n.size);
+      const [tr, tg, tb] = kindTint(n.kind);
+      const body = {
+        ...n,
+        x: 0,
+        y: 0,
+        vx: (rng() - 0.5) * 0.5,
+        vy: (rng() - 0.5) * 0.5,
+        r,
+        tr,
+        tg,
+        tb,
+        labelOnHover: n.label && n.label.length > 0 && n.id[0] !== 'f'
+      };
+      byId.set(n.id, body);
+      return body;
+    });
+
+    const resize = () => {
+      const rect = bubbleCanvas.getBoundingClientRect();
+      state.dpr = Math.max(1, Math.min(2.5, window.devicePixelRatio || 1));
+      state.w = Math.max(1, Math.floor(rect.width));
+      state.h = Math.max(1, Math.floor(rect.height));
+
+      bubbleCanvas.width = Math.floor(state.w * state.dpr);
+      bubbleCanvas.height = Math.floor(state.h * state.dpr);
+      bubbleCanvas.style.width = `${state.w}px`;
+      bubbleCanvas.style.height = `${state.h}px`;
+      ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+
+      // Initial scatter with mild left->right gradient.
+      bodies.forEach((b, i) => {
+        if (b.x !== 0 || b.y !== 0) return;
+        const col = (i / Math.max(1, bodies.length - 1)) * 0.7 + 0.15;
+        b.x = col * state.w + (rng() - 0.5) * state.w * 0.18;
+        b.y = (0.5 + (rng() - 0.5) * 0.7) * state.h;
+      });
+    };
+
+    const findHover = () => {
+      if (!state.pointer.inside) return null;
+      const px = state.pointer.x;
+      const py = state.pointer.y;
+      let best = null;
+      let bestD = Infinity;
+      for (const b of bodies) {
+        const dx = px - b.x;
+        const dy = py - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d <= b.r && d < bestD) {
+          best = b.id;
+          bestD = d;
+        }
+      }
+      return best;
+    };
+
+    const step = (dt) => {
+      const { w, h } = state;
+      const pad = 18;
+
+      // Gentle drift + bounds.
+      for (const b of bodies) {
+        const drift = 0.12;
+        b.vx += (rng() - 0.5) * drift * dt;
+        b.vy += (rng() - 0.5) * drift * dt;
+        b.vx *= 0.985;
+        b.vy *= 0.985;
+
+        b.x += b.vx * 60 * dt;
+        b.y += b.vy * 60 * dt;
+
+        if (b.x < pad + b.r) (b.x = pad + b.r), (b.vx *= -0.6);
+        if (b.x > w - pad - b.r) (b.x = w - pad - b.r), (b.vx *= -0.6);
+        if (b.y < pad + b.r) (b.y = pad + b.r), (b.vy *= -0.6);
+        if (b.y > h - pad - b.r) (b.y = h - pad - b.r), (b.vy *= -0.6);
+      }
+
+      // Soft collisions (repel).
+      const repel = 0.55;
+      for (let i = 0; i < bodies.length; i++) {
+        for (let j = i + 1; j < bodies.length; j++) {
+          const a = bodies[i];
+          const b = bodies[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.max(0.001, Math.hypot(dx, dy));
+          const minDist = a.r + b.r + 10;
+          if (dist >= minDist) continue;
+          const overlap = minDist - dist;
+          const nx = dx / dist;
+          const ny = dy / dist;
+          const push = overlap * repel * 0.03;
+          a.vx -= nx * push;
+          a.vy -= ny * push;
+          b.vx += nx * push;
+          b.vy += ny * push;
+        }
+      }
+
+      const hovered = findHover();
+      state.hoveredId = hovered;
+    };
+
+    const drawBubble = (b, isHovered, emphasis) => {
+      const { x, y, r, tr, tg, tb } = b;
+      const glowR = r * (isHovered ? 1.85 : 1.55);
+
+      const grad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.3, r * 0.25, x, y, glowR);
+      grad.addColorStop(0, `rgba(${tr}, ${tg}, ${tb}, ${0.14 + 0.06 * emphasis})`);
+      grad.addColorStop(0.45, `rgba(${tr}, ${tg}, ${tb}, ${0.06 + 0.04 * emphasis})`);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, glowR, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = isHovered ? palette.fillStrong : palette.fill;
+      ctx.strokeStyle = isHovered ? 'rgba(255,255,255,0.22)' : palette.stroke;
+      ctx.lineWidth = isHovered ? 1.5 : 1;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Specular highlight.
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${isHovered ? 0.18 : 0.12})`;
+      ctx.lineWidth = 1;
+      ctx.arc(x - r * 0.16, y - r * 0.18, r * 0.78, -1.15, -0.35);
+      ctx.stroke();
+    };
+
+    const drawLabel = (text, x, y, alpha, sizePx) => {
+      if (!text) return;
+      ctx.font = `600 ${sizePx}px Outfit, system-ui, -apple-system, Segoe UI, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fillText(text, x, y);
+    };
+
+    const draw = (now) => {
+      state.t = now;
+      ctx.clearRect(0, 0, state.w, state.h);
+
+      // Subtle vignette.
+      const vignette = ctx.createRadialGradient(state.w * 0.5, state.h * 0.55, Math.min(state.w, state.h) * 0.2, state.w * 0.5, state.h * 0.55, Math.max(state.w, state.h) * 0.7);
+      vignette.addColorStop(0, 'rgba(0,0,0,0)');
+      vignette.addColorStop(1, 'rgba(0,0,0,0.78)');
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, state.w, state.h);
+
+      const hoveredId = state.hoveredId;
+      const hovered = hoveredId ? byId.get(hoveredId) : null;
+      const related = hovered ? (links.get(hovered.id) ?? []) : [];
+      const relatedBodies = related.map((id) => byId.get(id)).filter(Boolean);
+
+      // Relationship lines.
+      if (hovered) {
+        for (const other of relatedBodies) {
+          ctx.strokeStyle = other.kind === 'capital' ? palette.lineStrong : palette.line;
+          ctx.lineWidth = other.kind === 'capital' ? 1.6 : 1.1;
+          ctx.beginPath();
+          ctx.moveTo(hovered.x, hovered.y);
+          ctx.lineTo(other.x, other.y);
+          ctx.stroke();
+        }
+      }
+
+      // Bubbles (draw non-hover first).
+      for (const b of bodies) {
+        const isHovered = hovered && b.id === hovered.id;
+        const isRelated = hovered && related.includes(b.id);
+        const emphasis = isHovered ? 1.0 : isRelated ? 0.85 : 0.35;
+        drawBubble(b, isHovered, emphasis);
+      }
+
+      // Hover labels (only on hover / related).
+      if (hovered) {
+        drawLabel(hovered.label || hovered.id, hovered.x, hovered.y, 0.92, Math.round(clamp(hovered.r * 0.22, 12, 16)));
+        for (const other of relatedBodies) {
+          if (!other.labelOnHover) continue;
+          drawLabel(other.label || other.id, other.x, other.y, 0.78, 12);
+        }
+
+        // Satellite bubble orbiting around hovered.
+        const orbitR = hovered.r + clamp(26 + hovered.r * 0.18, 26, 44);
+        const theta = now * 0.0012;
+        const sx = hovered.x + Math.cos(theta) * orbitR;
+        const sy = hovered.y + Math.sin(theta) * orbitR;
+        const satText = related.length ? related[Math.floor((now / 1400) % related.length)] : hovered.id;
+        const satR = clamp(hovered.r * 0.32, 14, 22);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 6]);
+        ctx.beginPath();
+        ctx.arc(hovered.x, hovered.y, orbitR, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        drawBubble({ ...hovered, x: sx, y: sy, r: satR, tr: 210, tg: 240, tb: 255 }, true, 1.0);
+        drawLabel(satText, sx, sy, 0.85, 11);
+      }
+
+      // Caption hint (cursor).
+      bubbleCanvas.style.cursor = hovered ? 'pointer' : 'default';
+    };
+
+    const tick = (now) => {
+      const dt = 1 / 60;
+      if (!prefersReducedMotion) step(dt);
+      draw(now);
+      state.rafId = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      if (state.rafId) return;
+      state.rafId = requestAnimationFrame(tick);
+    };
+
+    const stop = () => {
+      if (!state.rafId) return;
+      cancelAnimationFrame(state.rafId);
+      state.rafId = 0;
+    };
+
+    const onResize = () => {
+      resize();
+    };
+
+    const toLocal = (event) => {
+      const rect = bubbleCanvas.getBoundingClientRect();
+      return {
+        x: clamp(event.clientX - rect.left, 0, rect.width),
+        y: clamp(event.clientY - rect.top, 0, rect.height)
+      };
+    };
+
+    const onPointerMove = (event) => {
+      const p = toLocal(event);
+      state.pointer.x = p.x;
+      state.pointer.y = p.y;
+      state.pointer.inside = true;
+    };
+
+    const onPointerLeave = () => {
+      state.pointer.inside = false;
+      state.hoveredId = null;
+    };
+
+    resize();
+    draw(performance.now());
+
+    window.addEventListener('resize', onResize, { passive: true });
+    bubbleCanvas.addEventListener('pointermove', onPointerMove, { passive: true });
+    bubbleCanvas.addEventListener('pointerleave', onPointerLeave, { passive: true });
+
+    const hostSection = bubbleCanvas.closest('section');
+    const observer =
+      hostSection && typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(
+          (entries) => {
+            const visible = entries.some((e) => e.isIntersecting);
+            if (visible) start();
+            else stop();
+          },
+          { threshold: 0.08 }
+        )
+        : null;
+
+    if (observer && hostSection) observer.observe(hostSection);
+    else start();
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      bubbleCanvas.removeEventListener('pointermove', onPointerMove);
+      bubbleCanvas.removeEventListener('pointerleave', onPointerLeave);
+      if (observer && hostSection) observer.unobserve(hostSection);
+      stop();
+    };
+  };
+
+  initBubbleWorld();
 
   // Reveal animations for scroll
   const observerOptions = {

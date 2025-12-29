@@ -181,9 +181,93 @@ body {
   transition: all 0.3s ease;
 }
 
-.input-group button:hover {
+.input-group button:hover:not(:disabled) {
   background: var(--accent-color);
   color: #fff;
+}
+
+.input-group button:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+.input-group button svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.35rem;
+}
+
+.input-group button .spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Form feedback messages */
+.form-feedback {
+  min-height: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.form-feedback.feedback-success {
+  color: #4ade80;
+}
+
+.form-feedback.feedback-error {
+  color: #f87171;
+}
+
+/* Form states */
+.hero-form.form-loading .input-group {
+  border-color: var(--accent-color);
+}
+
+.hero-form.form-success .input-group {
+  border-color: #4ade80;
+}
+
+.hero-form.form-success .input-group button {
+  background: #4ade80;
+  color: #000;
+}
+
+.hero-form.form-error .input-group {
+  border-color: #f87171;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 .form-footer {
@@ -246,31 +330,8 @@ body {
   will-change: transform;
 }
 
-.hero-ledge {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 56px;
-  pointer-events: none;
-  z-index: 4;
-}
-
-.hero-ledge::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.hero-ledge::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
-  box-shadow: 0 -18px 32px rgba(0, 0, 0, 0.7);
+.hero-carousel-lane[data-lane='featured'] .hero-carousel-track {
+  height: clamp(320px, 44vh, 620px);
 }
 
 .hero-person {
@@ -298,6 +359,63 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .hero-carousel-lane {
     transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Bubble World (Section under hero) */
+.bubble-world {
+  position: relative;
+  height: clamp(520px, 90vh, 940px);
+  background:
+    radial-gradient(900px 520px at 25% 30%, rgba(59, 130, 246, 0.12), transparent 60%),
+    radial-gradient(720px 520px at 80% 55%, rgba(255, 255, 255, 0.05), transparent 62%),
+    radial-gradient(620px 420px at 45% 88%, rgba(59, 130, 246, 0.08), transparent 60%),
+    #000;
+  overflow: hidden;
+}
+
+.bubble-world-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bubble-world-caption {
+  position: absolute;
+  left: 2.25rem;
+  bottom: 2.25rem;
+  z-index: 2;
+  pointer-events: none;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.bubble-world-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 0.15rem;
+}
+
+.bubble-world-subtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 680px) {
+  .bubble-world-caption {
+    left: 1.25rem;
+    bottom: 1.25rem;
+    padding: 0.75rem 0.9rem;
   }
 }
 
