@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // IMPORTANT: Replace 'YOUR_BUTTONDOWN_API_KEY' with your actual API key
   // For production, consider using a serverless function to proxy API calls
   updateConfig({
-    apiKey: 'YOUR_BUTTONDOWN_API_KEY', // Replace with your actual key
+    apiKey: import.meta.env.VITE_BUTTONDOWN_API_KEY,
     subscriberType: 'regular', // 'regular' = skip double opt-in, 'unactivated' = require confirmation
     tags: ['website-signup', 'executive-algorithm'],
     utmSource: 'website',
