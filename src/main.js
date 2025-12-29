@@ -1,20 +1,10 @@
-import { initNewsletterForms, updateConfig } from './newsletter.js';
+import { initNewsletterForms } from './newsletter.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const scene = document.getElementById('parallax-scene');
   const bubbleCanvas = document.getElementById('bubble-canvas');
 
-  // Initialize newsletter forms with Buttondown integration
-  // IMPORTANT: Replace 'YOUR_BUTTONDOWN_API_KEY' with your actual API key
-  // For production, consider using a serverless function to proxy API calls
-  updateConfig({
-    apiKey: import.meta.env.VITE_BUTTONDOWN_API_KEY,
-    subscriberType: 'regular', // 'regular' = skip double opt-in, 'unactivated' = require confirmation
-    tags: ['website-signup', 'executive-algorithm'],
-    utmSource: 'website',
-    utmMedium: 'signup-form',
-    utmCampaign: 'executive-algorithm'
-  });
+  // Initialize newsletter forms (uses server proxy at /api/subscribe)
   initNewsletterForms();
 
   const mulberry32 = (seed) => {

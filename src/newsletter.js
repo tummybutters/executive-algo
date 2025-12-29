@@ -98,95 +98,35 @@ export async function subscribeToNewsletter(email, options = {}) {
         };
     }
 
-    // Get client IP for spam prevention (optional)
-    const ipAddress = await getClientIP();
-
-    // Build request payload
-    const payload = {
-        email_address: email.toLowerCase().trim(),
-        type: BUTTONDOWN_CONFIG.subscriberType,
-        tags: BUTTONDOWN_CONFIG.tags,
-        utm_source: BUTTONDOWN_CONFIG.utmSource,
-        utm_medium: BUTTONDOWN_CONFIG.utmMedium,
-        utm_campaign: BUTTONDOWN_CONFIG.utmCampaign,
-        referrer_url: options.referrerUrl || window.location.href
-    };
-
-    // Add IP address if available
-    if (ipAddress) {
-        payload.ip_address = ipAddress;
-    }
-
-    // Add any custom metadata
-    if (options.metadata) {
-        payload.metadata = options.metadata;
-    }
-
     try {
-        const response = await fetch(BUTTONDOWN_CONFIG.apiUrl, {
+        // Call our server proxy to avoid CORS issues
+        const response = await fetch('/api/subscribe', {
             method: 'POST',
             headers: {
-                'Authorization': `Token ${BUTTONDOWN_CONFIG.apiKey}`,
-                'Content-Type': 'application/json',
-                // Use 'add' to handle existing subscribers gracefully
-                'X-Buttondown-Collision-Behavior': 'add'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                email: email.toLowerCase().trim(),
+                referrer_url: options.referrerUrl || window.location.href,
+                metadata: options.metadata || {}
+            })
         });
 
         const data = await response.json();
 
-        // Handle successful subscription (201 Created)
-        if (response.status === 201) {
+        if (data.success) {
             return {
                 success: true,
-                message: BUTTONDOWN_CONFIG.subscriberType === 'regular'
-                    ? 'Welcome aboard! You\'re now subscribed.'
-                    : 'Almost there! Check your email to confirm your subscription.',
-                data
+                message: data.message || "Welcome aboard! You're now subscribed."
             };
         }
 
-        // Handle various error responses
-        if (response.status === 400) {
-            const errorCode = data.code || data.detail || 'default';
-            return {
-                success: false,
-                message: ERROR_MESSAGES[errorCode] || ERROR_MESSAGES.default,
-                errorCode
-            };
-        }
-
-        if (response.status === 403) {
-            return {
-                success: false,
-                message: 'Unable to subscribe at this time. Please try again later.',
-                errorCode: 'forbidden'
-            };
-        }
-
-        if (response.status === 409) {
-            // Conflict - subscriber already exists
-            return {
-                success: false,
-                message: ERROR_MESSAGES.subscriber_already_exists,
-                errorCode: 'subscriber_already_exists'
-            };
-        }
-
-        if (response.status === 429) {
-            return {
-                success: false,
-                message: ERROR_MESSAGES.rate_limited,
-                errorCode: 'rate_limited'
-            };
-        }
-
-        // Generic error for other status codes
+        // Handle error responses
+        const errorCode = data.code || 'default';
         return {
             success: false,
-            message: ERROR_MESSAGES.default,
-            errorCode: 'unknown'
+            message: data.message || ERROR_MESSAGES[errorCode] || ERROR_MESSAGES.default,
+            errorCode
         };
 
     } catch (error) {
