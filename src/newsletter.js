@@ -1,30 +1,9 @@
 /**
- * Buttondown Newsletter Integration
- * 
- * This module handles newsletter subscriptions via the Buttondown API.
- * 
- * IMPORTANT: For production, you should proxy API calls through your own backend
- * to avoid exposing your API key in client-side code.
- * 
- * For now, this uses a serverless function approach or direct API call.
+ * Mailchimp Newsletter Integration
+ *
+ * This module submits newsletter signups through the server proxy at /api/subscribe.
+ * The server owns the Mailchimp credentials to avoid exposing them client-side.
  */
-
-// Configuration - Replace with your actual Buttondown API key
-// In production, this should be handled server-side or via environment variables
-const BUTTONDOWN_CONFIG = {
-    // IMPORTANT: Replace this with your actual Buttondown API key
-    // For security, you should use a serverless function to proxy these requests
-    apiKey: 'YOUR_BUTTONDOWN_API_KEY',
-    apiUrl: 'https://api.buttondown.com/v1/subscribers',
-    // Set to 'regular' to skip double opt-in, or 'unactivated' for double opt-in
-    subscriberType: 'regular',
-    // Tags to apply to new subscribers
-    tags: ['website-signup'],
-    // UTM parameters for tracking
-    utmSource: 'website',
-    utmMedium: 'signup-form',
-    utmCampaign: 'executive-algorithm'
-};
 
 /**
  * Form states for UI feedback
@@ -37,18 +16,14 @@ export const FormState = {
 };
 
 /**
- * Error messages mapping from Buttondown error codes
+ * Error messages mapping from server error codes
  */
 const ERROR_MESSAGES = {
-    email_already_exists: 'You\'re already subscribed! Check your inbox.',
+    member_exists: 'You\'re already subscribed! Check your inbox.',
     email_blocked: 'This email address cannot be subscribed.',
     email_empty: 'Please enter your email address.',
     email_invalid: 'Please enter a valid email address.',
-    ip_address_spammy: 'Unable to subscribe at this time. Please try again later.',
     rate_limited: 'Too many requests. Please wait a moment and try again.',
-    subscriber_already_exists: 'You\'re already subscribed! Check your inbox.',
-    subscriber_blocked: 'This email address cannot be subscribed.',
-    subscriber_suppressed: 'This email address has been suppressed.',
     default: 'Something went wrong. Please try again.'
 };
 
@@ -60,24 +35,6 @@ const ERROR_MESSAGES = {
 export function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-/**
- * Get the user's IP address for spam prevention
- * Note: This requires a server-side endpoint or third-party service
- * For client-side, we'll skip this and let Buttondown use the request IP
- */
-async function getClientIP() {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        if (response.ok) {
-            const data = await response.json();
-            return data.ip;
-        }
-    } catch (error) {
-        console.warn('Could not fetch IP address:', error);
-    }
-    return null;
 }
 
 /**
@@ -141,7 +98,7 @@ export async function subscribeToNewsletter(email, options = {}) {
 
 /**
  * Initialize newsletter form handlers
- * This sets up all newsletter forms on the page to submit via Buttondown
+ * This sets up all newsletter forms on the page to submit via Mailchimp
  */
 export function initNewsletterForms() {
     const forms = document.querySelectorAll('.hero-form');
@@ -253,7 +210,7 @@ export function initNewsletterForms() {
             // Set loading state
             setState(FormState.LOADING);
 
-            // Call Buttondown API
+            // Call Mailchimp proxy
             const result = await subscribeToNewsletter(email, {
                 referrerUrl: window.location.href,
                 metadata: {
@@ -286,9 +243,4 @@ export function initNewsletterForms() {
             }
         });
     });
-}
-
-// Export configuration update function for easy customization
-export function updateConfig(newConfig) {
-    Object.assign(BUTTONDOWN_CONFIG, newConfig);
 }

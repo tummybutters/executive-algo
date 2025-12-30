@@ -28,18 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const people = [
-      { src: '/hero/people/braddy.png' },
-      { src: '/hero/people/bill.png' },
-      { src: '/hero/people/brian.png' },
-      { src: '/hero/people/sammy.png' },
-      { src: '/hero/people/zuckerberg.png' },
-      { src: '/hero/people/jensen.png' },
-      { src: '/hero/people/satya.png' },
-      { src: '/hero/people/karp.png' },
-      { src: '/hero/people/demmy.png' }
-    ];
-
     const rng = mulberry32(1337);
 
     // Single featured (bottom) row: include everyone.
@@ -102,12 +90,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ];
 
+    const waitForImage = (img) =>
+      new Promise((resolve) => {
+        if (img.complete && img.naturalWidth > 0) {
+          resolve();
+          return;
+        }
+        const done = () => resolve();
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+      });
+
     const decodeImage = async (img) => {
+      if (img.complete && img.naturalWidth > 0) return;
       try {
-        if (typeof img.decode === 'function') await img.decode();
+        if (typeof img.decode === 'function') {
+          await img.decode();
+          return;
+        }
       } catch {
-        // ignore
+        // ignore and fall back to load events
       }
+      await waitForImage(img);
+    };
+
+    const normalizeOffset = (laneState) => {
+      const total = laneState.total;
+      if (!Number.isFinite(total) || total <= 0) return;
+      laneState.offset = ((laneState.offset % total) + total) % total;
     };
 
     const createLane = (laneConfig, laneIndex, laneItems) => {
@@ -239,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       laneState.total = Math.max(1, x);
-      laneState.offset = ((((laneState.offset ?? 0) % laneState.total) + laneState.total) % laneState.total);
+      normalizeOffset(laneState);
       laneState.speed = laneState.total / laneState.duration;
       positionLane(laneState);
     };
@@ -271,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const dx = dir * laneState.speed * dt;
 
           laneState.offset += dx;
+          normalizeOffset(laneState);
           positionLane(laneState);
         });
       }
@@ -313,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const startOffset = dragState.laneOffsets?.[laneIndex];
         if (typeof startOffset !== 'number') return;
         laneState.offset = startOffset + deltaX;
+        normalizeOffset(laneState);
         positionLane(laneState);
       });
     };

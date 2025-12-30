@@ -11,12 +11,15 @@ async function createServer() {
     // Parse JSON bodies
     app.use(express.json());
 
-    // Newsletter subscription endpoint - proxies to Buttondown
+    // Newsletter subscription endpoint - proxies to Mailchimp
     app.post('/api/subscribe', async (req, res) => {
-        const apiKey = process.env.BUTTONDOWN_API_KEY;
+        const apiKey = process.env.MAILCHIMP_API_KEY;
+        const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+        const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+        const doubleOptIn = process.env.MAILCHIMP_DOUBLE_OPT_IN === 'true';
 
-        if (!apiKey) {
-            console.error('BUTTONDOWN_API_KEY not set');
+        if (!apiKey || !serverPrefix || !audienceId) {
+            console.error('Mailchimp config missing');
             return res.status(500).json({
                 success: false,
                 message: 'Server configuration error',
@@ -35,53 +38,62 @@ async function createServer() {
         }
 
         try {
-            const buttondownResponse = await fetch('https://api.buttondown.com/v1/subscribers', {
+            const mailchimpResponse = await fetch(
+                `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${audienceId}/members`,
+                {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Token ${apiKey}`,
-                    'Content-Type': 'application/json',
-                    'X-Buttondown-Collision-Behavior': 'add'
+                    'Authorization': `Basic ${Buffer.from(`anystring:${apiKey}`).toString('base64')}`,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     email_address: email.toLowerCase().trim(),
-                    type: 'regular',
+                    status: doubleOptIn ? 'pending' : 'subscribed',
                     tags: ['website-signup', 'executive-algorithm'],
-                    utm_source: 'website',
-                    utm_medium: 'signup-form',
-                    utm_campaign: 'executive-algorithm',
-                    referrer_url: referrer_url || '',
-                    metadata: metadata || {}
+                    merge_fields: {
+                        REFERRER: referrer_url || ''
+                    }
                 })
             });
 
-            const data = await buttondownResponse.json();
+            const data = await mailchimpResponse.json();
 
-            if (buttondownResponse.status === 201) {
+            if (mailchimpResponse.status === 200 || mailchimpResponse.status === 201) {
+                const message = doubleOptIn
+                    ? "Almost there! Please confirm your subscription in your inbox."
+                    : "Welcome aboard! You're now subscribed.";
                 return res.status(201).json({
                     success: true,
-                    message: "Welcome aboard! You're now subscribed."
+                    message
                 });
             }
 
             // Handle error responses
             const errorMessages = {
-                email_already_exists: "You're already subscribed! Check your inbox.",
-                subscriber_already_exists: "You're already subscribed! Check your inbox.",
+                member_exists: "You're already subscribed! Check your inbox.",
                 email_invalid: "Please enter a valid email address.",
                 email_blocked: "This email address cannot be subscribed.",
                 rate_limited: "Too many requests. Please wait a moment and try again.",
                 default: "Something went wrong. Please try again."
             };
 
-            const errorCode = data.code || 'default';
-            return res.status(buttondownResponse.status).json({
+            let errorCode = 'default';
+            if (data?.title === 'Member Exists') {
+                errorCode = 'member_exists';
+            } else if (data?.title === 'Invalid Resource' || /invalid email/i.test(data?.detail || '')) {
+                errorCode = 'email_invalid';
+            } else if (mailchimpResponse.status === 429) {
+                errorCode = 'rate_limited';
+            }
+
+            return res.status(mailchimpResponse.status).json({
                 success: false,
                 message: errorMessages[errorCode] || errorMessages.default,
                 code: errorCode
             });
 
         } catch (error) {
-            console.error('Buttondown API error:', error);
+            console.error('Mailchimp API error:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Unable to subscribe at this time. Please try again later.',
