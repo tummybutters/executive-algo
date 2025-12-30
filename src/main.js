@@ -32,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Single featured (bottom) row: include everyone.
     // Order matters for the collage "story" as it loops.
-    // Make Satya + Jensen spaced apart as centerpieces, with smaller faces between/around them.
+    // Karpathy + Satya as centerpieces with Demis/Brian around them, then Jensen area, then Brad/Sam/Bill/Zuck
     const featured = [
-      { src: '/hero/people/jensen.png' },
       { src: '/hero/people/demmy.png' },
-      { src: '/hero/people/brian.png' },
       { src: '/hero/people/karp.png' },
       { src: '/hero/people/satya.png' },
+      { src: '/hero/people/brian.png' },
+      { src: '/hero/people/jensen.png' },
       { src: '/hero/people/sammy.png' },
       { src: '/hero/people/braddy.png' },
       { src: '/hero/people/bill.png' },
@@ -48,22 +48,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const featuredBottomOffsetPx = 28; // tweak 0–50 to taste
 
     const featuredStyleBySrc = {
-      // Centerpieces
+      // Centerpieces - Karpathy and Satya
+      '/hero/people/karp.png': { heightMul: 1.26, scale: 1.08, y: 20, shiftX: 0 },
+      '/hero/people/satya.png': { heightMul: 1.26, scale: 1.08, shiftX: 10 },
+      // Jensen still prominent
       '/hero/people/jensen.png': { heightMul: 1.22, scale: 1.06, shiftX: -10 },
-      '/hero/people/satya.png': { heightMul: 1.24, scale: 1.06, shiftX: 10 },
-      // Smaller supporting faces
-      '/hero/people/sammy.png': { heightMul: 0.92, scale: 0.92, shiftX: 0 },
-      // Lower Karp slightly to crop the bottom edge visually.
-      '/hero/people/karp.png': { heightMul: 1.14, scale: 1.03, y: 25, shiftX: -10 },
-      '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 },
-      // Make Braddy bigger and prominent
-      '/hero/people/braddy.png': { heightMul: 1.35, scale: 1.18, y: 80, shiftX: 0 }
+      // Demis and Brian - supporting around centerpieces
+      '/hero/people/demmy.png': { heightMul: 1.0, scale: 0.95, shiftX: 0 },
+      '/hero/people/brian.png': { heightMul: 1.0, scale: 0.95, shiftX: 0 },
+      // Sam slightly bigger
+      '/hero/people/sammy.png': { heightMul: 1.05, scale: 1.0, shiftX: 0 },
+      // Brad slightly smaller and moved down 30px to crop bottom
+      '/hero/people/braddy.png': { heightMul: 1.18, scale: 1.05, y: 110, shiftX: 0 },
+      '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 }
     };
 
     // Create extra breathing room around centerpieces without loosening the whole carousel.
     const featuredExtraGapAfterBySrc = {
-      '/hero/people/jensen.png': 140,
-      '/hero/people/satya.png': 140
+      '/hero/people/karp.png': 120,
+      '/hero/people/satya.png': 120,
+      '/hero/people/jensen.png': 100
     };
 
     const hashToUnit = (str) => {
