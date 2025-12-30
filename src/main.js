@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Lower Karp slightly to crop the bottom edge visually.
       '/hero/people/karp.png': { heightMul: 1.14, scale: 1.03, y: 25, shiftX: -10 },
       '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 },
-      // Keep Braddy's bottom artifacts out of view without clipping the top.
-      '/hero/people/braddy.png': { heightMul: 1.06, scale: 1.0, y: 120, shiftX: 0 }
+      // Make Braddy bigger and prominent
+      '/hero/people/braddy.png': { heightMul: 1.35, scale: 1.18, y: 80, shiftX: 0 }
     };
 
     // Create extra breathing room around centerpieces without loosening the whole carousel.
