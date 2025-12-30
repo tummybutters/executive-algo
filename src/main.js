@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Order matters for the collage "story" as it loops.
     // Karpathy + Satya as centerpieces with Demis/Brian around them, then Jensen area, then Brad/Sam/Bill/Zuck
     const featured = [
-      { src: '/hero/people/demmy.png' },
+      { src: '/hero/people/brian.png' },
       { src: '/hero/people/karp.png' },
       { src: '/hero/people/satya.png' },
-      { src: '/hero/people/brian.png' },
+      { src: '/hero/people/demmy.png' },
       { src: '/hero/people/jensen.png' },
       { src: '/hero/people/sammy.png' },
       { src: '/hero/people/braddy.png' },
@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
       '/hero/people/jensen.png': { heightMul: 1.22, scale: 1.06, shiftX: -10 },
       // Demis and Brian - supporting around centerpieces
       '/hero/people/demmy.png': { heightMul: 1.0, scale: 0.95, shiftX: 0 },
-      '/hero/people/brian.png': { heightMul: 1.0, scale: 0.95, shiftX: 0 },
+      '/hero/people/brian.png': { heightMul: 1.0, scale: 0.95, shiftX: -40 },
       // Sam slightly bigger
       '/hero/people/sammy.png': { heightMul: 1.05, scale: 1.0, shiftX: 0 },
       // Brad slightly smaller and moved down 30px to crop bottom
-      '/hero/people/braddy.png': { heightMul: 1.18, scale: 1.05, y: 110, shiftX: 0 },
+      '/hero/people/braddy.png': { heightMul: 1.42, scale: 1.26, y: 130, shiftX: 0 },
       '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 }
     };
 
