@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { src: '/hero/people/sammy.png' },
       { src: '/hero/people/braddy.png' },
       { src: '/hero/people/bill.png' },
-      { src: '/hero/people/zuckerberg.png' }
+      { src: '/hero/people/zuckerberg.png' },
+      { src: '/hero/people/demis2.png' }
     ];
 
     const featuredBottomOffsetPx = 28; // tweak 0–50 to taste
@@ -55,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
       '/hero/people/jensen.png': { heightMul: 1.22, scale: 1.06, shiftX: -10 },
       // Demis and Brian - supporting around centerpieces
       '/hero/people/demmy.png': { heightMul: 1.0, scale: 0.95, shiftX: 0 },
-      '/hero/people/brian.png': { heightMul: 1.0, scale: 0.95, shiftX: -40 },
+      '/hero/people/brian.png': { heightMul: 1.0, scale: 0.95, shiftX: -50 },
+      '/hero/people/demis2.png': { heightMul: 1.2, scale: 1.1, shiftX: 0 },
       // Sam slightly bigger
       '/hero/people/sammy.png': { heightMul: 1.05, scale: 1.0, shiftX: 0 },
       // Brad slightly smaller and moved down 30px to crop bottom
