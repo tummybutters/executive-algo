@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
       '/hero/people/sammy.png': { heightMul: 1.05, scale: 1.0, shiftX: 0 },
       // Brad slightly smaller and moved down 30px to crop bottom
       '/hero/people/braddy.png': { heightMul: 1.42, scale: 1.26, y: 130, shiftX: 0 },
-      '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 }
+      '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 },
+      // Zuck 15% bigger
+      '/hero/people/zuckerberg.png': { heightMul: 1.15, scale: 1.15, shiftX: 0 }
     };
 
     // Create extra breathing room around centerpieces without loosening the whole carousel.
