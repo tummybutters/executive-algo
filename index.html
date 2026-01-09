@@ -60,12 +60,117 @@
         </div>
       </section>
 
-      <!-- Bubble Environment -->
-      <section class="bubble-world" id="bubble-world">
-        <canvas class="bubble-world-canvas" id="bubble-canvas" aria-hidden="true"></canvas>
-        <div class="bubble-world-caption" aria-hidden="true">
-          <div class="bubble-world-title">Ecosystem Field</div>
-          <div class="bubble-world-subtitle">Hover to trace influence</div>
+      <!-- Ecosystem Navigation -->
+      <section class="ecosystem-nav" id="ecosystem-nav">
+        <div class="ecosystem-container">
+          <div class="ecosystem-header">
+            <h2 class="ecosystem-title">The Ecosystem</h2>
+            <p class="ecosystem-subtitle">Key players shaping the future of technology</p>
+          </div>
+
+          <nav class="pill-nav" role="tablist" aria-label="Ecosystem categories">
+            <button class="pill-tab active" role="tab" aria-selected="true" aria-controls="panel-labs" data-tab="labs">AI Labs</button>
+            <button class="pill-tab" role="tab" aria-selected="false" aria-controls="panel-platforms" data-tab="platforms">Platforms</button>
+            <button class="pill-tab" role="tab" aria-selected="false" aria-controls="panel-capital" data-tab="capital">Capital</button>
+            <button class="pill-tab" role="tab" aria-selected="false" aria-controls="panel-people" data-tab="people">People</button>
+          </nav>
+
+          <div class="tab-content-wrapper">
+            <div class="tab-panel active" id="panel-labs" role="tabpanel" aria-labelledby="tab-labs">
+              <div class="ecosystem-grid">
+                <div class="ecosystem-card">
+                  <div class="card-icon lab-icon"></div>
+                  <h3>OpenAI</h3>
+                  <p>Leading AI research lab behind GPT and DALL-E</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon lab-icon"></div>
+                  <h3>DeepMind</h3>
+                  <p>Google's AI powerhouse advancing AGI research</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon lab-icon"></div>
+                  <h3>Anthropic</h3>
+                  <p>Safety-focused AI research company behind Claude</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="panel-platforms" role="tabpanel" aria-labelledby="tab-platforms">
+              <div class="ecosystem-grid">
+                <div class="ecosystem-card">
+                  <div class="card-icon platform-icon"></div>
+                  <h3>NVIDIA</h3>
+                  <p>The backbone of AI compute infrastructure</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon platform-icon"></div>
+                  <h3>Microsoft</h3>
+                  <p>Enterprise AI integration and Azure cloud</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon platform-icon"></div>
+                  <h3>Google</h3>
+                  <p>Search, cloud, and AI research powerhouse</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon platform-icon"></div>
+                  <h3>Meta</h3>
+                  <p>Open-source AI and social platform scale</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="panel-capital" role="tabpanel" aria-labelledby="tab-capital">
+              <div class="ecosystem-grid">
+                <div class="ecosystem-card">
+                  <div class="card-icon capital-icon"></div>
+                  <h3>Sequoia</h3>
+                  <p>Legendary VC backing transformative companies</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon capital-icon"></div>
+                  <h3>a16z</h3>
+                  <p>Andreessen Horowitz shaping tech's future</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon capital-icon"></div>
+                  <h3>Benchmark</h3>
+                  <p>Elite partnership backing category-defining startups</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon capital-icon"></div>
+                  <h3>Norges</h3>
+                  <p>World's largest sovereign wealth fund</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="panel-people" role="tabpanel" aria-labelledby="tab-people">
+              <div class="ecosystem-grid">
+                <div class="ecosystem-card">
+                  <div class="card-icon person-icon"></div>
+                  <h3>Sam Altman</h3>
+                  <p>CEO of OpenAI driving AGI development</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon person-icon"></div>
+                  <h3>Jensen Huang</h3>
+                  <p>NVIDIA CEO powering the AI revolution</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon person-icon"></div>
+                  <h3>Satya Nadella</h3>
+                  <p>Microsoft CEO transforming enterprise AI</p>
+                </div>
+                <div class="ecosystem-card">
+                  <div class="card-icon person-icon"></div>
+                  <h3>Demis Hassabis</h3>
+                  <p>DeepMind CEO pioneering AGI research</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

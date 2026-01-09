@@ -362,10 +362,10 @@ body {
   }
 }
 
-/* Bubble World (Section under hero) */
-.bubble-world {
+/* Ecosystem Navigation (Pill Nav Bar) */
+.ecosystem-nav {
   position: relative;
-  height: clamp(520px, 90vh, 940px);
+  padding: 6rem 0;
   background:
     radial-gradient(900px 520px at 25% 30%, rgba(59, 130, 246, 0.12), transparent 60%),
     radial-gradient(720px 520px at 80% 55%, rgba(255, 255, 255, 0.05), transparent 62%),
@@ -374,48 +374,191 @@ body {
   overflow: hidden;
 }
 
-.bubble-world-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
+.ecosystem-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.bubble-world-caption {
-  position: absolute;
-  left: 2.25rem;
-  bottom: 2.25rem;
-  z-index: 2;
-  pointer-events: none;
-  padding: 0.85rem 1rem;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.ecosystem-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.ecosystem-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+
+.ecosystem-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+}
+
+/* Pill Navigation */
+.pill-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  max-width: 600px;
+  margin: 0 auto 3rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
 }
 
-.bubble-world-title {
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.82);
-  margin-bottom: 0.15rem;
-}
-
-.bubble-world-subtitle {
+.pill-tab {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  white-space: nowrap;
 }
 
+.pill-tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pill-tab.active {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.pill-tab:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Tab Content */
+.tab-content-wrapper {
+  position: relative;
+  min-height: 300px;
+}
+
+.tab-panel {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.tab-panel.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ecosystem Grid */
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.ecosystem-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.ecosystem-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lab-icon {
+  background: linear-gradient(135deg, rgba(120, 210, 255, 0.2), rgba(120, 210, 255, 0.05));
+  border: 1px solid rgba(120, 210, 255, 0.3);
+}
+
+.platform-icon {
+  background: linear-gradient(135deg, rgba(140, 200, 255, 0.2), rgba(140, 200, 255, 0.05));
+  border: 1px solid rgba(140, 200, 255, 0.3);
+}
+
+.capital-icon {
+  background: linear-gradient(135deg, rgba(110, 160, 255, 0.2), rgba(110, 160, 255, 0.05));
+  border: 1px solid rgba(110, 160, 255, 0.3);
+}
+
+.person-icon {
+  background: linear-gradient(135deg, rgba(210, 235, 255, 0.2), rgba(210, 235, 255, 0.05));
+  border: 1px solid rgba(210, 235, 255, 0.3);
+}
+
+.ecosystem-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.ecosystem-card p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.5;
+}
+
+/* Mobile Responsive */
 @media (max-width: 680px) {
-  .bubble-world-caption {
-    left: 1.25rem;
-    bottom: 1.25rem;
-    padding: 0.75rem 0.9rem;
+  .ecosystem-nav {
+    padding: 4rem 0;
+  }
+
+  .ecosystem-title {
+    font-size: 2rem;
+  }
+
+  .pill-nav {
+    flex-wrap: wrap;
+    border-radius: 20px;
+    gap: 0.375rem;
+    padding: 0.375rem;
+  }
+
+  .pill-tab {
+    flex: 1 1 calc(50% - 0.375rem);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 16px;
+  }
+
+  .ecosystem-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ecosystem-card {
+    padding: 1.5rem;
   }
 }
 
