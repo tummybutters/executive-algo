@@ -60,12 +60,108 @@
         </div>
       </section>
 
-      <!-- Bubble Environment -->
-      <section class="bubble-world" id="bubble-world">
-        <canvas class="bubble-world-canvas" id="bubble-canvas" aria-hidden="true"></canvas>
-        <div class="bubble-world-caption" aria-hidden="true">
-          <div class="bubble-world-title">Ecosystem Field</div>
-          <div class="bubble-world-subtitle">Hover to trace influence</div>
+      <!-- Ecosystem Navigation Section -->
+      <section class="ecosystem-nav-section" id="ecosystem-nav">
+        <div class="container">
+          <h2 class="ecosystem-title">The Ecosystem We Track</h2>
+          <p class="ecosystem-subtitle">From frontier labs to key decision makers</p>
+
+          <!-- Pill Nav Bar -->
+          <div class="pill-nav-container">
+            <nav class="pill-nav" role="tablist" aria-label="Ecosystem categories">
+              <button class="pill-tab active" role="tab" aria-selected="true" aria-controls="tab-labs" data-tab="labs">AI Labs</button>
+              <button class="pill-tab" role="tab" aria-selected="false" aria-controls="tab-platforms" data-tab="platforms">Platforms</button>
+              <button class="pill-tab" role="tab" aria-selected="false" aria-controls="tab-capital" data-tab="capital">Capital</button>
+              <button class="pill-tab" role="tab" aria-selected="false" aria-controls="tab-builders" data-tab="builders">Builders</button>
+            </nav>
+          </div>
+
+          <!-- Tab Content Panels -->
+          <div class="tab-panels">
+            <div class="tab-panel active" id="tab-labs" role="tabpanel" aria-labelledby="labs">
+              <div class="tab-content-grid">
+                <div class="entity-card">
+                  <span class="entity-name">OpenAI</span>
+                  <span class="entity-type">Frontier Lab</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">DeepMind</span>
+                  <span class="entity-type">Frontier Lab</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Anthropic</span>
+                  <span class="entity-type">Frontier Lab</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">xAI</span>
+                  <span class="entity-type">Frontier Lab</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="tab-platforms" role="tabpanel" aria-labelledby="platforms">
+              <div class="tab-content-grid">
+                <div class="entity-card">
+                  <span class="entity-name">NVIDIA</span>
+                  <span class="entity-type">Compute Platform</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Microsoft</span>
+                  <span class="entity-type">Cloud & AI</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Google</span>
+                  <span class="entity-type">Cloud & AI</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Meta</span>
+                  <span class="entity-type">AI Platform</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="tab-capital" role="tabpanel" aria-labelledby="capital">
+              <div class="tab-content-grid">
+                <div class="entity-card">
+                  <span class="entity-name">Sequoia</span>
+                  <span class="entity-type">Venture Capital</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">a16z</span>
+                  <span class="entity-type">Venture Capital</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Benchmark</span>
+                  <span class="entity-type">Venture Capital</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Tiger Global</span>
+                  <span class="entity-type">Growth Equity</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="tab-builders" role="tabpanel" aria-labelledby="builders">
+              <div class="tab-content-grid">
+                <div class="entity-card">
+                  <span class="entity-name">Cursor</span>
+                  <span class="entity-type">AI Developer Tools</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">ElevenLabs</span>
+                  <span class="entity-type">AI Voice</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Scale AI</span>
+                  <span class="entity-type">AI Infrastructure</span>
+                </div>
+                <div class="entity-card">
+                  <span class="entity-name">Databricks</span>
+                  <span class="entity-type">Data & AI</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
