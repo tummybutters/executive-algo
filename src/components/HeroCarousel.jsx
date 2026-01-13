@@ -263,7 +263,7 @@ export default function HeroCarousel({ people: peopleOverride }) {
     let lastFrame = 0;
     let isReady = false;
     let inView = true;
-    const frameInterval = 1000 / (lowPower ? 24 : 30);
+    const frameInterval = lowPower ? 1000 / 30 : 0;
     const dragState = {
       dragging: false,
       pointerId: null,
@@ -272,7 +272,7 @@ export default function HeroCarousel({ people: peopleOverride }) {
     };
 
     const tick = (now) => {
-      if (now - lastFrame < frameInterval) {
+      if (frameInterval && now - lastFrame < frameInterval) {
         rafId = requestAnimationFrame(tick);
         return;
       }
