@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, MotionConfig, useReducedMotion } from 'motion/react';
-import BubbleWorld from './components/BubbleWorld.jsx';
 import HeroCarousel from './components/HeroCarousel.jsx';
 import NewsletterForm from './components/NewsletterForm.jsx';
 
@@ -83,8 +82,6 @@ export default function App() {
 
           <HeroCarousel />
         </section>
-
-        <BubbleWorld />
 
         <motion.section
           className="newsletter-highlight"

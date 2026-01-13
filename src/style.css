@@ -328,10 +328,16 @@ body {
   height: clamp(260px, 38vh, 520px);
   width: 100%;
   will-change: transform;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 .hero-carousel-lane[data-lane='featured'] .hero-carousel-track {
   height: clamp(320px, 44vh, 620px);
+}
+
+.hero-carousel-track.is-ready {
+  opacity: 1;
 }
 
 .hero-person {
@@ -561,6 +567,14 @@ body {
 }
 
 /* Highight Section */
+.newsletter-highlight,
+.signal-noise,
+.shaping-future,
+.final-cta {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
 .newsletter-highlight {
   padding: 8rem 0;
   background: radial-gradient(circle at top right, #111 0%, transparent 60%);

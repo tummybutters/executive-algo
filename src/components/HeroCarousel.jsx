@@ -6,46 +6,49 @@ import { clamp } from '../utils.js';
 
 const featuredBottomOffsetPx = 28;
 
+const optimizedBase = '/hero/people-optimized';
+const optimized = (name) => `${optimizedBase}/${name}.png`;
+
 const featuredStyleBySrc = {
-  '/hero/people/jensen.png': { heightMul: 1.22, scale: 1.06, shiftX: -10 },
-  '/hero/people/satya.png': { heightMul: 1.24, scale: 1.06, shiftX: 10 },
-  '/hero/people/sammy.png': { heightMul: 0.92, scale: 0.92, shiftX: 0 },
-  '/hero/people/karp.png': { heightMul: 1.14, scale: 1.03, y: 25, shiftX: -10 },
-  '/hero/people/bill.png': { heightMul: 1.22, scale: 1.08, shiftX: 12 },
-  '/hero/people/braddy.png': { heightMul: 1.14, scale: 1.02, y: 140, shiftX: 0 }
+  [optimized('jensen')]: { heightMul: 1.22, scale: 1.06, shiftX: -10 },
+  [optimized('satya')]: { heightMul: 1.24, scale: 1.06, shiftX: 10 },
+  [optimized('sammy')]: { heightMul: 0.92, scale: 0.92, shiftX: 0 },
+  [optimized('karp')]: { heightMul: 1.14, scale: 1.03, y: 25, shiftX: -10 },
+  [optimized('bill')]: { heightMul: 1.22, scale: 1.08, shiftX: 12 },
+  [optimized('braddy')]: { heightMul: 1.14, scale: 1.02, y: 140, shiftX: 0 }
 };
 
 const featuredExtraGapAfterBySrc = {
-  '/hero/people/jensen.png': 140,
-  '/hero/people/satya.png': 140
+  [optimized('jensen')]: 140,
+  [optimized('satya')]: 140
 };
 
-const heroPeople = [
-  '/hero/people/jensen.png',
-  '/hero/people/elon_musk.png',
-  '/hero/people/dario_amodei.png',
-  '/hero/people/ilya_sutskever.png',
-  '/hero/people/marc_andreessen.png',
-  '/hero/people/peter_thiel.png',
-  '/hero/people/chamath_palihapitiya.png',
-  '/hero/people/jamie_dimon.png',
-  '/hero/people/ray_dalio.png',
-  '/hero/people/reid_hoffman.png',
-  '/hero/people/aravind_srinivas.png',
-  '/hero/people/michael_truell.png',
-  '/hero/people/mati_staniszewski.png',
-  '/hero/people/bret_taylor.png',
-  '/hero/people/palmer_luckey.png',
-  '/hero/people/tim_ellis.png',
-  '/hero/people/brett_adcock.png',
-  '/hero/people/satya.png',
-  '/hero/people/sammy.png',
-  '/hero/people/zuckerberg.png',
-  '/hero/people/karp.png',
-  '/hero/people/bill.png',
-  '/hero/people/braddy.png',
-  '/hero/people/brian.png',
-  '/hero/people/demmy.png'
+export const heroPeople = [
+  optimized('jensen'),
+  optimized('elon_musk'),
+  optimized('dario_amodei'),
+  optimized('ilya_sutskever'),
+  optimized('marc_andreessen'),
+  optimized('peter_thiel'),
+  optimized('chamath_palihapitiya'),
+  optimized('jamie_dimon'),
+  optimized('ray_dalio'),
+  optimized('reid_hoffman'),
+  optimized('aravind_srinivas'),
+  optimized('michael_truell'),
+  optimized('mati_staniszewski'),
+  optimized('bret_taylor'),
+  optimized('palmer_luckey'),
+  optimized('tim_ellis'),
+  optimized('brett_adcock'),
+  optimized('satya'),
+  optimized('sammy'),
+  optimized('zuckerberg'),
+  optimized('karp'),
+  optimized('bill'),
+  optimized('braddy'),
+  optimized('brian'),
+  optimized('demmy')
 ];
 
 const hashToUnit = (str) => {
@@ -59,16 +62,21 @@ const hashToUnit = (str) => {
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ people: peopleOverride }) {
   const prefersReducedMotion = useReducedMotion();
   const sceneRef = useRef(null);
   const laneRef = useRef(null);
   const itemRefs = useRef([]);
   const imgRefs = useRef([]);
 
+  const sourceList = useMemo(
+    () => (peopleOverride && peopleOverride.length > 0 ? peopleOverride : heroPeople),
+    [peopleOverride]
+  );
+
   const people = useMemo(() => {
     const sizePreset = { heightMin: 420, heightMax: 540 };
-    return heroPeople.map((src, index) => {
+    return sourceList.map((src, index) => {
       const featuredStyle = featuredStyleBySrc[src];
       const unit = hashToUnit(src);
       const defaultY = Math.round(lerp(-12, 22, unit));
@@ -88,7 +96,7 @@ export default function HeroCarousel() {
         shiftX: featuredStyle?.shiftX ?? defaultShiftX
       };
     });
-  }, []);
+  }, [sourceList]);
 
   useEffect(() => {
     const scene = sceneRef.current;
@@ -118,6 +126,33 @@ export default function HeroCarousel() {
       speed: 0
     };
 
+    const layoutCacheKey = () => {
+      if (typeof window === 'undefined') return null;
+      const bucket = Math.round(window.innerWidth / 120) * 120;
+      return `hero-carousel-widths-v1-${bucket}`;
+    };
+
+    const readLayoutCache = () => {
+      const key = layoutCacheKey();
+      if (!key || typeof window === 'undefined') return null;
+      try {
+        const raw = window.sessionStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const writeLayoutCache = (widths) => {
+      const key = layoutCacheKey();
+      if (!key || typeof window === 'undefined') return;
+      try {
+        window.sessionStorage.setItem(key, JSON.stringify({ widths }));
+      } catch {
+        // ignore
+      }
+    };
+
     laneState.items = people
       .map((person, index) => {
         const el = itemRefs.current[index];
@@ -136,9 +171,8 @@ export default function HeroCarousel() {
 
     const positionLane = () => {
       const total = laneState.total || 1;
-      const laneRect = laneState.lane.getBoundingClientRect();
-      const viewportW = laneRect.width;
-      const buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
+      const viewportW = laneState.viewportW ?? laneState.lane.getBoundingClientRect().width;
+      const buffer = laneState.buffer ?? Math.round(clamp(viewportW * 0.12, 180, 420));
 
       laneState.items.forEach((item) => {
         let x = (item.baseX ?? 0) + (item.shiftX ?? 0) + laneState.offset;
@@ -152,15 +186,56 @@ export default function HeroCarousel() {
     };
 
     const layoutLane = () => {
+      const laneRect = laneState.lane.getBoundingClientRect();
+      const viewportW = laneRect.width;
+      laneState.viewportW = viewportW;
+      laneState.buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
+
       const gap = Math.round(clamp(window.innerWidth * 0.02, 28, 60));
       laneState.gap = gap;
 
       const maxW = Math.round(clamp(window.innerWidth * 0.28, 260, 420));
       let x = Math.round(clamp(window.innerWidth * 0.03, 18, 44));
 
+      const widthsForCache = {};
+
       laneState.items.forEach((item) => {
         if (maxW) item.el.style.maxWidth = `${maxW}px`;
         item.width = Math.ceil(item.el.getBoundingClientRect().width) || 280;
+        item.baseX = x;
+        const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
+        x += item.width + gap + extraGap;
+        widthsForCache[item.src] = item.width;
+      });
+
+      laneState.total = Math.max(1, x);
+      laneState.offset = ((((laneState.offset ?? 0) % laneState.total) + laneState.total) % laneState.total);
+      laneState.speed = laneState.total / laneState.duration;
+      positionLane();
+      writeLayoutCache(widthsForCache);
+    };
+
+    const applyCachedLayout = () => {
+      const cache = readLayoutCache();
+      const cachedWidths = cache?.widths ?? {};
+      if (!laneState.items.length) return;
+
+      const laneRect = laneState.lane.getBoundingClientRect();
+      const viewportW = laneRect.width;
+      laneState.viewportW = viewportW;
+      laneState.buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
+
+      const gap = Math.round(clamp(window.innerWidth * 0.02, 28, 60));
+      laneState.gap = gap;
+      const maxW = Math.round(clamp(window.innerWidth * 0.28, 260, 420));
+      let x = Math.round(clamp(window.innerWidth * 0.03, 18, 44));
+
+      laneState.items.forEach((item) => {
+        if (maxW) item.el.style.maxWidth = `${maxW}px`;
+        const cachedWidth = cachedWidths[item.src];
+        const fallbackWidth = Math.round((item.height ?? 420) * 0.68);
+        const width = Math.min(maxW ?? fallbackWidth, cachedWidth ?? fallbackWidth);
+        item.width = width;
         item.baseX = x;
         const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
         x += item.width + gap + extraGap;
@@ -178,8 +253,17 @@ export default function HeroCarousel() {
       layoutLane();
     };
 
+    const lowPower =
+      typeof navigator !== 'undefined' &&
+      ((navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4));
+
     let rafId = 0;
     let lastT = performance.now();
+    let lastFrame = 0;
+    let isReady = false;
+    let inView = true;
+    const frameInterval = 1000 / (lowPower ? 24 : 30);
     const dragState = {
       dragging: false,
       pointerId: null,
@@ -188,8 +272,14 @@ export default function HeroCarousel() {
     };
 
     const tick = (now) => {
+      if (now - lastFrame < frameInterval) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+
       const dt = Math.min(0.05, (now - lastT) / 1000);
       lastT = now;
+      lastFrame = now;
 
       if (!dragState.dragging) {
         const dir = laneState.direction === 'reverse' ? 1 : -1;
@@ -202,10 +292,33 @@ export default function HeroCarousel() {
     };
 
     const start = () => {
-      if (!prefersReducedMotion) rafId = requestAnimationFrame(tick);
+      if (prefersReducedMotion || rafId || !isReady || !inView) return;
+      lastT = performance.now();
+      lastFrame = 0;
+      rafId = requestAnimationFrame(tick);
     };
 
-    layoutAll().then(start);
+    const stop = () => {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    };
+
+    const scheduleStart = () => {
+      const schedule = window.requestIdleCallback
+        ? (cb) => window.requestIdleCallback(cb, { timeout: 800 })
+        : (cb) => window.setTimeout(cb, 120);
+      schedule(() => {
+        layoutAll().then(() => {
+          isReady = true;
+          start();
+        });
+      });
+    };
+
+    applyCachedLayout();
+    track.classList.add('is-ready');
+    scheduleStart();
 
     const onResize = () => {
       layoutLane();
@@ -246,7 +359,28 @@ export default function HeroCarousel() {
       }
     };
 
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
+    const observer =
+      typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(
+          (entries) => {
+            const visible = entries.some((entry) => entry.isIntersecting);
+            inView = visible;
+            if (visible) start();
+            else stop();
+          },
+          { threshold: 0.15 }
+        )
+        : null;
+
+    if (observer) observer.observe(scene);
+
     window.addEventListener('resize', onResize, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
     scene.addEventListener('pointerdown', onPointerDown);
     scene.addEventListener('pointermove', onPointerMove);
     scene.addEventListener('pointerup', endDrag);
@@ -254,11 +388,13 @@ export default function HeroCarousel() {
 
     return () => {
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
       scene.removeEventListener('pointerdown', onPointerDown);
       scene.removeEventListener('pointermove', onPointerMove);
       scene.removeEventListener('pointerup', endDrag);
       scene.removeEventListener('pointercancel', endDrag);
-      if (rafId) cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+      stop();
     };
   }, [people, prefersReducedMotion]);
 
@@ -298,6 +434,7 @@ export default function HeroCarousel() {
                 alt=""
                 loading="eager"
                 decoding="async"
+                fetchPriority={index < 4 ? 'high' : 'low'}
                 draggable={false}
                 ref={(el) => {
                   imgRefs.current[index] = el;
