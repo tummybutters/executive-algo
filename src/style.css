@@ -617,50 +617,69 @@ body {
   line-height: 1.2;
 }
 
-.card-mockup {
-  background: #0a0a0a;
-  border: 1px solid #222;
-  border-radius: 20px;
-  padding: 2rem;
-  width: 320px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+.memo-paper {
+  background: linear-gradient(145deg, #0f1218 0%, #0a0c10 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  width: 420px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
-.card-top {
+.memo-header {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
-  font-size: 0.8rem;
-  color: #666;
 }
 
-.brand {
+.memo-accent {
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.memo-brand {
   color: #fff;
   font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
 }
 
-.check-list {
-  list-style: none;
-}
-
-.check-list li {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.check {
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.1);
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
+.memo-date {
+  color: rgba(255, 255, 255, 0.4);
   font-size: 0.8rem;
+}
+
+.memo-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.06) 100%);
+  border-radius: 6px;
+  animation: skeleton-shimmer 2s ease infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .highlight-content {

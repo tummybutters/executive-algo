@@ -94,19 +94,25 @@ export default function App() {
             <div className="highlight-header">
               <h2 className="section-title">Hold up... Another Newsletter?</h2>
               <motion.div
-                className="card-mockup"
+                className="memo-paper"
                 whileHover={prefersReducedMotion ? undefined : { y: -6 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 18 }}
               >
-                <div className="card-top">
-                  <span className="brand">Executive Insights</span>
-                  <span className="date">February 28, 2025</span>
+                <div className="memo-header">
+                  <div className="memo-accent" />
+                  <span className="memo-brand">Executive Insights</span>
+                  <span className="memo-date">February 28, 2025</span>
                 </div>
-                <ul className="check-list">
-                  <li><span className="check">✓</span> No Spam</li>
-                  <li><span className="check">✓</span> No Fluff</li>
-                  <li><span className="check">✓</span> No Waste</li>
-                </ul>
+                <div className="memo-content">
+                  <div className="skeleton-line" style={{ width: '100%' }} />
+                  <div className="skeleton-line" style={{ width: '100%' }} />
+                  <div className="skeleton-line" style={{ width: '85%' }} />
+                  <div className="skeleton-line" style={{ width: '70%' }} />
+                  <div className="skeleton-line" style={{ width: '100%' }} />
+                  <div className="skeleton-line" style={{ width: '80%' }} />
+                  <div className="skeleton-line" style={{ width: '90%' }} />
+                  <div className="skeleton-line" style={{ width: '60%' }} />
+                </div>
               </motion.div>
             </div>
             <div className="highlight-content">
