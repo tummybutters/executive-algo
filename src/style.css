@@ -108,6 +108,7 @@ body {
   justify-content: center;
   text-align: center;
   overflow: hidden;
+  padding-top: clamp(4.5rem, 10vh, 7rem);
 }
 
 .hero-content {
@@ -115,7 +116,7 @@ body {
   z-index: 10;
   max-width: 800px;
   padding: 0 2rem;
-  transform: translateY(-9rem);
+  transform: translateY(-4rem);
 }
 
 .hero-title {
@@ -812,7 +813,7 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .hero-content {
-    transform: translateY(-1.75rem);
+    transform: translateY(-0.75rem);
   }
 
   .hero-title {
