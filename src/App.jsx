@@ -1,8 +1,110 @@
 'use client';
 
-import { motion, MotionConfig, useReducedMotion } from 'motion/react';
+import { motion, MotionConfig, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
 import HeroCarousel from './components/HeroCarousel.jsx';
 import NewsletterForm from './components/NewsletterForm.jsx';
+
+const skeletonLines = [
+  { width: 100 },
+  { width: 100 },
+  { width: 85 },
+  { width: 70 },
+  { width: 100 },
+  { width: 80 },
+  { width: 90 },
+  { width: 60 }
+];
+
+function MemoSection({ prefersReducedMotion }) {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
+  });
+
+  const glowOpacity = useTransform(scrollYProgress, [0.1, 0.4, 0.7], [0, 0.8, 0]);
+  const glowScale = useTransform(scrollYProgress, [0.1, 0.5], [0.8, 1.2]);
+
+  return (
+    <section className="newsletter-highlight" ref={sectionRef}>
+      <div className="container">
+        <motion.h2
+          className="section-title memo-title"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          Hold up... Another Newsletter?
+        </motion.h2>
+
+        <div className="memo-wrapper">
+          <motion.div
+            className="memo-glow"
+            style={{
+              opacity: prefersReducedMotion ? 0.5 : glowOpacity,
+              scale: prefersReducedMotion ? 1 : glowScale
+            }}
+          />
+          <motion.div
+            className="memo-paper memo-paper-large"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <div className="memo-header">
+              <div className="memo-accent" />
+              <span className="memo-brand">Executive Insights</span>
+              <span className="memo-date">February 28, 2025</span>
+            </div>
+            <div className="memo-content">
+              {skeletonLines.map((line, index) => (
+                <SkeletonLine
+                  key={index}
+                  width={line.width}
+                  index={index}
+                  scrollYProgress={scrollYProgress}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          className="highlight-content highlight-content-centered"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          <p>We live in an era where the Einsteins, Rockefellers, and Churchills of our time sit for two-hour podcasts, openly sharing their thoughts on technology, humanity, and markets.</p>
+          <p>We break them down in minutes—so you don't miss the ideas shaping the future.</p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function SkeletonLine({ width, index, scrollYProgress, prefersReducedMotion }) {
+  const startOffset = 0.15 + index * 0.04;
+  const endOffset = startOffset + 0.15;
+  const fillProgress = useTransform(scrollYProgress, [startOffset, endOffset], [0, 100]);
+
+  return (
+    <div className="skeleton-line-container" style={{ width: `${width}%` }}>
+      <div className="skeleton-line-bg" />
+      <motion.div
+        className="skeleton-line-fill"
+        style={{
+          width: prefersReducedMotion ? '100%' : useTransform(fillProgress, (v) => `${v}%`)
+        }}
+      />
+    </div>
+  );
+}
 
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
@@ -83,44 +185,7 @@ export default function App() {
           <HeroCarousel />
         </section>
 
-        <motion.section
-          className="newsletter-highlight"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={revealVariants}
-        >
-          <div className="container">
-            <div className="highlight-header">
-              <h2 className="section-title">Hold up... Another Newsletter?</h2>
-              <motion.div
-                className="memo-paper"
-                whileHover={prefersReducedMotion ? undefined : { y: -6 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-              >
-                <div className="memo-header">
-                  <div className="memo-accent" />
-                  <span className="memo-brand">Executive Insights</span>
-                  <span className="memo-date">February 28, 2025</span>
-                </div>
-                <div className="memo-content">
-                  <div className="skeleton-line" style={{ width: '100%' }} />
-                  <div className="skeleton-line" style={{ width: '100%' }} />
-                  <div className="skeleton-line" style={{ width: '85%' }} />
-                  <div className="skeleton-line" style={{ width: '70%' }} />
-                  <div className="skeleton-line" style={{ width: '100%' }} />
-                  <div className="skeleton-line" style={{ width: '80%' }} />
-                  <div className="skeleton-line" style={{ width: '90%' }} />
-                  <div className="skeleton-line" style={{ width: '60%' }} />
-                </div>
-              </motion.div>
-            </div>
-            <div className="highlight-content">
-              <p>We live in an era where the Einsteins, Rockefellers, and Churchills of our time sit for two-hour podcasts, openly sharing their thoughts on technology, humanity, and markets.</p>
-              <p>We break them down in minutes—so you don't miss the ideas shaping the future.</p>
-            </div>
-          </div>
-        </motion.section>
+        <MemoSection prefersReducedMotion={prefersReducedMotion} />
 
         <motion.section
           className="signal-noise"
