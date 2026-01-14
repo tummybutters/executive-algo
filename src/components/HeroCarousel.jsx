@@ -23,6 +23,33 @@ const featuredExtraGapAfterBySrc = {
   [optimized('satya')]: 140
 };
 
+const personTitles = {
+  [optimized('jensen')]: 'CEO of NVIDIA',
+  [optimized('elon_musk')]: 'CEO of Tesla',
+  [optimized('dario_amodei')]: 'CEO of Anthropic',
+  [optimized('ilya_sutskever')]: 'Head AI Researcher',
+  [optimized('marc_andreessen')]: 'Founder of a16z',
+  [optimized('peter_thiel')]: 'Founder of Palantir',
+  [optimized('chamath_palihapitiya')]: 'CEO of Social',
+  [optimized('jamie_dimon')]: 'CEO of JPMorgan',
+  [optimized('ray_dalio')]: 'Founder of Bridgewater',
+  [optimized('reid_hoffman')]: 'Founder of LinkedIn',
+  [optimized('aravind_srinivas')]: 'CEO of Perplexity',
+  [optimized('michael_truell')]: 'Founder of Cursor',
+  [optimized('mati_staniszewski')]: 'CEO of ElevenLabs',
+  [optimized('palmer_luckey')]: 'Founder of Anduril',
+  [optimized('tim_ellis')]: 'Founder of Relativity',
+  [optimized('brett_adcock')]: 'CEO of Figure',
+  [optimized('satya')]: 'CEO of Microsoft',
+  [optimized('sammy')]: 'CEO of OpenAI',
+  [optimized('zuckerberg')]: 'CEO of Meta',
+  [optimized('karp')]: 'CEO of Palantir',
+  [optimized('bill')]: 'Founder of Microsoft',
+  [optimized('braddy')]: 'CEO of Coinbase',
+  [optimized('brian')]: 'CEO of Airbnb',
+  [optimized('demmy')]: 'Head AI Researcher'
+};
+
 export const heroPeople = [
   optimized('jensen'),
   optimized('elon_musk'),
@@ -37,7 +64,6 @@ export const heroPeople = [
   optimized('aravind_srinivas'),
   optimized('michael_truell'),
   optimized('mati_staniszewski'),
-  optimized('bret_taylor'),
   optimized('palmer_luckey'),
   optimized('tim_ellis'),
   optimized('brett_adcock'),
@@ -415,7 +441,7 @@ export default function HeroCarousel({ people: peopleOverride }) {
       >
         <div className="hero-carousel-track">
           {people.map((person, index) => (
-            <div
+            <motion.div
               className="hero-person"
               key={person.id}
               ref={(el) => {
@@ -428,6 +454,8 @@ export default function HeroCarousel({ people: peopleOverride }) {
                 '--s': person.scale,
                 '--h': `${person.height}px`
               }}
+              whileHover="hover"
+              initial="rest"
             >
               <img
                 src={person.src}
@@ -440,7 +468,17 @@ export default function HeroCarousel({ people: peopleOverride }) {
                   imgRefs.current[index] = el;
                 }}
               />
-            </div>
+              <motion.div
+                className="person-tooltip"
+                variants={{
+                  rest: { opacity: 0, y: 10, scale: 0.9 },
+                  hover: { opacity: 1, y: 0, scale: 1 }
+                }}
+                transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+              >
+                {personTitles[person.src] || ''}
+              </motion.div>
+            </motion.div>
           ))}
         </div>
       </div>
