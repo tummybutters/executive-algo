@@ -354,6 +354,10 @@ body {
   filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.22));
 }
 
+.hero-person-gravity {
+  will-change: transform, opacity, filter;
+}
+
 .hero-person img {
   height: var(--h, 240px);
   width: auto;

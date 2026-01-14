@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, useTransform } from 'motion/react';
 import { useEffect, useMemo, useRef } from 'react';
 import { clamp } from '../utils.js';
 
@@ -88,8 +88,155 @@ const hashToUnit = (str) => {
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
-export default function HeroCarousel({ people: peopleOverride }) {
-  const prefersReducedMotion = useReducedMotion();
+function GravityPerson({
+  person,
+  index,
+  totalPeople,
+  scrollYProgress,
+  prefersReducedMotion,
+  itemRefs,
+  imgRefs
+}) {
+  // Stagger effect - each person starts transforming at slightly different times
+  const staggerOffset = index * 0.015;
+  const startPull = 0.25 + staggerOffset;
+  const endPull = 0.75 + staggerOffset;
+
+  // Calculate distance from center for x-convergence
+  const centerIndex = totalPeople / 2;
+  const distanceFromCenter = index - centerIndex;
+  const normalizedDistance = distanceFromCenter / centerIndex; // -1 to 1
+
+  // Gravity well transforms - use conditional hooks pattern
+  const gravityScale = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, endPull],
+    [1, 0.4]
+  );
+
+  const gravityY = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, endPull],
+    [0, 350]
+  );
+
+  const gravityX = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, endPull],
+    [0, -normalizedDistance * 150]
+  );
+
+  const gravityOpacity = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, startPull + 0.2, endPull],
+    [1, 0.8, 0]
+  );
+
+  const gravityBlur = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, endPull],
+    [0, 6]
+  );
+
+  const gravityRotate = useTransform(
+    scrollYProgress ?? { get: () => 0, onChange: () => () => { } },
+    [startPull, endPull],
+    [0, normalizedDistance * 12]
+  );
+
+  // If no scrollYProgress, render without gravity transforms
+  if (!scrollYProgress || prefersReducedMotion) {
+    return (
+      <motion.div
+        className="hero-person"
+        ref={(el) => {
+          itemRefs.current[index] = el;
+        }}
+        style={{
+          '--x': '0px',
+          '--y': `${person.y}px`,
+          '--r': '0deg',
+          '--s': person.scale,
+          '--h': `${person.height}px`
+        }}
+        whileHover="hover"
+        initial="rest"
+      >
+        <img
+          src={person.src}
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority={index < 4 ? 'high' : 'low'}
+          draggable={false}
+          ref={(el) => {
+            imgRefs.current[index] = el;
+          }}
+        />
+        <motion.div
+          className="person-tooltip"
+          variants={{
+            rest: { opacity: 0, y: 10, scale: 0.9 },
+            hover: { opacity: 1, y: 0, scale: 1 }
+          }}
+          transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          {personTitles[person.src] || ''}
+        </motion.div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      className="hero-person hero-person-gravity"
+      ref={(el) => {
+        itemRefs.current[index] = el;
+      }}
+      style={{
+        '--x': '0px',
+        '--y': `${person.y}px`,
+        '--r': '0deg',
+        '--s': person.scale,
+        '--h': `${person.height}px`,
+        scale: gravityScale,
+        y: gravityY,
+        x: gravityX,
+        opacity: gravityOpacity,
+        rotate: gravityRotate,
+        filter: useTransform(gravityBlur, (b) => `blur(${b}px)`)
+      }}
+      whileHover="hover"
+      initial="rest"
+    >
+      <img
+        src={person.src}
+        alt=""
+        loading="eager"
+        decoding="async"
+        fetchPriority={index < 4 ? 'high' : 'low'}
+        draggable={false}
+        ref={(el) => {
+          imgRefs.current[index] = el;
+        }}
+      />
+      <motion.div
+        className="person-tooltip"
+        variants={{
+          rest: { opacity: 0, y: 10, scale: 0.9 },
+          hover: { opacity: 1, y: 0, scale: 1 }
+        }}
+        transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+      >
+        {personTitles[person.src] || ''}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export default function HeroCarousel({ people: peopleOverride, scrollYProgress, prefersReducedMotion: prefersReducedMotionProp }) {
+  const prefersReducedMotionHook = useReducedMotion();
+  const prefersReducedMotion = prefersReducedMotionProp ?? prefersReducedMotionHook;
   const sceneRef = useRef(null);
   const laneRef = useRef(null);
   const itemRefs = useRef([]);
@@ -441,44 +588,16 @@ export default function HeroCarousel({ people: peopleOverride }) {
       >
         <div className="hero-carousel-track">
           {people.map((person, index) => (
-            <motion.div
-              className="hero-person"
+            <GravityPerson
               key={person.id}
-              ref={(el) => {
-                itemRefs.current[index] = el;
-              }}
-              style={{
-                '--x': '0px',
-                '--y': `${person.y}px`,
-                '--r': '0deg',
-                '--s': person.scale,
-                '--h': `${person.height}px`
-              }}
-              whileHover="hover"
-              initial="rest"
-            >
-              <img
-                src={person.src}
-                alt=""
-                loading="eager"
-                decoding="async"
-                fetchPriority={index < 4 ? 'high' : 'low'}
-                draggable={false}
-                ref={(el) => {
-                  imgRefs.current[index] = el;
-                }}
-              />
-              <motion.div
-                className="person-tooltip"
-                variants={{
-                  rest: { opacity: 0, y: 10, scale: 0.9 },
-                  hover: { opacity: 1, y: 0, scale: 1 }
-                }}
-                transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
-              >
-                {personTitles[person.src] || ''}
-              </motion.div>
-            </motion.div>
+              person={person}
+              index={index}
+              totalPeople={people.length}
+              scrollYProgress={scrollYProgress}
+              prefersReducedMotion={prefersReducedMotion}
+              itemRefs={itemRefs}
+              imgRefs={imgRefs}
+            />
           ))}
         </div>
       </div>

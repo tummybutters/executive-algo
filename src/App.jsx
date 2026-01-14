@@ -16,6 +16,49 @@ const skeletonLines = [
   { width: 60 }
 ];
 
+function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem }) {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start']
+  });
+
+  return (
+    <section className="hero" ref={sectionRef}>
+      <motion.div
+        className="hero-content"
+        variants={heroContainer}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.h1 className="hero-title" variants={heroItem}>
+          Valuable Insights Are the <span className="text-gradient">Easiest to Miss.</span>
+        </motion.h1>
+        <motion.p className="hero-subtitle" variants={heroItem}>
+          The most important CEOs, researchers, and capital allocators share hours of insight now—too much for anyone to follow.
+          <br />
+          <br />
+          We track, extract, and distill them straight to your inbox.
+        </motion.p>
+        <motion.div variants={heroItem}>
+          <NewsletterForm
+            buttonLabel="Join Algorithm"
+            footer="We respect your privacy. Unsubscribe at any time."
+            source="hero"
+          />
+        </motion.div>
+        <motion.div className="hero-stats-strip" variants={heroItem}>
+          <span>&bull; Skimmable Read</span>
+          <span>&bull; Value Packed</span>
+          <span>&bull; Twice a Week</span>
+        </motion.div>
+      </motion.div>
+
+      <HeroCarousel scrollYProgress={scrollYProgress} prefersReducedMotion={prefersReducedMotion} />
+    </section>
+  );
+}
+
 function MemoSection({ prefersReducedMotion }) {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -89,8 +132,8 @@ function MemoSection({ prefersReducedMotion }) {
 }
 
 function SkeletonLine({ width, index, scrollYProgress, prefersReducedMotion }) {
-  const startOffset = 0.15 + index * 0.04;
-  const endOffset = startOffset + 0.15;
+  const startOffset = 0.12 + index * 0.03;
+  const endOffset = startOffset + 0.12;
   const fillProgress = useTransform(scrollYProgress, [startOffset, endOffset], [0, 100]);
 
   return (
@@ -152,38 +195,7 @@ export default function App() {
       </motion.nav>
 
       <main>
-        <section className="hero">
-          <motion.div
-            className="hero-content"
-            variants={heroContainer}
-            initial="hidden"
-            animate="show"
-          >
-            <motion.h1 className="hero-title" variants={heroItem}>
-              Valuable Insights Are the <span className="text-gradient">Easiest to Miss.</span>
-            </motion.h1>
-            <motion.p className="hero-subtitle" variants={heroItem}>
-              The most important CEOs, researchers, and capital allocators share hours of insight now—too much for anyone to follow.
-              <br />
-              <br />
-              We track, extract, and distill them straight to your inbox.
-            </motion.p>
-            <motion.div variants={heroItem}>
-              <NewsletterForm
-                buttonLabel="Join Algorithm"
-                footer="We respect your privacy. Unsubscribe at any time."
-                source="hero"
-              />
-            </motion.div>
-            <motion.div className="hero-stats-strip" variants={heroItem}>
-              <span>&bull; Skimmable Read</span>
-              <span>&bull; Value Packed</span>
-              <span>&bull; Twice a Week</span>
-            </motion.div>
-          </motion.div>
-
-          <HeroCarousel />
-        </section>
+        <GravityHeroSection prefersReducedMotion={prefersReducedMotion} heroContainer={heroContainer} heroItem={heroItem} />
 
         <MemoSection prefersReducedMotion={prefersReducedMotion} />
 
