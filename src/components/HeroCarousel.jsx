@@ -77,6 +77,11 @@ export const heroPeople = [
   optimized('demmy')
 ];
 
+const toWebp = (src, variant) =>
+  src
+    .replace('/people-optimized/', variant === 'mobile' ? '/people-optimized-mobile-webp/' : '/people-optimized-webp/')
+    .replace(/\.png$/, '.webp');
+
 const hashToUnit = (str) => {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
@@ -482,17 +487,21 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
               whileHover="hover"
               initial="rest"
             >
-              <img
-                src={person.src}
-                alt=""
-                loading={index < 6 ? 'eager' : 'lazy'}
-                decoding="async"
-                fetchPriority={index < 4 ? 'high' : 'low'}
-                draggable={false}
-                ref={(el) => {
-                  imgRefs.current[index] = el;
-                }}
-              />
+              <picture>
+                <source media="(max-width: 640px)" srcSet={toWebp(person.src, 'mobile')} type="image/webp" />
+                <source srcSet={toWebp(person.src, 'desktop')} type="image/webp" />
+                <img
+                  src={person.src}
+                  alt=""
+                  loading={index < 6 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  fetchPriority={index < 4 ? 'high' : 'low'}
+                  draggable={false}
+                  ref={(el) => {
+                    imgRefs.current[index] = el;
+                  }}
+                />
+              </picture>
               <motion.div
                 className="person-tooltip"
                 variants={{

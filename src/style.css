@@ -373,6 +373,10 @@ body {
   will-change: transform, opacity, filter;
 }
 
+.hero-person picture {
+  display: block;
+}
+
 .hero-person img {
   height: var(--h, 240px);
   width: auto;
