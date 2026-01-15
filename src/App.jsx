@@ -183,8 +183,11 @@ export default function App() {
       >
         <div className="nav-container">
           <div className="logo">
-            <div className="logo-icon"></div>
-            <span>Executive Algorithm</span>
+            <img className="logo-icon" src="/qortana-logo.png" alt="Qortana logo" />
+            <div className="logo-text">
+              <span className="logo-byline">by qortana</span>
+              <span className="logo-title">Executive Algorithm</span>
+            </div>
           </div>
           <div className="nav-links">
             <a href="#how-it-works">How it works</a>
