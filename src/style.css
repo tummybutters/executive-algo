@@ -1019,7 +1019,7 @@ body {
   .hero {
     height: auto;
     min-height: 100svh;
-    padding-top: 5.25rem;
+    padding-top: 4.5rem;
     padding-bottom: 2rem;
     justify-content: flex-start;
   }
@@ -1035,8 +1035,8 @@ body {
 
   .hero-content {
     padding: 0 1.5rem;
-    transform: translateY(0);
-    margin-top: 0.75rem;
+    transform: translateY(-1.5rem);
+    margin-top: 0;
   }
 
   .hero-title {
