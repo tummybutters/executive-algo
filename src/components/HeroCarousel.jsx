@@ -485,7 +485,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
               <img
                 src={person.src}
                 alt=""
-                loading="eager"
+                loading={index < 6 ? 'eager' : 'lazy'}
                 decoding="async"
                 fetchPriority={index < 4 ? 'high' : 'low'}
                 draggable={false}

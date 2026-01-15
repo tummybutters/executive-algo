@@ -1,8 +1,8 @@
 'use client';
 
 import { motion, MotionConfig, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { useRef } from 'react';
-import HeroCarousel from './components/HeroCarousel.jsx';
+import { useEffect, useRef, useState } from 'react';
+import HeroCarousel, { heroPeople } from './components/HeroCarousel.jsx';
 import NewsletterForm from './components/NewsletterForm.jsx';
 
 const skeletonLines = [
@@ -16,12 +16,13 @@ const skeletonLines = [
   { width: 60 }
 ];
 
-function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem }) {
+function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem, isSmallViewport }) {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start']
   });
+  const carouselPeople = isSmallViewport ? heroPeople.slice(0, 12) : undefined;
 
   return (
     <section className="hero" ref={sectionRef}>
@@ -54,7 +55,11 @@ function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem }) {
         </motion.div>
       </motion.div>
 
-      <HeroCarousel scrollYProgress={scrollYProgress} prefersReducedMotion={prefersReducedMotion} />
+      <HeroCarousel
+        scrollYProgress={scrollYProgress}
+        prefersReducedMotion={prefersReducedMotion}
+        people={carouselPeople}
+      />
     </section>
   );
 }
@@ -151,6 +156,20 @@ function SkeletonLine({ width, index, scrollYProgress, prefersReducedMotion }) {
 
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
+  const [isSmallViewport, setIsSmallViewport] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const media = window.matchMedia('(max-width: 640px)');
+    const update = () => setIsSmallViewport(media.matches);
+    update();
+    if (media.addEventListener) {
+      media.addEventListener('change', update);
+      return () => media.removeEventListener('change', update);
+    }
+    media.addListener(update);
+    return () => media.removeListener(update);
+  }, []);
 
   const revealVariants = {
     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
@@ -185,8 +204,8 @@ export default function App() {
           <div className="logo">
             <img className="logo-icon" src="/qortana-logo.png" alt="Qortana logo" />
             <div className="logo-text">
-              <span className="logo-byline">by qortana</span>
               <span className="logo-title">Executive Algorithm</span>
+              <span className="logo-byline">by qortana</span>
             </div>
           </div>
           <div className="nav-links">
@@ -198,7 +217,12 @@ export default function App() {
       </motion.nav>
 
       <main>
-        <GravityHeroSection prefersReducedMotion={prefersReducedMotion} heroContainer={heroContainer} heroItem={heroItem} />
+        <GravityHeroSection
+          prefersReducedMotion={prefersReducedMotion}
+          heroContainer={heroContainer}
+          heroItem={heroItem}
+          isSmallViewport={isSmallViewport}
+        />
 
         <MemoSection prefersReducedMotion={prefersReducedMotion} />
 

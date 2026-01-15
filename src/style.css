@@ -72,6 +72,7 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #7e7e7e;
+  white-space: nowrap;
 }
 
 .logo-title {
@@ -977,6 +978,123 @@ body {
   }
 
   .nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.9rem 0;
+    background: rgba(5, 5, 5, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .nav-container {
+    padding: 0 1.25rem;
+  }
+
+  .logo {
+    gap: 0.6rem;
+  }
+
+  .logo-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .logo-title {
+    font-size: 1rem;
+  }
+
+  .logo-byline {
+    font-size: 0.55rem;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 100svh;
+    padding-top: 6.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.15) 45%, rgba(0, 0, 0, 0.55) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    padding: 0 1.5rem;
+    transform: translateY(0);
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-subtitle br {
+    display: none;
+  }
+
+  .hero-form {
+    max-width: 100%;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 0.6rem;
+    border-radius: 24px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .input-group button {
+    width: 100%;
+    padding: 0.85rem 1rem;
+  }
+
+  .hero-stats-strip {
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+  }
+
+  .parallax-container {
+    pointer-events: none;
+  }
+
+  .hero-carousel-track {
+    height: clamp(180px, 28vh, 300px);
+  }
+
+  .hero-carousel-lane[data-lane='featured'] .hero-carousel-track {
+    height: clamp(220px, 32vh, 340px);
+  }
+
+  .hero-person {
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.55));
+    transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r, 0deg)) scale(calc(var(--s, 1) * 0.65));
+  }
+
+  .hero-person img {
+    height: calc(var(--h, 240px) * 0.7);
+  }
+
+  .person-tooltip {
     display: none;
   }
 }
