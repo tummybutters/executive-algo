@@ -289,13 +289,14 @@ body {
 .form-footer {
   font-size: 0.8rem;
   color: #666;
+  margin-top: 0.5rem;
 }
 
 .hero-stats-strip {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-top: 4rem;
+  margin-top: 3rem;
   color: #ffffff;
   font-weight: 500;
   font-size: 0.9rem;
@@ -1018,8 +1019,9 @@ body {
   .hero {
     height: auto;
     min-height: 100svh;
-    padding-top: 6.5rem;
+    padding-top: 5.25rem;
     padding-bottom: 2rem;
+    justify-content: flex-start;
   }
 
   .hero::before {
@@ -1034,6 +1036,7 @@ body {
   .hero-content {
     padding: 0 1.5rem;
     transform: translateY(0);
+    margin-top: 0.75rem;
   }
 
   .hero-title {
@@ -1043,7 +1046,7 @@ body {
 
   .hero-subtitle {
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-subtitle br {
@@ -1073,7 +1076,7 @@ body {
   .hero-stats-strip {
     flex-wrap: wrap;
     gap: 0.6rem 1.2rem;
-    margin-top: 2rem;
+    margin-top: 1.2rem;
     font-size: 0.8rem;
   }
 

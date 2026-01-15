@@ -149,7 +149,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     const laneState = {
       lane,
       track,
-      duration: 115,
+      duration: 86,
       direction: 'normal',
       gap: 180,
       items: [],
