@@ -1081,7 +1081,8 @@ body {
   }
 
   .parallax-container {
-    pointer-events: none;
+    pointer-events: auto;
+    touch-action: pan-y;
   }
 
   .hero-carousel-track {
@@ -1094,7 +1095,8 @@ body {
 
   .hero-person {
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.55));
-    transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r, 0deg)) scale(calc(var(--s, 1) * 0.65));
+    transform: translate3d(var(--x, 0px), 0, 0) rotate(var(--r, 0deg)) scale(calc(var(--s, 1) * 0.65));
+    transform-origin: center bottom;
   }
 
   .hero-person img {

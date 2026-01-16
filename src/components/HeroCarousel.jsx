@@ -161,6 +161,19 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       speed: 0
     };
 
+    const durationForWidth = (width) => {
+      if (!width) return 86;
+      if (width <= 480) return 52;
+      if (width <= 640) return 60;
+      if (width <= 900) return 72;
+      return 86;
+    };
+
+    const updateDuration = () => {
+      if (typeof window === 'undefined') return;
+      laneState.duration = durationForWidth(window.innerWidth);
+    };
+
     const layoutCacheKey = () => {
       if (typeof window === 'undefined') return null;
       const bucket = Math.round(window.innerWidth / 120) * 120;
@@ -245,6 +258,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
       laneState.total = Math.max(1, x);
       laneState.offset = ((((laneState.offset ?? 0) % laneState.total) + laneState.total) % laneState.total);
+      updateDuration();
       laneState.speed = laneState.total / laneState.duration;
       positionLane();
       writeLayoutCache(widthsForCache);
@@ -278,6 +292,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
       laneState.total = Math.max(1, x);
       laneState.offset = ((((laneState.offset ?? 0) % laneState.total) + laneState.total) % laneState.total);
+      updateDuration();
       laneState.speed = laneState.total / laneState.duration;
       positionLane();
     };
