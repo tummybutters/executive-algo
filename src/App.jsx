@@ -22,7 +22,20 @@ function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem, isS
     target: sectionRef,
     offset: ['start start', 'end start']
   });
-  const carouselPeople = isSmallViewport ? heroPeople.slice(0, 12) : undefined;
+  const mobileCarouselOrder = [
+    'satya',
+    'braddy',
+    'michael_truell',
+    'karp',
+    'jensen',
+    'mati_staniszewski',
+    'brett_adcock'
+  ];
+  const carouselPeople = isSmallViewport
+    ? mobileCarouselOrder
+        .map((stem) => heroPeople.find((src) => src.endsWith(`/${stem}.png`)))
+        .filter(Boolean)
+    : undefined;
 
   return (
     <section className="hero" ref={sectionRef}>

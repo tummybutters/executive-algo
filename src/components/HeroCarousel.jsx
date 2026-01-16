@@ -77,10 +77,13 @@ export const heroPeople = [
   optimized('demmy')
 ];
 
-const toWebp = (src, variant) =>
-  src
-    .replace('/people-optimized/', variant === 'mobile' ? '/people-optimized-mobile-webp/' : '/people-optimized-webp/')
-    .replace(/\.png$/, '.webp');
+const toWebp = (src, variant) => {
+  const base =
+    variant === 'mobile'
+      ? '/people-optimized-mobile-webp/'
+      : '/people-optimized-desktop-webp/';
+  return src.replace('/people-optimized/', base).replace(/\.png$/, '.webp');
+};
 
 const hashToUnit = (str) => {
   let h = 2166136261;

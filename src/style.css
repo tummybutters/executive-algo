@@ -119,11 +119,11 @@ body {
   position: relative;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  padding-top: clamp(4.5rem, 10vh, 7rem);
+  padding-top: calc(clamp(4.5rem, 10vh, 7rem) + 25px);
 }
 
 .hero-content {
@@ -131,7 +131,7 @@ body {
   z-index: 10;
   max-width: 800px;
   padding: 0 2rem;
-  transform: translateY(-4rem);
+  transform: translateY(0);
 }
 
 .hero-title {
