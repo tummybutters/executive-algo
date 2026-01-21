@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.MAILCHIMP_API_KEY;
   const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
-  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID || process.env.MAILCHIMP_LIST_ID;
 
   if (!apiKey || !serverPrefix || !audienceId) {
     console.error('Mailchimp config missing');
