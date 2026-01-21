@@ -27,7 +27,6 @@ export default async function handler(req, res) {
   const apiKey = process.env.MAILCHIMP_API_KEY;
   const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
   const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
-  const doubleOptIn = process.env.MAILCHIMP_DOUBLE_OPT_IN === 'true';
 
   if (!apiKey || !serverPrefix || !audienceId) {
     console.error('Mailchimp config missing');
@@ -53,7 +52,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           email_address: email.toLowerCase().trim(),
-          status: doubleOptIn ? 'pending' : 'subscribed',
+          status: 'subscribed',
           tags: ['website-signup', 'conviction-index'],
           merge_fields: {
             REFERRER: referrer_url || ''
@@ -65,9 +64,7 @@ export default async function handler(req, res) {
     const data = await mailchimpResponse.json().catch(() => ({}));
 
     if (mailchimpResponse.ok) {
-      const message = doubleOptIn
-        ? 'Almost there! Please confirm your subscription in your inbox.'
-        : "Welcome aboard! You're now subscribed.";
+      const message = "Welcome aboard! You're now subscribed.";
       res.status(201).json({ success: true, message });
       return;
     }
