@@ -49,7 +49,7 @@ async function createServer() {
                 body: JSON.stringify({
                     email_address: email.toLowerCase().trim(),
                     status: doubleOptIn ? 'pending' : 'subscribed',
-                    tags: ['website-signup', 'executive-algorithm'],
+                    tags: ['website-signup', 'conviction-index'],
                     merge_fields: {
                         REFERRER: referrer_url || ''
                     }
