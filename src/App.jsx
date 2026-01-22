@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, MotionConfig, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HeroCarousel, { heroPeople } from './components/HeroCarousel.jsx';
 import NewsletterForm from './components/NewsletterForm.jsx';
 
@@ -16,66 +16,43 @@ const skeletonLines = [
   { width: 60 }
 ];
 
-const filterStages = [
-  { id: 'stage-1', title: '10,000+ hours', detail: 'Published weekly', width: 100 },
-  { id: 'stage-2', title: '~50 hours', detail: 'Worth tracking', width: 68 },
-  { id: 'stage-3', title: '5-10 insights', detail: 'That matter', width: 38 }
-];
-
-const processSteps = [
+const valueCards = [
   {
-    id: 'track',
-    title: 'Track',
-    body: 'We monitor 50+ influential voices across the podcasts that matter.'
+    title: 'Twice-weekly signal brief',
+    body: '5-10 insights distilled from hours of long-form conversations.'
   },
   {
-    id: 'extract',
-    title: 'Extract',
-    body: 'Dense analysis, not summaries. The framework behind the soundbite. Why they changed their mind.'
+    title: 'Conviction shifts',
+    body: 'The exact moments a leader changes their stance—and why.'
   },
   {
-    id: 'deliver',
-    title: 'Deliver',
-    body: "Twice weekly. Only when there's signal worth sending."
+    title: 'Conversation queue',
+    body: 'The few episodes worth your full attention when you have time.'
   }
 ];
 
-const voiceList = [
-  { name: 'Jensen Huang', topic: 'AI infrastructure & compute economics' },
-  { name: 'Dario Amodei', topic: 'AI safety frameworks & capability timelines' },
-  { name: 'Marc Andreessen', topic: 'Capital flows & technology adoption' },
-  { name: 'Demis Hassabis', topic: 'Research directions & scientific breakthroughs' },
-  { name: 'Brian Chesky', topic: 'Product thinking & company building' }
+const algorithmPoints = [
+  'We listen wide so you can listen deep.',
+  'We filter for frameworks, not dopamine.',
+  'You decide if an episode earns your time.'
 ];
 
-const insightCards = [
-  {
-    title: 'Why Huang Changed His Mind on Memory Bandwidth',
-    source: 'Extracted from: Acquired Podcast, Jan 2025',
-    readTime: 'Read time: 3 min'
-  },
-  {
-    title: "Amodei's Shifting Timeline: What Changed",
-    source: 'Extracted from: Dwarkesh Patel, Dec 2024',
-    readTime: 'Read time: 4 min'
-  }
+const sciFiHighlights = [
+  'We are accelerating toward a sci‑fi future.',
+  'The best conversations make it feel beautiful, not chaotic.',
+  'This is how you stay curious without drowning in content.'
 ];
 
-const buildFilterParticles = (count = 18) =>
-  Array.from({ length: count }, (_, index) => {
-    const spread = (Math.sin(index * 1.4) + 1) / 2;
-    const left = 8 + spread * 84;
-    const size = 4 + (index % 3) * 2;
-    const delay = (index % 6) * 0.35;
-    const duration = 3.6 + (index % 5) * 0.25;
-    return {
-      id: `particle-${index}`,
-      left,
-      size,
-      delay,
-      duration
-    };
-  });
+const peopleTracked = [
+  { name: 'Jensen Huang', title: 'Co-founder, NVIDIA' },
+  { name: 'Dario Amodei', title: 'Co-founder, Anthropic' },
+  { name: 'Marc Andreessen', title: 'Co-founder, a16z' },
+  { name: 'Demis Hassabis', title: 'Co-founder, DeepMind' },
+  { name: 'Brian Chesky', title: 'Co-founder, Airbnb' },
+  { name: 'Patrick Collison', title: 'Co-founder, Stripe' },
+  { name: 'Reid Hoffman', title: 'Co-founder, LinkedIn' },
+  { name: 'Melanie Perkins', title: 'Co-founder, Canva' }
+];
 
 function MemoSection({ prefersReducedMotion }) {
   const sectionRef = useRef(null);
@@ -228,72 +205,7 @@ function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem, isS
   );
 }
 
-function FilterVisual({ prefersReducedMotion }) {
-  const particles = useMemo(() => buildFilterParticles(18), []);
-
-  return (
-    <div className="filter-visual" aria-hidden="true">
-      <div className="filter-particles">
-        {particles.map((particle) => (
-          <motion.span
-            key={particle.id}
-            className="filter-particle"
-            style={{ left: `${particle.left}%`, width: particle.size, height: particle.size }}
-            animate={
-              prefersReducedMotion
-                ? undefined
-                : {
-                    y: [-30, 240],
-                    opacity: [0, 1, 0],
-                    scale: [0.6, 1, 0.7]
-                  }
-            }
-            transition={
-              prefersReducedMotion
-                ? undefined
-                : {
-                    duration: particle.duration,
-                    delay: particle.delay,
-                    repeat: Infinity,
-                    ease: 'linear'
-                  }
-            }
-          />
-        ))}
-      </div>
-      <div className="filter-funnel">
-        {filterStages.map((stage, index) => (
-          <div className="filter-stage" key={stage.id}>
-            <motion.div
-              className="filter-stage-bar"
-              initial={{ scaleX: prefersReducedMotion ? 1 : 0.2, opacity: prefersReducedMotion ? 1 : 0.4 }}
-              whileInView={{ scaleX: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.8 }}
-              transition={{ duration: 0.8, delay: index * 0.12, ease: [0.2, 0.8, 0.2, 1] }}
-              style={{ '--stage-width': `${stage.width}%`, originX: 0.5 }}
-            />
-            <div className="filter-stage-text">
-              <span className="stage-title">{stage.title}</span>
-              <span className="stage-detail">{stage.detail}</span>
-            </div>
-            {index < filterStages.length - 1 ? (
-              <motion.div
-                className="filter-arrow"
-                initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : -4 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.8 }}
-                transition={{ duration: 0.6, delay: index * 0.15 + 0.2 }}
-                animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
-              />
-            ) : null}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ProblemSection({ prefersReducedMotion }) {
+function ValueSection({ prefersReducedMotion }) {
   const containerVariants = {
     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
     show: {
@@ -309,43 +221,8 @@ function ProblemSection({ prefersReducedMotion }) {
 
   return (
     <motion.section
-      className="access-paradox"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
-      variants={containerVariants}
-    >
-      <div className="container access-paradox-grid">
-        <motion.div className="access-paradox-copy" variants={itemVariants}>
-          <p className="section-kicker">Who's Actually Worth Tracking?</p>
-          <h2 className="section-title">Signal vs Noise</h2>
-        </motion.div>
-        <motion.div className="access-paradox-visual" variants={itemVariants}>
-          <FilterVisual prefersReducedMotion={prefersReducedMotion} />
-        </motion.div>
-      </div>
-    </motion.section>
-  );
-}
-
-function ProcessSection({ prefersReducedMotion }) {
-  const containerVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-    }
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
-    show: { opacity: 1, y: 0 }
-  };
-
-  return (
-    <motion.section
-      className="process-section"
-      id="how-it-works"
+      className="value-section"
+      id="what-you-get"
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.35 }}
@@ -353,125 +230,248 @@ function ProcessSection({ prefersReducedMotion }) {
     >
       <div className="container">
         <motion.div className="section-header" variants={itemVariants}>
-          <p className="section-kicker">How It Works</p>
-          <h2 className="section-title">How We Extract Signal</h2>
-        </motion.div>
-        <motion.div className="process-grid" variants={containerVariants}>
-          {processSteps.map((step) => (
-            <motion.div
-              className="process-card"
-              key={step.id}
-              variants={itemVariants}
-              whileHover={prefersReducedMotion ? undefined : { y: -6 }}
-              transition={{ type: 'spring', stiffness: 180, damping: 18 }}
-            >
-              <div className="process-icon" data-variant={step.id}>
-                <span />
-                <span />
-              </div>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </motion.section>
-  );
-}
-
-function VoicesSection({ prefersReducedMotion }) {
-  const containerVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-    }
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
-    show: { opacity: 1, y: 0 }
-  };
-
-  return (
-    <motion.section
-      className="voices-track"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
-      variants={containerVariants}
-    >
-      <div className="container">
-        <motion.div className="section-header" variants={itemVariants}>
-          <h2 className="section-title">The People Shaping the Future.</h2>
+          <p className="section-kicker">What You Get</p>
+          <h2 className="section-title">A chosen algorithm for long-form intelligence.</h2>
           <p className="section-subtitle">
-            Whether it's the CEO redefining industry or the head of the world's largest AI lab predicting the future of work, their convictions and frameworks matter.
-          </p>
-          <p className="section-subtitle">
-            They're successful, influential, and actively shaping the world—we track what they believe so you don't miss what's forming.
+            We are not another feed. We are the filter you picked — a calm, high-signal layer between you and
+            the endless stream of podcasts.
           </p>
         </motion.div>
-        <motion.div className="voices-grid" variants={containerVariants}>
-          {voiceList.map((voice) => (
-            <motion.div className="voice-card" key={voice.name} variants={itemVariants}>
-              <span className="voice-name">{voice.name}</span>
-              <span className="voice-topic">{voice.topic}</span>
-            </motion.div>
-          ))}
-          <motion.div className="voice-more" variants={itemVariants}>
-            + 45 more across technology, markets, and research
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.section>
-  );
-}
-
-function RecentInsightsSection({ prefersReducedMotion }) {
-  const containerVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-    }
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
-    show: { opacity: 1, y: 0 }
-  };
-
-  return (
-    <motion.section
-      className="recent-insights"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
-      variants={containerVariants}
-    >
-      <div className="container">
-        <motion.div className="section-header" variants={itemVariants}>
-          <p className="section-kicker">Recent Insights</p>
-          <h2 className="section-title">Recent Insights</h2>
-        </motion.div>
-        <motion.div className="insights-grid" variants={containerVariants}>
-          {insightCards.map((card) => (
-            <motion.article className="insight-card" key={card.title} variants={itemVariants}>
+        <motion.div className="value-grid" variants={containerVariants}>
+          {valueCards.map((card, index) => (
+            <motion.div className="value-card" key={card.title} variants={itemVariants}>
+              <span className="value-number">0{index + 1}</span>
               <h3>{card.title}</h3>
-              <p className="insight-source">{card.source}</p>
-              <span className="insight-meta">{card.readTime}</span>
-            </motion.article>
+              <p>{card.body}</p>
+            </motion.div>
           ))}
         </motion.div>
-        <motion.a
-          className="sample-link"
-          href="#"
+      </div>
+    </motion.section>
+  );
+}
+
+function SlopSection({ prefersReducedMotion }) {
+  const containerVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
+    }
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  return (
+    <motion.section
+      className="slop-section"
+      id="why"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      variants={containerVariants}
+    >
+      <div className="container slop-grid">
+        <motion.div className="slop-copy" variants={itemVariants}>
+          <p className="section-kicker">The Feed Problem</p>
+          <h2 className="section-title">Platforms are built to feed you slop.</h2>
+          <p className="section-subtitle">
+            Algorithms optimize for engagement, not for the conversations that change how you think. The result
+            is endless noise and a shrinking attention span.
+          </p>
+          <p className="section-subtitle">
+            We offer the opposite: a chosen algorithm that protects your leisure time and upgrades the ideas you
+            spend it on.
+          </p>
+        </motion.div>
+        <motion.div className="slop-panel" variants={itemVariants}>
+          <div className="slop-panel-header">
+            <span>The Choice</span>
+            <span>Signal &gt; Noise</span>
+          </div>
+          <div className="slop-contrast">
+            <div className="slop-item slop-item-muted">
+              <span className="slop-label">The Feed</span>
+              <p>Endless clips, context-free takes, momentum you never asked for.</p>
+            </div>
+            <div className="slop-item slop-item-signal">
+              <span className="slop-label">Your Algorithm</span>
+              <p>Long-form, high-conviction ideas. Context preserved. Attention respected.</p>
+            </div>
+          </div>
+          <ul className="slop-steps">
+            {algorithmPoints.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
+function MomentumSection({ prefersReducedMotion }) {
+  const containerVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
+    }
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  return (
+    <motion.section
+      className="momentum-section"
+      id="momentum"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      variants={containerVariants}
+    >
+      <div className="container momentum-grid">
+        <motion.div className="momentum-frame" variants={itemVariants}>
+          <div className="momentum-image">
+            <img src="/warp-drive.jpg" alt="Accelerating toward a sci-fi future" loading="lazy" />
+          </div>
+        </motion.div>
+        <motion.div className="momentum-copy" variants={itemVariants}>
+          <p className="section-kicker">The Moment</p>
+          <h2 className="section-title">We are racing into a sci‑fi future.</h2>
+          <p className="section-subtitle">
+            The best long‑form conversations make the acceleration feel fun, awe‑struck, and beautiful — not
+            overwhelming.
+          </p>
+          <p className="section-subtitle">
+            We capture the episodes and insights that hold the real heart of this moment, so you can feel it
+            fully without the noise.
+          </p>
+          <ul className="momentum-points">
+            {sciFiHighlights.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
+function PeopleSection({ prefersReducedMotion }) {
+  const containerVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
+    }
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  return (
+    <motion.section
+      className="people-section"
+      id="people"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      variants={containerVariants}
+    >
+      <div className="container">
+        <motion.div className="section-header" variants={itemVariants}>
+          <p className="section-kicker">Who We Track</p>
+          <h2 className="section-title">The builders setting the tempo.</h2>
+          <p className="section-subtitle">
+            Not everyone. The people shaping capital, infrastructure, and research — where conviction actually
+            moves the world.
+          </p>
+        </motion.div>
+        <motion.div className="people-grid" variants={containerVariants}>
+          {peopleTracked.map((person) => (
+            <motion.div className="people-card" key={person.name} variants={itemVariants}>
+              <span className="people-name">{person.name}</span>
+              <span className="people-title">{person.title}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+        <motion.div className="people-note" variants={itemVariants}>
+          + dozens more across technology, markets, and research.
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
+function LeisureSection({ prefersReducedMotion }) {
+  const containerVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
+    }
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  return (
+    <motion.section
+      className="leisure-section"
+      id="join"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      variants={containerVariants}
+    >
+      <div className="container leisure-grid">
+        <motion.div className="leisure-copy" variants={itemVariants}>
+          <p className="section-kicker">Leisure, Upgraded</p>
+          <h2 className="section-title">Spend your time on conversations that pay you back.</h2>
+          <p className="section-subtitle">
+            When you want to go deep, you will already know which episodes are worth it. When you do not, the
+            brief still keeps you ahead.
+          </p>
+          <div className="leisure-ritual">
+            <div>
+              <span className="ritual-title">Read the brief</span>
+              <span className="ritual-detail">3 minutes to absorb the signal.</span>
+            </div>
+            <div>
+              <span className="ritual-title">Pick an episode</span>
+              <span className="ritual-detail">Only the conversations that earned it.</span>
+            </div>
+            <div>
+              <span className="ritual-title">Let the rest go</span>
+              <span className="ritual-detail">No guilt, no algorithmic noise.</span>
+            </div>
+          </div>
+        </motion.div>
+        <motion.div
+          className="cta-panel"
           variants={itemVariants}
-          whileHover={prefersReducedMotion ? undefined : { x: 6 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+          whileHover={prefersReducedMotion ? undefined : { y: -8 }}
+          transition={{ type: 'spring', stiffness: 160, damping: 20 }}
         >
-          See sample issue -&gt;
-        </motion.a>
+          <div className="cta-header">
+            <span className="cta-kicker">Join the index</span>
+            <h2>Make your input deliberate.</h2>
+            <p>Twice-weekly, high-conviction briefs. Zero noise.</p>
+          </div>
+          <NewsletterForm buttonLabel="Join Now" source="footer-cta" />
+          <p className="cta-footnote">Free. Unsubscribe anytime.</p>
+        </motion.div>
       </div>
     </motion.section>
   );
@@ -493,11 +493,6 @@ export default function App() {
     media.addListener(update);
     return () => media.removeListener(update);
   }, []);
-
-  const revealVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
-    show: { opacity: 1, y: 0 }
-  };
 
   const heroContainer = {
     hidden: { opacity: 0 },
@@ -527,14 +522,15 @@ export default function App() {
           <div className="logo">
             <img className="logo-icon" src="/qortana-logo.png" alt="The Conviction Index logo" />
             <div className="logo-text">
-              <span className="logo-title">the conviction index .com</span>
+              <span className="logo-title">the conviction index</span>
               <span className="logo-byline">by qortana</span>
             </div>
           </div>
           <div className="nav-links">
-            <a href="#how-it-works">How it works</a>
-            <a href="#pricing">Success Stories</a>
-            <button className="nav-cta">Join Now</button>
+            <a href="#what-you-get">What you get</a>
+            <a href="#why">Why this exists</a>
+            <a href="#people">People tracked</a>
+            <a className="nav-cta" href="#join">Join Now</a>
           </div>
         </div>
       </motion.nav>
@@ -549,38 +545,16 @@ export default function App() {
 
         <MemoSection prefersReducedMotion={prefersReducedMotion} />
 
-        <ProblemSection prefersReducedMotion={prefersReducedMotion} />
-        <ProcessSection prefersReducedMotion={prefersReducedMotion} />
-        <VoicesSection prefersReducedMotion={prefersReducedMotion} />
-        <RecentInsightsSection prefersReducedMotion={prefersReducedMotion} />
-
-        <motion.section
-          className="final-cta"
-          id="pricing"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={revealVariants}
-        >
-          <div className="container">
-            <motion.div
-              className="cta-card"
-              whileHover={prefersReducedMotion ? undefined : { y: -8 }}
-              transition={{ type: 'spring', stiffness: 160, damping: 20 }}
-            >
-              <h2>Join The Conviction Index</h2>
-              <p>Track the ideas shaping the future from the people building it.</p>
-
-              <NewsletterForm buttonLabel="Join Now" source="footer-cta" />
-              <p className="cta-footnote">Join thousands tracking high-conviction insights twice weekly.</p>
-            </motion.div>
-          </div>
-        </motion.section>
+        <ValueSection prefersReducedMotion={prefersReducedMotion} />
+        <SlopSection prefersReducedMotion={prefersReducedMotion} />
+        <MomentumSection prefersReducedMotion={prefersReducedMotion} />
+        <PeopleSection prefersReducedMotion={prefersReducedMotion} />
+        <LeisureSection prefersReducedMotion={prefersReducedMotion} />
       </main>
 
       <footer className="footer">
         <div className="container">
-          <p>&copy; 2025 the conviction index .com. All rights reserved.</p>
+          <p>&copy; 2025 the conviction index. All rights reserved.</p>
         </div>
       </footer>
     </MotionConfig>
