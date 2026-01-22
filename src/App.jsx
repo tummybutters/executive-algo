@@ -23,7 +23,7 @@ const valueCards = [
   },
   {
     title: 'Conviction shifts',
-    body: 'The exact moments a leader changes their stance—and why.'
+    body: 'The exact moments a leader changes their stance - and why.'
   },
   {
     title: 'Conversation queue',
@@ -38,20 +38,124 @@ const algorithmPoints = [
 ];
 
 const sciFiHighlights = [
-  'We are accelerating toward a sci‑fi future.',
+  'We are accelerating toward a sci-fi future.',
   'The best conversations make it feel beautiful, not chaotic.',
   'This is how you stay curious without drowning in content.'
 ];
 
-const peopleTracked = [
-  { name: 'Jensen Huang', title: 'Co-founder, NVIDIA' },
-  { name: 'Dario Amodei', title: 'Co-founder, Anthropic' },
-  { name: 'Marc Andreessen', title: 'Co-founder, a16z' },
-  { name: 'Demis Hassabis', title: 'Co-founder, DeepMind' },
-  { name: 'Brian Chesky', title: 'Co-founder, Airbnb' },
-  { name: 'Patrick Collison', title: 'Co-founder, Stripe' },
-  { name: 'Reid Hoffman', title: 'Co-founder, LinkedIn' },
-  { name: 'Melanie Perkins', title: 'Co-founder, Canva' }
+const trackingCategories = [
+  {
+    title: 'The Architects',
+    subtitle: 'Mega-cap tech leaders',
+    entries: [
+      'Jensen Huang - CEO, NVIDIA',
+      'Satya Nadella - CEO, Microsoft',
+      'Sundar Pichai - CEO, Google/Alphabet',
+      'Mark Zuckerberg - CEO, Meta',
+      'Tim Cook - CEO, Apple',
+      'Elon Musk - CEO, Tesla/xAI/SpaceX',
+      'Andy Jassy - CEO, Amazon'
+    ]
+  },
+  {
+    title: 'The Frontier',
+    subtitle: 'AI lab leaders & founders',
+    entries: [
+      'Sam Altman - CEO, OpenAI',
+      'Dario Amodei - CEO, Anthropic',
+      'Daniela Amodei - President, Anthropic',
+      'Demis Hassabis - CEO, Google DeepMind',
+      'Ilya Sutskever - CEO, Safe Superintelligence',
+      'Mira Murati - Founder, Thinking Machines Lab',
+      'Arthur Mensch - CEO, Mistral AI',
+      'Liang Wenfeng - Founder, DeepSeek'
+    ]
+  },
+  {
+    title: 'The Theorists',
+    subtitle: 'Researchers & technical architects',
+    entries: [
+      'Andrej Karpathy - Founder, Eureka Labs',
+      'Noam Brown - Research Scientist, OpenAI',
+      'Chris Olah - Co-founder, Anthropic',
+      'Yann LeCun - Chief AI Scientist, Meta/NYU',
+      'Shane Legg - Chief AGI Scientist, DeepMind',
+      'John Jumper - VP Research, DeepMind',
+      'Jan Leike - Co-founder, ex-OpenAI',
+      'Amanda Askell - Researcher, Anthropic'
+    ]
+  },
+  {
+    title: 'The Allocators',
+    subtitle: 'VCs & capital allocators',
+    entries: [
+      'Marc Andreessen - Co-founder, a16z',
+      'Ben Horowitz - Co-founder, a16z',
+      'Pat Grady - Co-steward, Sequoia',
+      'Alfred Lin - Co-steward, Sequoia',
+      'Roelof Botha - Partner Emeritus, Sequoia',
+      'Brad Gerstner - Founder, Altimeter',
+      'Vinod Khosla - Founder, Khosla Ventures',
+      'Peter Thiel - Co-founder, Founders Fund',
+      'Keith Rabois - GP, Founders Fund',
+      'Chris Dixon - GP, a16z',
+      'Nat Friedman - Investor',
+      'Daniel Gross - Co-founder, Pioneer',
+      'Elad Gil - Investor'
+    ]
+  },
+  {
+    title: 'The Insurgents',
+    subtitle: 'Disruptive unicorns & neo-labs',
+    entries: [
+      'Michael Truell - Co-founder, Anysphere',
+      'Anton Osika - Co-founder, Lovable',
+      'Guillermo Rauch - CEO, Vercel',
+      'Amjad Masad - CEO, Replit',
+      'Eric Simons - CEO, StackBlitz',
+      'Winston Weinberg - CEO, Harvey',
+      'Arvind Jain - CEO, Glean'
+    ]
+  },
+  {
+    title: 'The Builders',
+    subtitle: 'Defense & deep tech',
+    entries: [
+      'Palmer Luckey - Founder, Anduril',
+      'Trae Stephens - Executive Chairman, Anduril',
+      'Brian Schimpf - CEO, Anduril',
+      'Alex Karp - CEO, Palantir',
+      'Gwynne Shotwell - President & COO, SpaceX',
+      'Brett Adcock - CEO, Figure AI',
+      'Tim Ellis - CEO, Relativity Space'
+    ]
+  },
+  {
+    title: 'The Establishment',
+    subtitle: 'Fortune 500 & finance',
+    entries: [
+      'Jamie Dimon - CEO, JPMorgan Chase',
+      'Ray Dalio - Founder, Bridgewater',
+      'Brian Armstrong - CEO, Coinbase',
+      'Brian Chesky - CEO, Airbnb',
+      'Reid Hoffman - Co-founder, LinkedIn',
+      'Aravind Srinivas - CEO, Perplexity',
+      'Mati Staniszewski - CEO, ElevenLabs'
+    ]
+  },
+  {
+    title: 'The Amplifiers',
+    subtitle: 'Cultural & infrastructure shapers',
+    entries: [
+      'Lex Fridman - Host, Lex Fridman Podcast',
+      'Dwarkesh Patel - Host, Dwarkesh Podcast',
+      'Ben Gilbert & David Rosenthal - Hosts, Acquired',
+      'Patrick OShaughnessy - Host, Invest Like the Best',
+      'Tim Ferriss - Host, Tim Ferriss Show',
+      'Erik Torenberg - Host, Turpentine',
+      'Theo Von - Comedian/Host'
+    ]
+  }
 ];
 
 function MemoSection({ prefersReducedMotion }) {
@@ -119,7 +223,7 @@ function MemoSection({ prefersReducedMotion }) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <p>We live in an era where the Einsteins, Rockefellers, and Churchills of our time sit for two-hour podcasts, openly sharing their beliefs on technology, markets, and the future.</p>
-          <p>We track what they believe—and where conviction is forming.</p>
+          <p>We track what they believe - and where conviction is forming.</p>
         </motion.div>
       </div>
     </section>
@@ -177,7 +281,7 @@ function GravityHeroSection({ prefersReducedMotion, heroContainer, heroItem, isS
           Valuable Insights Are the <span className="text-gradient">Easiest to Miss.</span>
         </motion.h1>
         <motion.p className="hero-subtitle" variants={heroItem}>
-          The most important CEOs, researchers, and capital allocators share hours of insight now—too much for anyone to follow.
+          The most important CEOs, researchers, and capital allocators share hours of insight now - too much for anyone to follow.
           <br />
           <br />
           We track their convictions and distill them straight to your inbox.
@@ -233,7 +337,7 @@ function ValueSection({ prefersReducedMotion }) {
           <p className="section-kicker">What You Get</p>
           <h2 className="section-title">A chosen algorithm for long-form intelligence.</h2>
           <p className="section-subtitle">
-            We are not another feed. We are the filter you picked — a calm, high-signal layer between you and
+            We are not another feed. We are the filter you picked - a calm, high-signal layer between you and
             the endless stream of podcasts.
           </p>
         </motion.div>
@@ -344,9 +448,9 @@ function MomentumSection({ prefersReducedMotion }) {
         </motion.div>
         <motion.div className="momentum-copy" variants={itemVariants}>
           <p className="section-kicker">The Moment</p>
-          <h2 className="section-title">We are racing into a sci‑fi future.</h2>
+          <h2 className="section-title">We are racing into a sci-fi future.</h2>
           <p className="section-subtitle">
-            The best long‑form conversations make the acceleration feel fun, awe‑struck, and beautiful — not
+            The best long-form conversations make the acceleration feel fun, awe-struck, and beautiful - not
             overwhelming.
           </p>
           <p className="section-subtitle">
@@ -390,22 +494,28 @@ function PeopleSection({ prefersReducedMotion }) {
       <div className="container">
         <motion.div className="section-header" variants={itemVariants}>
           <p className="section-kicker">Who We Track</p>
-          <h2 className="section-title">The builders setting the tempo.</h2>
+          <h2 className="section-title">A taxonomy of conviction.</h2>
           <p className="section-subtitle">
-            Not everyone. The people shaping capital, infrastructure, and research — where conviction actually
-            moves the world.
+            Not everyone. The people shaping capital, infrastructure, research, and the narrative itself.
           </p>
         </motion.div>
-        <motion.div className="people-grid" variants={containerVariants}>
-          {peopleTracked.map((person) => (
-            <motion.div className="people-card" key={person.name} variants={itemVariants}>
-              <span className="people-name">{person.name}</span>
-              <span className="people-title">{person.title}</span>
-            </motion.div>
+        <motion.div className="tracking-grid" variants={containerVariants}>
+          {trackingCategories.map((category) => (
+            <motion.article className="tracking-card" key={category.title} variants={itemVariants}>
+              <div className="tracking-header">
+                <span className="tracking-title">{category.title}</span>
+                <span className="tracking-subtitle">{category.subtitle}</span>
+              </div>
+              <ul className="tracking-list">
+                {category.entries.map((entry) => (
+                  <li key={entry}>{entry}</li>
+                ))}
+              </ul>
+            </motion.article>
           ))}
         </motion.div>
         <motion.div className="people-note" variants={itemVariants}>
-          + dozens more across technology, markets, and research.
+          Expanding weekly as new voices earn conviction.
         </motion.div>
       </div>
     </motion.section>

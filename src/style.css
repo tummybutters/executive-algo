@@ -1075,6 +1075,78 @@ body {
   font-size: 0.9rem;
 }
 
+.tracking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+.tracking-card {
+  position: relative;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #07090d;
+  box-shadow:
+    0 22px 36px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(120, 197, 255, 0.06);
+  display: grid;
+  gap: 1.2rem;
+}
+
+.tracking-card::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  top: 0;
+  background: linear-gradient(90deg, rgba(120, 197, 255, 0.5), transparent 70%);
+  opacity: 0.6;
+}
+
+.tracking-header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tracking-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f5f7fb;
+}
+
+.tracking-subtitle {
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #7f8794;
+}
+
+.tracking-list {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  color: #9aa2ae;
+  font-size: 0.9rem;
+}
+
+.tracking-list li {
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.tracking-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(120, 197, 255, 0.7);
+}
+
 .leisure-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -1199,7 +1271,8 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .people-grid {
+  .people-grid,
+  .tracking-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1317,7 +1390,8 @@ body {
     gap: 2rem;
   }
 
-  .people-grid {
+  .people-grid,
+  .tracking-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
@@ -1353,6 +1427,7 @@ body {
 
   .value-card,
   .people-card,
+  .tracking-card,
   .slop-item,
   .leisure-ritual div {
     padding: 0.9rem 1rem;
