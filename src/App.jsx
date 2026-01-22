@@ -632,7 +632,7 @@ export default function App() {
           <div className="logo">
             <img className="logo-icon" src="/qortana-logo.png" alt="The Conviction Index logo" />
             <div className="logo-text">
-              <span className="logo-title">the conviction index</span>
+              <span className="logo-title">The Conviction Index</span>
               <span className="logo-byline">by qortana</span>
             </div>
           </div>
