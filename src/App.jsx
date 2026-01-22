@@ -443,7 +443,15 @@ function MomentumSection({ prefersReducedMotion }) {
       <div className="container momentum-grid">
         <motion.div className="momentum-frame" variants={itemVariants}>
           <div className="momentum-image">
-            <img src="/warp-drive.jpg" alt="Accelerating toward a sci-fi future" loading="lazy" />
+            <video
+              className="momentum-video"
+              src="/warp-drive.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            />
           </div>
         </motion.div>
         <motion.div className="momentum-copy" variants={itemVariants}>

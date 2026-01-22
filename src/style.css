@@ -16,6 +16,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -29,6 +33,14 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.value-section,
+.slop-section,
+.momentum-section,
+.people-section,
+.leisure-section {
+  scroll-margin-top: 120px;
 }
 
 /* Navbar */
@@ -1004,7 +1016,8 @@ body {
   background: #050608;
 }
 
-.momentum-image img {
+.momentum-image img,
+.momentum-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1092,6 +1105,7 @@ body {
     inset 0 0 0 1px rgba(120, 197, 255, 0.06);
   display: grid;
   gap: 1.2rem;
+  min-height: 100%;
 }
 
 .tracking-card::before {
@@ -1271,7 +1285,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .people-grid,
   .tracking-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1390,7 +1403,6 @@ body {
     gap: 2rem;
   }
 
-  .people-grid,
   .tracking-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
