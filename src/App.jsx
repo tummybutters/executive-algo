@@ -38,9 +38,9 @@ const algorithmPoints = [
 ];
 
 const sciFiHighlights = [
-  'We are accelerating toward a sci-fi future.',
-  'The best conversations make it feel beautiful, not chaotic.',
-  'This is how you stay curious without drowning in content.'
+  'The future is arriving faster than most people can track.',
+  'The right conversations make it legible, not chaotic.',
+  'This is how you stay oriented without getting buried in content.'
 ];
 
 const trackingCategories = [
@@ -223,6 +223,7 @@ function MemoSection({ prefersReducedMotion }) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <p>We live in an era where the Einsteins, Rockefellers, and Churchills of our time sit for two-hour podcasts, openly sharing their beliefs on technology, markets, and the future.</p>
+          <p>Most people will never hear it. You're not most people.</p>
           <p>We track what they believe - and where conviction is forming.</p>
         </motion.div>
       </div>
@@ -381,7 +382,7 @@ function SlopSection({ prefersReducedMotion }) {
       <div className="container slop-grid">
         <motion.div className="slop-copy" variants={itemVariants}>
           <p className="section-kicker">The Feed Problem</p>
-          <h2 className="section-title">Platforms are built to feed you slop.</h2>
+          <h2 className="section-title">You already know something massive is happening. The feed doesn't help you understand it - it just makes you feel behind.</h2>
           <p className="section-subtitle">
             Algorithms optimize for engagement, not for the conversations that change how you think. The result
             is endless noise and a shrinking attention span.
@@ -394,16 +395,16 @@ function SlopSection({ prefersReducedMotion }) {
         <motion.div className="slop-panel" variants={itemVariants}>
           <div className="slop-panel-header">
             <span>The Choice</span>
-            <span>Signal &gt; Noise</span>
+            <span>Context &gt; Clips</span>
           </div>
           <div className="slop-contrast">
             <div className="slop-item slop-item-muted">
               <span className="slop-label">The Feed</span>
-              <p>Endless clips, context-free takes, momentum you never asked for.</p>
+              <p>Clips with no context. Takes designed to make you react. The feeling of knowing less the more you scroll.</p>
             </div>
             <div className="slop-item slop-item-signal">
               <span className="slop-label">Your Algorithm</span>
-              <p>Long-form, high-conviction ideas. Context preserved. Attention respected.</p>
+              <p>Full conviction. Full context. The conversations that actually change how you think.</p>
             </div>
           </div>
           <ul className="slop-steps">
@@ -456,14 +457,17 @@ function MomentumSection({ prefersReducedMotion }) {
         </motion.div>
         <motion.div className="momentum-copy" variants={itemVariants}>
           <p className="section-kicker">The Moment</p>
-          <h2 className="section-title">We are racing into a sci-fi future.</h2>
+          <h2 className="section-title">
+            We are racing into a sci-fi <span className="strike-word">fiction</span>{' '}
+            <span className="reality-word">reality</span>.
+          </h2>
           <p className="section-subtitle">
-            The best long-form conversations make the acceleration feel fun, awe-struck, and beautiful - not
-            overwhelming.
+            The best long-form conversations give you genuine insight into the shape of an uncertain
+            future - what&apos;s actually shifting, and why it matters.
           </p>
           <p className="section-subtitle">
-            We capture the episodes and insights that hold the real heart of this moment, so you can feel it
-            fully without the noise.
+            We surface the episodes and ideas worth your attention, so you can understand the
+            trajectory instead of just reacting to it.
           </p>
           <ul className="momentum-points">
             {sciFiHighlights.map((point) => (
@@ -572,7 +576,7 @@ function LeisureSection({ prefersReducedMotion }) {
             </div>
             <div>
               <span className="ritual-title">Let the rest go</span>
-              <span className="ritual-detail">No guilt, no algorithmic noise.</span>
+              <span className="ritual-detail">You're not missing anything. The signal already found you.</span>
             </div>
           </div>
         </motion.div>

@@ -1029,6 +1029,25 @@ body {
   gap: 0.4rem;
 }
 
+.momentum-copy .section-subtitle {
+  margin-top: 1rem;
+}
+
+.momentum-copy .section-subtitle + .section-subtitle {
+  margin-top: 0.8rem;
+}
+
+.strike-word {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(120, 197, 255, 0.9);
+  text-decoration-skip-ink: none;
+}
+
+.reality-word {
+  color: #e5e9ef;
+}
+
 .momentum-points {
   list-style: none;
   margin-top: 1.5rem;
