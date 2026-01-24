@@ -1039,7 +1039,7 @@ body {
 
 .strike-word {
   text-decoration: line-through;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 4px;
   text-decoration-color: rgba(120, 197, 255, 0.9);
   text-decoration-skip-ink: none;
 }
