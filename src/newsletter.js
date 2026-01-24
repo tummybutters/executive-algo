@@ -6,25 +6,15 @@
  */
 
 /**
- * Form states for UI feedback
- */
-export const FormState = {
-    IDLE: 'idle',
-    LOADING: 'loading',
-    SUCCESS: 'success',
-    ERROR: 'error'
-};
-
-/**
  * Error messages mapping from server error codes
  */
 const ERROR_MESSAGES = {
-    member_exists: 'You\'re already subscribed! Check your inbox.',
-    email_blocked: 'This email address cannot be subscribed.',
-    email_empty: 'Please enter your email address.',
-    email_invalid: 'Please enter a valid email address.',
-    rate_limited: 'Too many requests. Please wait a moment and try again.',
-    default: 'Something went wrong. Please try again.'
+  member_exists: "You're already subscribed! Check your inbox.",
+  email_blocked: 'This email address cannot be subscribed.',
+  email_empty: 'Please enter your email address.',
+  email_invalid: 'Please enter a valid email address.',
+  rate_limited: 'Too many requests. Please wait a moment and try again.',
+  default: 'Something went wrong. Please try again.'
 };
 
 /**
@@ -33,8 +23,8 @@ const ERROR_MESSAGES = {
  * @returns {boolean} - Whether the email is valid
  */
 export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 /**
@@ -46,201 +36,48 @@ export function validateEmail(email) {
  * @returns {Promise<{success: boolean, message: string, data?: Object}>}
  */
 export async function subscribeToNewsletter(email, options = {}) {
-    // Validate email
-    if (!email || !validateEmail(email)) {
-        return {
-            success: false,
-            message: ERROR_MESSAGES.email_invalid,
-            errorCode: 'email_invalid'
-        };
-    }
+  if (!email || !validateEmail(email)) {
+    return {
+      success: false,
+      message: ERROR_MESSAGES.email_invalid,
+      errorCode: 'email_invalid'
+    };
+  }
 
-    try {
-        // Call our server proxy to avoid CORS issues
-        const response = await fetch('/api/subscribe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email.toLowerCase().trim(),
-                referrer_url: options.referrerUrl || window.location.href,
-                metadata: options.metadata || {}
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            return {
-                success: true,
-                message: data.message || "Welcome aboard! You're now subscribed."
-            };
-        }
-
-        // Handle error responses
-        const errorCode = data.code || 'default';
-        return {
-            success: false,
-            message: data.message || ERROR_MESSAGES[errorCode] || ERROR_MESSAGES.default,
-            errorCode
-        };
-
-    } catch (error) {
-        console.error('Newsletter subscription error:', error);
-        return {
-            success: false,
-            message: 'Network error. Please check your connection and try again.',
-            errorCode: 'network_error'
-        };
-    }
-}
-
-/**
- * Initialize newsletter form handlers
- * This sets up all newsletter forms on the page to submit via Mailchimp
- */
-export function initNewsletterForms() {
-    const forms = document.querySelectorAll('.hero-form');
-
-    forms.forEach((form, index) => {
-        const input = form.querySelector('input[type="email"]');
-        const button = form.querySelector('button[type="submit"]');
-        const formFooter = form.querySelector('.form-footer');
-
-        if (!input || !button) return;
-
-        // Store original button text
-        const originalButtonText = button.textContent;
-
-        // Create feedback element
-        let feedbackEl = form.querySelector('.form-feedback');
-        if (!feedbackEl) {
-            feedbackEl = document.createElement('div');
-            feedbackEl.className = 'form-feedback';
-            feedbackEl.setAttribute('role', 'alert');
-            feedbackEl.setAttribute('aria-live', 'polite');
-            if (formFooter) {
-                formFooter.insertAdjacentElement('beforebegin', feedbackEl);
-            } else {
-                form.appendChild(feedbackEl);
-            }
-        }
-
-        // Update UI based on state
-        const setState = (state, message = '') => {
-            // Reset classes
-            form.classList.remove('form-loading', 'form-success', 'form-error');
-            feedbackEl.classList.remove('feedback-success', 'feedback-error');
-
-            switch (state) {
-                case FormState.LOADING:
-                    form.classList.add('form-loading');
-                    button.disabled = true;
-                    button.innerHTML = `
-            <svg class="spinner" viewBox="0 0 24 24" width="18" height="18">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="32" stroke-linecap="round"/>
-            </svg>
-            <span>Subscribing...</span>
-          `;
-                    feedbackEl.textContent = '';
-                    break;
-
-                case FormState.SUCCESS:
-                    form.classList.add('form-success');
-                    button.disabled = true;
-                    button.innerHTML = `
-            <svg viewBox="0 0 24 24" width="18" height="18">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
-            </svg>
-            <span>Subscribed!</span>
-          `;
-                    feedbackEl.classList.add('feedback-success');
-                    feedbackEl.textContent = message;
-                    input.value = '';
-
-                    // Re-enable after 3 seconds
-                    setTimeout(() => {
-                        button.disabled = false;
-                        button.textContent = originalButtonText;
-                        form.classList.remove('form-success');
-                    }, 3000);
-                    break;
-
-                case FormState.ERROR:
-                    form.classList.add('form-error');
-                    button.disabled = false;
-                    button.textContent = originalButtonText;
-                    feedbackEl.classList.add('feedback-error');
-                    feedbackEl.textContent = message;
-
-                    // Clear error after 5 seconds
-                    setTimeout(() => {
-                        form.classList.remove('form-error');
-                        feedbackEl.textContent = '';
-                    }, 5000);
-                    break;
-
-                default:
-                    button.disabled = false;
-                    button.textContent = originalButtonText;
-                    feedbackEl.textContent = '';
-            }
-        };
-
-        // Handle form submission
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = input.value.trim();
-
-            // Quick validation before API call
-            if (!email) {
-                setState(FormState.ERROR, 'Please enter your email address.');
-                input.focus();
-                return;
-            }
-
-            if (!validateEmail(email)) {
-                setState(FormState.ERROR, 'Please enter a valid email address.');
-                input.focus();
-                return;
-            }
-
-            // Set loading state
-            setState(FormState.LOADING);
-
-            // Call Mailchimp proxy
-            const result = await subscribeToNewsletter(email, {
-                referrerUrl: window.location.href,
-                metadata: {
-                    form_id: `form-${index}`,
-                    source: index === 0 ? 'hero' : 'footer-cta'
-                }
-            });
-
-            // Update UI based on result
-            if (result.success) {
-                setState(FormState.SUCCESS, result.message);
-
-                // Track successful subscription (for analytics)
-                if (window.gtag) {
-                    window.gtag('event', 'newsletter_signup', {
-                        event_category: 'engagement',
-                        event_label: index === 0 ? 'hero_form' : 'footer_form'
-                    });
-                }
-            } else {
-                setState(FormState.ERROR, result.message);
-            }
-        });
-
-        // Clear error state when user starts typing
-        input.addEventListener('input', () => {
-            if (form.classList.contains('form-error')) {
-                form.classList.remove('form-error');
-                feedbackEl.textContent = '';
-            }
-        });
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email.toLowerCase().trim(),
+        referrer_url: options.referrerUrl || window.location.href,
+        metadata: options.metadata || {}
+      })
     });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return {
+        success: true,
+        message: data.message || "Welcome aboard! You're now subscribed."
+      };
+    }
+
+    const errorCode = data.code || 'default';
+    return {
+      success: false,
+      message: data.message || ERROR_MESSAGES[errorCode] || ERROR_MESSAGES.default,
+      errorCode
+    };
+  } catch (error) {
+    console.error('Newsletter subscription error:', error);
+    return {
+      success: false,
+      message: 'Network error. Please check your connection and try again.',
+      errorCode: 'network_error'
+    };
+  }
 }

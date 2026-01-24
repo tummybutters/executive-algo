@@ -949,7 +949,7 @@ body {
   color: #8c929c;
 }
 
-.slop-item-signal {
+.slop-item-highlight {
   background: #080c12;
   color: #d9ecff;
   box-shadow: inset 0 0 0 1px rgba(120, 197, 255, 0.2);
@@ -1272,6 +1272,145 @@ body {
   font-size: 0.85rem;
 }
 
+/* Spotlight */
+.spotlight-page {
+  background: #050608;
+}
+
+.spotlight-hero,
+.spotlight-detail {
+  padding: 8rem 0 4rem;
+  background: radial-gradient(circle at 12% 30%, rgba(59, 130, 246, 0.18), transparent 45%);
+}
+
+.spotlight-filter-bar {
+  padding: 0 0 2rem;
+}
+
+.spotlight-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.spotlight-filter {
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 10, 14, 0.7);
+  color: #c9ced6;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.spotlight-filter:hover {
+  border-color: rgba(120, 197, 255, 0.6);
+  color: #ffffff;
+}
+
+.spotlight-filter.is-active {
+  background: rgba(120, 197, 255, 0.18);
+  border-color: rgba(120, 197, 255, 0.65);
+  color: #e9f2ff;
+}
+
+.spotlight-list {
+  padding-bottom: 8rem;
+}
+
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.spotlight-card {
+  padding: 1.8rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(7, 9, 13, 0.9);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 1rem;
+}
+
+.spotlight-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #8f98a4;
+}
+
+.spotlight-pill {
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  background: rgba(120, 197, 255, 0.16);
+  color: #d7e7ff;
+  border: 1px solid rgba(120, 197, 255, 0.35);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.spotlight-card-title {
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+.spotlight-card-summary {
+  color: #9aa2ae;
+  line-height: 1.6;
+}
+
+.spotlight-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #7f8794;
+}
+
+.spotlight-link {
+  color: #e6f1ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.spotlight-link:hover {
+  color: #ffffff;
+}
+
+.spotlight-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 1.4rem 0;
+  align-items: center;
+}
+
+.spotlight-placeholder {
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border-radius: 18px;
+  background: rgba(10, 12, 18, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #a8afb8;
+}
+
+.spotlight-back {
+  display: inline-flex;
+  margin-top: 2rem;
+  color: #e6f1ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.spotlight-back:hover {
+  color: #ffffff;
+}
+
 
 /* Footer */
 .footer {
@@ -1300,7 +1439,8 @@ body {
   .value-grid,
   .slop-grid,
   .momentum-grid,
-  .leisure-grid {
+  .leisure-grid,
+  .spotlight-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1319,6 +1459,11 @@ body {
 
   .nav-links {
     display: none;
+  }
+
+  .spotlight-hero,
+  .spotlight-detail {
+    padding: 6rem 0 3rem;
   }
 }
 
@@ -1442,6 +1587,10 @@ body {
   .people-section,
   .leisure-section {
     padding: 6rem 0;
+  }
+
+  .spotlight-card {
+    padding: 1.4rem;
   }
 
   .value-section .section-title,

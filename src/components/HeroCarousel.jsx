@@ -233,6 +233,8 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       });
     };
 
+    const fallbackWidthFor = (item) => Math.round((item.height ?? 420) * 0.68);
+
     const layoutLane = () => {
       const laneRect = laneState.lane.getBoundingClientRect();
       const viewportW = laneRect.width;
@@ -249,7 +251,9 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
       laneState.items.forEach((item) => {
         if (maxW) item.el.style.maxWidth = `${maxW}px`;
-        item.width = Math.ceil(item.el.getBoundingClientRect().width) || 280;
+        const measuredWidth = Math.ceil(item.el.getBoundingClientRect().width);
+        const width = measuredWidth || item.width || fallbackWidthFor(item);
+        item.width = Math.min(maxW ?? width, width);
         item.baseX = x;
         const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
         x += item.width + gap + extraGap;
@@ -298,7 +302,10 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     };
 
     const layoutAll = async () => {
-      await Promise.all(laneState.items.map((item) => decodeImage(item.img)));
+      await Promise.race([
+        Promise.all(laneState.items.map((item) => decodeImage(item.img))),
+        new Promise((resolve) => window.setTimeout(resolve, 1200))
+      ]);
       await new Promise((resolve) => requestAnimationFrame(resolve));
       layoutLane();
     };
@@ -313,6 +320,8 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     let lastFrame = 0;
     let isReady = false;
     let inView = true;
+    let relayoutRaf = 0;
+    const imgLoadHandlers = [];
     const frameInterval = lowPower ? 1000 / 30 : 0;
     const dragState = {
       dragging: false,
@@ -354,6 +363,14 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       rafId = 0;
     };
 
+    const scheduleRelayout = () => {
+      if (relayoutRaf) return;
+      relayoutRaf = requestAnimationFrame(() => {
+        relayoutRaf = 0;
+        layoutLane();
+      });
+    };
+
     const scheduleStart = () => {
       const schedule = window.requestIdleCallback
         ? (cb) => window.requestIdleCallback(cb, { timeout: 800 })
@@ -371,7 +388,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     scheduleStart();
 
     const onResize = () => {
-      layoutLane();
+      scheduleRelayout();
     };
 
     const onPointerDown = (event) => {
@@ -411,7 +428,10 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
     const onVisibility = () => {
       if (document.hidden) stop();
-      else start();
+      else {
+        scheduleRelayout();
+        start();
+      }
     };
 
     const observer =
@@ -420,14 +440,25 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
           (entries) => {
             const visible = entries.some((entry) => entry.isIntersecting);
             inView = visible;
-            if (visible) start();
-            else stop();
+            if (visible) {
+              scheduleRelayout();
+              start();
+            } else stop();
           },
           { threshold: 0.15 }
         )
         : null;
 
     if (observer) observer.observe(scene);
+
+    laneState.items.forEach((item) => {
+      if (!item.img || item.img.complete) return;
+      const handler = () => {
+        scheduleRelayout();
+      };
+      item.img.addEventListener('load', handler, { once: true });
+      imgLoadHandlers.push([item.img, handler]);
+    });
 
     window.addEventListener('resize', onResize, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
@@ -444,6 +475,10 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       scene.removeEventListener('pointerup', endDrag);
       scene.removeEventListener('pointercancel', endDrag);
       if (observer) observer.disconnect();
+      if (relayoutRaf) cancelAnimationFrame(relayoutRaf);
+      imgLoadHandlers.forEach(([img, handler]) => {
+        img.removeEventListener('load', handler);
+      });
       stop();
     };
   }, [people, prefersReducedMotion]);

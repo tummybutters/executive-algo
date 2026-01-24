@@ -3,7 +3,7 @@
 ## Project overview
 - Vite + React single-page app with Motion animations.
 - Express `server.js` serves the Vite dev middleware in dev and static `dist/` in prod.
-- `/api/subscribe` proxies Buttondown signup requests (requires env var).
+- `/api/subscribe` proxies Mailchimp signup requests (requires env vars).
 
 ## Key commands
 - `npm run dev` → starts `server.js` (Express + Vite middleware) on port 3000.
@@ -12,11 +12,18 @@
 - `npm run start` → production server (`server.js`) for `dist/`.
 
 ## Environment
-- `BUTTONDOWN_API_KEY` required for `/api/subscribe` to work in `server.js`.
+- `MAILCHIMP_API_KEY`, `MAILCHIMP_SERVER_PREFIX`, and `MAILCHIMP_AUDIENCE_ID` (or `MAILCHIMP_LIST_ID`) are required for `/api/subscribe` in `server.js`.
 
 ## Structure
 - `src/main.jsx` → React entry.
-- `src/App.jsx` → page layout + Motion-driven section reveals.
+- `src/App.jsx` → app shell (MotionConfig + layout).
+- `src/layouts/SiteLayout.jsx` → nav + footer layout.
+- `src/pages/Home.jsx` → home page composition.
+- `src/pages/Spotlight.jsx` → spotlight index page.
+- `src/pages/SpotlightDetail.jsx` → spotlight detail page.
+- `src/sections/home/*` → home sections split into focused components.
+- `src/data/home.js` → home page content arrays.
+- `src/hooks/useMediaQuery.js` → shared media query hook.
 - `src/components/HeroCarousel.jsx` → hero lane logic + performance optimizations.
 - `src/components/NewsletterForm.jsx` → form state + API calls.
 - `src/style.css` → global styles.
