@@ -141,14 +141,6 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     const track = lane.querySelector('.hero-carousel-track');
     if (!track) return;
 
-    const decodeImage = async (img) => {
-      try {
-        if (img && typeof img.decode === 'function') await img.decode();
-      } catch {
-        // ignore
-      }
-    };
-
     const laneState = {
       lane,
       track,
@@ -174,33 +166,6 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       laneState.duration = durationForWidth(window.innerWidth);
     };
 
-    const layoutCacheKey = () => {
-      if (typeof window === 'undefined') return null;
-      const bucket = Math.round(window.innerWidth / 120) * 120;
-      return `hero-carousel-widths-v1-${bucket}`;
-    };
-
-    const readLayoutCache = () => {
-      const key = layoutCacheKey();
-      if (!key || typeof window === 'undefined') return null;
-      try {
-        const raw = window.sessionStorage.getItem(key);
-        return raw ? JSON.parse(raw) : null;
-      } catch {
-        return null;
-      }
-    };
-
-    const writeLayoutCache = (widths) => {
-      const key = layoutCacheKey();
-      if (!key || typeof window === 'undefined') return;
-      try {
-        window.sessionStorage.setItem(key, JSON.stringify({ widths }));
-      } catch {
-        // ignore
-      }
-    };
-
     laneState.items = people
       .map((person, index) => {
         const el = itemRefs.current[index];
@@ -219,7 +184,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
     const positionLane = () => {
       const total = laneState.total || 1;
-      const viewportW = laneState.viewportW ?? laneState.lane.getBoundingClientRect().width;
+      const viewportW = laneState.viewportW ?? laneState.lane.offsetWidth;
       const buffer = laneState.buffer ?? Math.round(clamp(viewportW * 0.12, 180, 420));
 
       laneState.items.forEach((item) => {
@@ -236,8 +201,7 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     const fallbackWidthFor = (item) => Math.round((item.height ?? 420) * 0.68);
 
     const layoutLane = () => {
-      const laneRect = laneState.lane.getBoundingClientRect();
-      const viewportW = laneRect.width;
+      const viewportW = laneState.lane.offsetWidth;
       laneState.viewportW = viewportW;
       laneState.buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
 
@@ -247,48 +211,12 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       const maxW = Math.round(clamp(window.innerWidth * 0.28, 260, 420));
       let x = Math.round(clamp(window.innerWidth * 0.03, 18, 44));
 
-      const widthsForCache = {};
-
       laneState.items.forEach((item) => {
         if (maxW) item.el.style.maxWidth = `${maxW}px`;
-        const measuredWidth = Math.ceil(item.el.getBoundingClientRect().width);
-        const width = measuredWidth || item.width || fallbackWidthFor(item);
-        item.width = Math.min(maxW ?? width, width);
-        item.baseX = x;
-        const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
-        x += item.width + gap + extraGap;
-        widthsForCache[item.src] = item.width;
-      });
-
-      laneState.total = Math.max(1, x);
-      laneState.offset = ((((laneState.offset ?? 0) % laneState.total) + laneState.total) % laneState.total);
-      updateDuration();
-      laneState.speed = laneState.total / laneState.duration;
-      positionLane();
-      writeLayoutCache(widthsForCache);
-    };
-
-    const applyCachedLayout = () => {
-      const cache = readLayoutCache();
-      const cachedWidths = cache?.widths ?? {};
-      if (!laneState.items.length) return;
-
-      const laneRect = laneState.lane.getBoundingClientRect();
-      const viewportW = laneRect.width;
-      laneState.viewportW = viewportW;
-      laneState.buffer = Math.round(clamp(viewportW * 0.12, 180, 420));
-
-      const gap = Math.round(clamp(window.innerWidth * 0.02, 28, 60));
-      laneState.gap = gap;
-      const maxW = Math.round(clamp(window.innerWidth * 0.28, 260, 420));
-      let x = Math.round(clamp(window.innerWidth * 0.03, 18, 44));
-
-      laneState.items.forEach((item) => {
-        if (maxW) item.el.style.maxWidth = `${maxW}px`;
-        const cachedWidth = cachedWidths[item.src];
-        const fallbackWidth = Math.round((item.height ?? 420) * 0.68);
-        const width = Math.min(maxW ?? fallbackWidth, cachedWidth ?? fallbackWidth);
-        item.width = width;
+        const measuredWidth = Math.ceil(item.el.offsetWidth);
+        const baseWidth = measuredWidth || fallbackWidthFor(item);
+        const scaledWidth = Math.round(baseWidth * (item.scale ?? 1));
+        item.width = Math.min(maxW ?? scaledWidth, scaledWidth);
         item.baseX = x;
         const extraGap = featuredExtraGapAfterBySrc[item.src] ?? 0;
         x += item.width + gap + extraGap;
@@ -299,15 +227,6 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       updateDuration();
       laneState.speed = laneState.total / laneState.duration;
       positionLane();
-    };
-
-    const layoutAll = async () => {
-      await Promise.race([
-        Promise.all(laneState.items.map((item) => decodeImage(item.img))),
-        new Promise((resolve) => window.setTimeout(resolve, 1200))
-      ]);
-      await new Promise((resolve) => requestAnimationFrame(resolve));
-      layoutLane();
     };
 
     const lowPower =
@@ -376,14 +295,12 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
         ? (cb) => window.requestIdleCallback(cb, { timeout: 800 })
         : (cb) => window.setTimeout(cb, 120);
       schedule(() => {
-        layoutAll().then(() => {
-          isReady = true;
-          start();
-        });
+        isReady = true;
+        start();
       });
     };
 
-    applyCachedLayout();
+    layoutLane();
     track.classList.add('is-ready');
     scheduleStart();
 
