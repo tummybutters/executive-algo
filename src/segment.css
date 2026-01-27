@@ -1,0 +1,83 @@
+/* Segment Landing Page Specifics */
+.segment-hero {
+    position: relative;
+    min-height: 80vh;
+    /* Shorter than main hero */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: calc(clamp(4.5rem, 10vh, 7rem) + 25px) 2rem 4rem;
+    background: radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.15), transparent 50%);
+}
+
+.segment-hero .hero-content {
+    /* Reuse hero-content styles but ensure it's centered */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* FAQ Section */
+.faq-section {
+    padding: 8rem 0;
+    background: var(--bg-color);
+    position: relative;
+}
+
+.faq-section .section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.faq-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.faq-item p {
+    font-size: 0.95rem;
+    color: #9aa2ae;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .segment-hero {
+        min-height: auto;
+        padding-bottom: 4rem;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .faq-item {
+        padding: 1.5rem;
+    }
+}

@@ -38,22 +38,23 @@ export default function SiteLayout({ children }) {
             </div>
           </div>
           <div className="nav-links">
-            <Link to={isHome ? '#what-you-get' : '/#what-you-get'}>What you get</Link>
-            <Link to={isHome ? '#why' : '/#why'}>Why this exists</Link>
-            <Link to={isHome ? '#people' : '/#people'}>People tracked</Link>
-            <Link to="/spotlight">Spotlight</Link>
+            <Link to="/problem">Problem</Link>
+            <Link to="/method">Method</Link>
+            <Link to="/brief">What You Get</Link>
+            <Link to="/people">People</Link>
+            <Link to="/moment">The Moment</Link>
             <Link className="nav-cta" to={isHome ? '#join' : '/#join'}>Join Now</Link>
           </div>
         </div>
-      </motion.nav>
+      </motion.nav >
 
       {children}
 
-      <footer className="footer">
+      < footer className="footer" >
         <div className="container">
           <p>&copy; 2025 the conviction index. All rights reserved.</p>
         </div>
-      </footer>
+      </footer >
     </>
   );
 }
