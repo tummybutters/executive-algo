@@ -9,7 +9,7 @@
     text-align: center;
     overflow: hidden;
     padding: calc(clamp(4.5rem, 10vh, 7rem) + 25px) 2rem 4rem;
-    background: radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.15), transparent 50%);
+    background: radial-gradient(circle at 50% 30%, rgba(154, 123, 58, 0.15), transparent 50%);
 }
 
 .segment-hero .hero-content {
@@ -39,16 +39,16 @@
 }
 
 .faq-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(24, 35, 61, 0.03);
+    border: 1px solid rgba(24, 35, 61, 0.08);
     border-radius: 16px;
     padding: 2rem;
     transition: all 0.3s ease;
 }
 
 .faq-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(24, 35, 61, 0.05);
+    border-color: rgba(24, 35, 61, 0.15);
     transform: translateY(-2px);
 }
 
@@ -56,13 +56,13 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #fff;
+    color: #18233D;
     line-height: 1.4;
 }
 
 .faq-item p {
     font-size: 0.95rem;
-    color: #9aa2ae;
+    color: #243352;
     line-height: 1.6;
 }
 

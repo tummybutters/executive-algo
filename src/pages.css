@@ -11,7 +11,7 @@
 .people-hero,
 .brief-hero {
     padding: 6rem 0 4rem;
-    background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.1), transparent 60%);
+    background: radial-gradient(circle at 50% 0%, rgba(154, 123, 58, 0.1), transparent 60%);
     text-align: center;
 }
 
@@ -28,7 +28,7 @@
 .people-subtitle,
 .brief-subtitle {
     font-size: 1.25rem;
-    color: #aaa;
+    color: #5B6478;
     font-weight: 300;
     max-width: 600px;
     margin: 0 auto;
@@ -46,12 +46,12 @@
 .content-block h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    color: #fff;
+    color: #18233D;
 }
 
 .content-block p {
     font-size: 1.1rem;
-    color: #9aa2ae;
+    color: #243352;
     line-height: 1.7;
 }
 
@@ -64,8 +64,8 @@
 }
 
 .directory-category {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(24, 35, 61, 0.03);
+    border: 1px solid rgba(24, 35, 61, 0.08);
     border-radius: 16px;
     padding: 2rem;
 }
@@ -73,7 +73,7 @@
 .category-header {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(24, 35, 61, 0.06);
 }
 
 .category-header h2 {
@@ -83,7 +83,7 @@
 
 .category-subtitle {
     font-size: 0.9rem;
-    color: #666;
+    color: #8A8472;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -96,7 +96,7 @@
 }
 
 .category-list li {
-    color: #ccc;
+    color: #5B6478;
     font-size: 0.95rem;
 }
 
@@ -109,8 +109,8 @@
 }
 
 .brief-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(24, 35, 61, 0.03);
+    border: 1px solid rgba(24, 35, 61, 0.08);
     padding: 2.5rem;
     border-radius: 20px;
 }
@@ -121,7 +121,7 @@
 }
 
 .brief-card p {
-    color: #9aa2ae;
+    color: #243352;
     line-height: 1.6;
 }
 
@@ -137,8 +137,8 @@
     max-width: 500px;
     margin: 0 auto;
     padding: 3rem;
-    background: rgba(10, 10, 10, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(251, 246, 236, 0.7);
+    border: 1px solid rgba(24, 35, 61, 0.1);
     border-radius: 24px;
 }
 
