@@ -1,22 +1,10 @@
-import { motion, useScroll } from 'motion/react';
+import { motion } from 'motion/react';
 import { useRef } from 'react';
-import HeroCarousel, { heroPeople } from '../../components/HeroCarousel.jsx';
+import HeroPortraitBand from '../../components/HeroPortraitBand.jsx';
 import NewsletterForm from '../../components/NewsletterForm.jsx';
-import useMediaQuery from '../../hooks/useMediaQuery.js';
-import { mobileCarouselOrder } from '../../data/home.js';
 
 export default function GravityHeroSection({ prefersReducedMotion }) {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start']
-  });
-  const isSmallViewport = useMediaQuery('(max-width: 640px)');
-  const carouselPeople = isSmallViewport
-    ? mobileCarouselOrder
-        .map((stem) => heroPeople.find((src) => src.endsWith(`/${stem}.png`)))
-        .filter(Boolean)
-    : undefined;
 
   const heroContainer = {
     hidden: { opacity: 0 },
@@ -41,10 +29,10 @@ export default function GravityHeroSection({ prefersReducedMotion }) {
           Valuable Insights Are the <span className="text-gradient">Easiest to Miss.</span>
         </motion.h1>
         <motion.p className="hero-subtitle" variants={heroItem}>
-          The people building AI, deploying capital, and shaping markets now speak for hours on long-form podcasts. Far too much for anyone to follow.
+          The most important CEOs, researchers, and capital allocators share hours of insight now, too much for anyone to follow.
           <br />
           <br />
-          We track what they actually believe, and how their conviction shifts over time, distilled to your inbox twice a week.
+          We track their convictions and distill them straight to your inbox.
         </motion.p>
         <motion.div variants={heroItem}>
           <NewsletterForm
@@ -60,11 +48,7 @@ export default function GravityHeroSection({ prefersReducedMotion }) {
         </motion.div>
       </motion.div>
 
-      <HeroCarousel
-        scrollYProgress={scrollYProgress}
-        prefersReducedMotion={prefersReducedMotion}
-        people={carouselPeople}
-      />
+      <HeroPortraitBand prefersReducedMotion={prefersReducedMotion} />
     </section>
   );
 }
