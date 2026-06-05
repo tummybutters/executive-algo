@@ -20,6 +20,7 @@
   --shadow-soft: rgba(24, 35, 61, 0.10);
   --font-main: 'Outfit', sans-serif;
   --font-display: 'Fraunces', 'Outfit', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --max-width: 1200px;
 }
 
@@ -164,13 +165,15 @@ body {
 /* Hero Section */
 .hero {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   text-align: center;
   overflow: hidden;
   padding-top: calc(clamp(4.5rem, 10vh, 7rem) + 25px);
+  padding-bottom: 0;
 }
 
 .hero-content {
@@ -342,12 +345,131 @@ body {
 .hero-stats-strip {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
-  color: #18233D;
-  font-weight: 500;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  gap: 1.75rem;
+  margin-top: 2.25rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Hero portrait band */
+.op-band {
+  position: relative;
+  width: 100%;
+  margin-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
+}
+
+.op-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0 0.5rem;
+  animation: op-marquee 80s linear infinite;
+}
+
+.op-track:hover {
+  animation-play-state: paused;
+}
+
+.op-track.is-static {
+  animation: none;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
+}
+
+@keyframes op-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.op-tile {
+  flex: 0 0 auto;
+  width: clamp(118px, 12vw, 158px);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.op-tile-img {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  box-shadow: 0 12px 28px rgba(24, 35, 61, 0.10);
+}
+
+.op-tile-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: grayscale(1) contrast(1.02) brightness(1.02);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.op-tile-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(24, 35, 61, 0.18) 0%, rgba(24, 35, 61, 0.52) 100%);
+  mix-blend-mode: multiply;
+  transition: opacity 0.4s ease;
+}
+
+.op-tile:hover .op-tile-img img {
+  filter: grayscale(0) contrast(1.02);
+  transform: scale(1.04);
+}
+
+.op-tile:hover .op-tile-img::after {
+  opacity: 0;
+}
+
+.op-tile-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  text-align: left;
+  padding-left: 0.1rem;
+}
+
+.op-tile-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-color);
+  line-height: 1.2;
+}
+
+.op-tile-role {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .op-track {
+    animation: none;
+  }
 }
 
 /* Parallax Background */
@@ -1541,25 +1663,16 @@ body {
 
   .hero {
     height: auto;
-    min-height: 100svh;
+    min-height: auto;
     padding-top: 4.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     justify-content: flex-start;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(242, 234, 219, 0.85) 0%, rgba(242, 234, 219, 0.3) 45%, rgba(242, 234, 219, 0.7) 100%);
-    z-index: 2;
-    pointer-events: none;
   }
 
   .hero-content {
     padding: 0 1.5rem;
-    transform: translateY(-1.5rem);
-    margin-top: 0;
+    transform: none;
+    margin-top: 0.5rem;
   }
 
   .hero-title {
@@ -1601,6 +1714,10 @@ body {
     gap: 0.6rem 1.2rem;
     margin-top: 1.2rem;
     font-size: 0.8rem;
+  }
+
+  .op-tile {
+    width: clamp(108px, 38vw, 140px);
   }
 
   .value-grid,
