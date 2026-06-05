@@ -52,7 +52,7 @@ export default function SiteLayout({ children }) {
 
       < footer className="footer" >
         <div className="container">
-          <p>&copy; 2025 the conviction index. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} The Conviction Index by Qortana. All rights reserved.</p>
         </div>
       </footer >
     </>

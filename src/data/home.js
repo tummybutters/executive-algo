@@ -16,7 +16,7 @@ export const valueCards = [
   },
   {
     title: 'Conviction shifts',
-    body: 'The exact moments a leader changes their stance - and why.'
+    body: 'The exact moments a leader changes their stance, and why.'
   },
   {
     title: 'Conversation queue',
@@ -41,112 +41,112 @@ export const trackingCategories = [
     title: 'The Architects',
     subtitle: 'Mega-cap tech leaders',
     entries: [
-      'Jensen Huang - CEO, NVIDIA',
-      'Satya Nadella - CEO, Microsoft',
-      'Sundar Pichai - CEO, Google/Alphabet',
-      'Mark Zuckerberg - CEO, Meta',
-      'Tim Cook - CEO, Apple',
-      'Elon Musk - CEO, Tesla/xAI/SpaceX',
-      'Andy Jassy - CEO, Amazon'
+      { name: 'Jensen Huang', role: 'CEO, NVIDIA' },
+      { name: 'Satya Nadella', role: 'CEO, Microsoft' },
+      { name: 'Sundar Pichai', role: 'CEO, Google/Alphabet' },
+      { name: 'Mark Zuckerberg', role: 'CEO, Meta' },
+      { name: 'Tim Cook', role: 'CEO, Apple' },
+      { name: 'Elon Musk', role: 'CEO, Tesla/xAI/SpaceX' },
+      { name: 'Andy Jassy', role: 'CEO, Amazon' }
     ]
   },
   {
     title: 'The Frontier',
-    subtitle: 'AI lab leaders & founders',
+    subtitle: 'AI lab leaders and founders',
     entries: [
-      'Sam Altman - CEO, OpenAI',
-      'Dario Amodei - CEO, Anthropic',
-      'Daniela Amodei - President, Anthropic',
-      'Demis Hassabis - CEO, Google DeepMind',
-      'Ilya Sutskever - CEO, Safe Superintelligence',
-      'Mira Murati - Founder, Thinking Machines Lab',
-      'Arthur Mensch - CEO, Mistral AI',
-      'Liang Wenfeng - Founder, DeepSeek'
+      { name: 'Sam Altman', role: 'CEO, OpenAI' },
+      { name: 'Dario Amodei', role: 'CEO, Anthropic' },
+      { name: 'Daniela Amodei', role: 'President, Anthropic' },
+      { name: 'Demis Hassabis', role: 'CEO, Google DeepMind' },
+      { name: 'Ilya Sutskever', role: 'CEO, Safe Superintelligence' },
+      { name: 'Mira Murati', role: 'Founder, Thinking Machines Lab' },
+      { name: 'Arthur Mensch', role: 'CEO, Mistral AI' },
+      { name: 'Liang Wenfeng', role: 'Founder, DeepSeek' }
     ]
   },
   {
     title: 'The Theorists',
-    subtitle: 'Researchers & technical architects',
+    subtitle: 'Researchers and technical architects',
     entries: [
-      'Andrej Karpathy - Founder, Eureka Labs',
-      'Noam Brown - Research Scientist, OpenAI',
-      'Chris Olah - Co-founder, Anthropic',
-      'Yann LeCun - Chief AI Scientist, Meta/NYU',
-      'Shane Legg - Chief AGI Scientist, DeepMind',
-      'John Jumper - VP Research, DeepMind',
-      'Jan Leike - Co-founder, ex-OpenAI',
-      'Amanda Askell - Researcher, Anthropic'
+      { name: 'Andrej Karpathy', role: 'Founder, Eureka Labs' },
+      { name: 'Noam Brown', role: 'Research Scientist, OpenAI' },
+      { name: 'Chris Olah', role: 'Co-founder, Anthropic' },
+      { name: 'Yann LeCun', role: 'Chief AI Scientist, Meta/NYU' },
+      { name: 'Shane Legg', role: 'Chief AGI Scientist, DeepMind' },
+      { name: 'John Jumper', role: 'VP Research, DeepMind' },
+      { name: 'Jan Leike', role: 'Co-founder, ex-OpenAI' },
+      { name: 'Amanda Askell', role: 'Researcher, Anthropic' }
     ]
   },
   {
     title: 'The Allocators',
-    subtitle: 'VCs & capital allocators',
+    subtitle: 'VCs and capital allocators',
     entries: [
-      'Marc Andreessen - Co-founder, a16z',
-      'Ben Horowitz - Co-founder, a16z',
-      'Pat Grady - Co-steward, Sequoia',
-      'Alfred Lin - Co-steward, Sequoia',
-      'Roelof Botha - Partner Emeritus, Sequoia',
-      'Brad Gerstner - Founder, Altimeter',
-      'Vinod Khosla - Founder, Khosla Ventures',
-      'Peter Thiel - Co-founder, Founders Fund',
-      'Keith Rabois - GP, Founders Fund',
-      'Chris Dixon - GP, a16z',
-      'Nat Friedman - Investor',
-      'Daniel Gross - Co-founder, Pioneer',
-      'Elad Gil - Investor'
+      { name: 'Marc Andreessen', role: 'Co-founder, a16z' },
+      { name: 'Ben Horowitz', role: 'Co-founder, a16z' },
+      { name: 'Pat Grady', role: 'Co-steward, Sequoia' },
+      { name: 'Alfred Lin', role: 'Co-steward, Sequoia' },
+      { name: 'Roelof Botha', role: 'Partner Emeritus, Sequoia' },
+      { name: 'Brad Gerstner', role: 'Founder, Altimeter' },
+      { name: 'Vinod Khosla', role: 'Founder, Khosla Ventures' },
+      { name: 'Peter Thiel', role: 'Co-founder, Founders Fund' },
+      { name: 'Keith Rabois', role: 'GP, Founders Fund' },
+      { name: 'Chris Dixon', role: 'GP, a16z' },
+      { name: 'Nat Friedman', role: 'Investor' },
+      { name: 'Daniel Gross', role: 'Co-founder, Pioneer' },
+      { name: 'Elad Gil', role: 'Investor' }
     ]
   },
   {
     title: 'The Insurgents',
-    subtitle: 'Disruptive unicorns & neo-labs',
+    subtitle: 'Disruptive unicorns and neo-labs',
     entries: [
-      'Michael Truell - Co-founder, Anysphere',
-      'Anton Osika - Co-founder, Lovable',
-      'Guillermo Rauch - CEO, Vercel',
-      'Amjad Masad - CEO, Replit',
-      'Eric Simons - CEO, StackBlitz',
-      'Winston Weinberg - CEO, Harvey',
-      'Arvind Jain - CEO, Glean'
+      { name: 'Michael Truell', role: 'Co-founder, Anysphere' },
+      { name: 'Anton Osika', role: 'Co-founder, Lovable' },
+      { name: 'Guillermo Rauch', role: 'CEO, Vercel' },
+      { name: 'Amjad Masad', role: 'CEO, Replit' },
+      { name: 'Eric Simons', role: 'CEO, StackBlitz' },
+      { name: 'Winston Weinberg', role: 'CEO, Harvey' },
+      { name: 'Arvind Jain', role: 'CEO, Glean' }
     ]
   },
   {
     title: 'The Builders',
-    subtitle: 'Defense & deep tech',
+    subtitle: 'Defense and deep tech',
     entries: [
-      'Palmer Luckey - Founder, Anduril',
-      'Trae Stephens - Executive Chairman, Anduril',
-      'Brian Schimpf - CEO, Anduril',
-      'Alex Karp - CEO, Palantir',
-      'Gwynne Shotwell - President & COO, SpaceX',
-      'Brett Adcock - CEO, Figure AI',
-      'Tim Ellis - CEO, Relativity Space'
+      { name: 'Palmer Luckey', role: 'Founder, Anduril' },
+      { name: 'Trae Stephens', role: 'Executive Chairman, Anduril' },
+      { name: 'Brian Schimpf', role: 'CEO, Anduril' },
+      { name: 'Alex Karp', role: 'CEO, Palantir' },
+      { name: 'Gwynne Shotwell', role: 'President and COO, SpaceX' },
+      { name: 'Brett Adcock', role: 'CEO, Figure AI' },
+      { name: 'Tim Ellis', role: 'CEO, Relativity Space' }
     ]
   },
   {
     title: 'The Establishment',
-    subtitle: 'Fortune 500 & finance',
+    subtitle: 'Fortune 500 and finance',
     entries: [
-      'Jamie Dimon - CEO, JPMorgan Chase',
-      'Ray Dalio - Founder, Bridgewater',
-      'Brian Armstrong - CEO, Coinbase',
-      'Brian Chesky - CEO, Airbnb',
-      'Reid Hoffman - Co-founder, LinkedIn',
-      'Aravind Srinivas - CEO, Perplexity',
-      'Mati Staniszewski - CEO, ElevenLabs'
+      { name: 'Jamie Dimon', role: 'CEO, JPMorgan Chase' },
+      { name: 'Ray Dalio', role: 'Founder, Bridgewater' },
+      { name: 'Brian Armstrong', role: 'CEO, Coinbase' },
+      { name: 'Brian Chesky', role: 'CEO, Airbnb' },
+      { name: 'Reid Hoffman', role: 'Co-founder, LinkedIn' },
+      { name: 'Aravind Srinivas', role: 'CEO, Perplexity' },
+      { name: 'Mati Staniszewski', role: 'CEO, ElevenLabs' }
     ]
   },
   {
     title: 'The Amplifiers',
-    subtitle: 'Cultural & infrastructure shapers',
+    subtitle: 'Cultural and infrastructure shapers',
     entries: [
-      'Lex Fridman - Host, Lex Fridman Podcast',
-      'Dwarkesh Patel - Host, Dwarkesh Podcast',
-      'Ben Gilbert & David Rosenthal - Hosts, Acquired',
-      'Patrick OShaughnessy - Host, Invest Like the Best',
-      'Tim Ferriss - Host, Tim Ferriss Show',
-      'Erik Torenberg - Host, Turpentine',
-      'Theo Von - Comedian/Host'
+      { name: 'Lex Fridman', role: 'Host, Lex Fridman Podcast' },
+      { name: 'Dwarkesh Patel', role: 'Host, Dwarkesh Podcast' },
+      { name: 'Ben Gilbert and David Rosenthal', role: 'Hosts, Acquired' },
+      { name: 'Patrick OShaughnessy', role: 'Host, Invest Like the Best' },
+      { name: 'Tim Ferriss', role: 'Host, Tim Ferriss Show' },
+      { name: 'Erik Torenberg', role: 'Host, Turpentine' },
+      { name: 'Theo Von', role: 'Comedian/Host' }
     ]
   }
 ];
