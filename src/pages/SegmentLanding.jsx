@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { useEffect } from 'react';
 import NewsletterForm from '../components/NewsletterForm.jsx';
 import '../segment.css';
 
@@ -25,16 +24,6 @@ function FAQItem({ question, answer, prefersReducedMotion }) {
 
 export default function SegmentLanding({ data }) {
     const prefersReducedMotion = useReducedMotion();
-
-    // Update SEO Meta Tags
-    useEffect(() => {
-        document.title = `${data.title} | The Conviction Index`;
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.content = data.metaDescription;
-        }
-        // Reset on unmount if needed, but router handles next page's title usually
-    }, [data]);
 
     const containerVariants = {
         hidden: { opacity: 0 },

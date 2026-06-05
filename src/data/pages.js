@@ -5,7 +5,7 @@ export const problemPage = {
     sections: [
         {
             heading: 'Optimization for Engagement, Not Insight',
-            body: 'Social algorithms are designed to keep you on the platform, not to inform you. They prioritize content that triggers an emotional response—outrage, surprise, or validation—rather than content that builds a durable mental model. You end up with a collection of fragmented facts but no cohesive understanding.'
+            body: 'Social algorithms are designed to keep you on the platform, not to inform you. They prioritize content that triggers an emotional response, outrage, surprise, or validation, rather than content that builds a durable mental model. You end up with a collection of fragmented facts but no cohesive understanding.'
         },
         {
             heading: 'The Fragmentation of Attention',
@@ -40,7 +40,7 @@ export const methodPage = {
         },
         {
             heading: 'The "Listen Wide, Listen Deep" Framework',
-            body: 'Our team monitors hundreds of hours of conversation across the tech ecosystem—"listening wide"—so you don\'t have to. When we find the signal, we point you to it, allowing you to "listen deep" to the specific 45 minutes that will actually change your perspective.'
+            body: 'Our team monitors hundreds of hours of conversation across the tech ecosystem, listening wide, so you don\'t have to. When we find the signal, we point you to it, allowing you to listen deep to the specific 45 minutes that will actually change your perspective.'
         },
         {
             heading: 'Twice-Weekly Cadence',
@@ -55,11 +55,11 @@ export const momentPage = {
     sections: [
         {
             heading: 'The Sci-Fi Reality Thesis',
-            body: 'We are living through a phase transition. Technologies that were science fiction five years ago—autonomous agents, fusion breakthroughs, private spaceflight—are becoming engineering problems. The pace of change is non-linear, and traditional media often fails to capture the magnitude of these shifts.'
+            body: 'We are living through a phase transition. Technologies that were science fiction five years ago, autonomous agents, fusion breakthroughs, private spaceflight, are becoming engineering problems. The pace of change is non-linear, and traditional media often fails to capture the magnitude of these shifts.'
         },
         {
             heading: 'Long-Form as the Signal Source',
-            body: 'In a world of rapid change, the best signal comes from the builders and allocators themselves. But they don\'t write press releases about their real fears and hopes; they talk about them in long-form conversations. This is where the "alpha" is—in the unscripted moments of 2-hour podcasts.'
+            body: 'In a world of rapid change, the best signal comes from the builders and allocators themselves. But they don\'t write press releases about their real fears and hopes; they talk about them in long-form conversations. This is where the "alpha" is, in the unscripted moments of 2-hour podcasts.'
         },
         {
             heading: 'Insiders vs. Everyone Else',
@@ -67,7 +67,7 @@ export const momentPage = {
         },
         {
             heading: 'Orientation Over Information',
-            body: 'You don\'t need more news; you need orientation. You need to know where you stand on the map of progress. We focus on directional shifts—where the puck is going—rather than the static noise of where it is right now.'
+            body: 'You don\'t need more news; you need orientation. You need to know where you stand on the map of progress. We focus on directional shifts, where the puck is going, rather than the static noise of where it is right now.'
         }
     ]
 };
@@ -82,7 +82,7 @@ export const briefPage = {
         },
         {
             heading: 'Conviction Shifts',
-            body: 'We explicitly highlight "Conviction Shifts"—sections where we track how a key figure\'s opinion has evolved. For example, "Marc Andreessen goes from bullish to bearish on remote work" or "Demis Hassabis changes his timeline for AGI." These are the signals that move markets.'
+            body: 'We explicitly highlight "Conviction Shifts," sections where we track how a key figure\'s opinion has evolved. For example, "Marc Andreessen goes from bullish to bearish on remote work" or "Demis Hassabis changes his timeline for AGI." These are the signals that move markets.'
         },
         {
             heading: 'The Conversation Queue',
