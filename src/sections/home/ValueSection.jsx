@@ -29,7 +29,7 @@ export default function ValueSection({ prefersReducedMotion }) {
           <p className="section-kicker">What You Get</p>
           <h2 className="section-title">A chosen algorithm for long-form intelligence.</h2>
           <p className="section-subtitle">
-            We are not another feed. We are the filter you picked - a calm, editorial layer between you and the endless
+            We are not another feed. We are the filter you picked, a calm, editorial layer between you and the endless
             stream of podcasts.
           </p>
         </motion.div>

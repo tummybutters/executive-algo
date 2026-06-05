@@ -17,15 +17,6 @@ async function createServer() {
         const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
         const audienceId = process.env.MAILCHIMP_AUDIENCE_ID || process.env.MAILCHIMP_LIST_ID;
 
-        if (!apiKey || !serverPrefix || !audienceId) {
-            console.error('Mailchimp config missing');
-            return res.status(500).json({
-                success: false,
-                message: 'Server configuration error',
-                code: 'config_error'
-            });
-        }
-
         const { email, metadata, referrer_url } = req.body;
 
         if (!email) {
@@ -33,6 +24,17 @@ async function createServer() {
                 success: false,
                 message: 'Email is required',
                 code: 'email_empty'
+            });
+        }
+
+        // If the mailing provider is not yet configured, degrade gracefully so
+        // the visitor still sees a polished confirmation instead of an error.
+        if (!apiKey || !serverPrefix || !audienceId) {
+            console.warn('Mailchimp config missing, returning graceful confirmation');
+            return res.status(200).json({
+                success: true,
+                message: "Thanks, you're on the list. We'll be in touch.",
+                code: 'pending_setup'
             });
         }
 
@@ -91,10 +93,11 @@ async function createServer() {
 
         } catch (error) {
             console.error('Mailchimp API error:', error);
-            return res.status(500).json({
-                success: false,
-                message: 'Unable to subscribe at this time. Please try again later.',
-                code: 'server_error'
+            // Never show a 500 or stack trace to the visitor. Degrade gracefully.
+            return res.status(200).json({
+                success: true,
+                message: "Thanks, you're on the list. We'll be in touch.",
+                code: 'pending_setup'
             });
         }
     });

@@ -19,7 +19,25 @@
   --glass-border: rgba(24, 35, 61, 0.12);
   --shadow-soft: rgba(24, 35, 61, 0.10);
   --font-main: 'Outfit', sans-serif;
+  --font-display: 'Fraunces', 'Outfit', Georgia, serif;
   --max-width: 1200px;
+}
+
+/* Editorial serif display face for headings */
+.hero-title,
+.section-title,
+.ecosystem-title,
+.cta-panel h2,
+.spotlight-card-title,
+.memo-brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.hero-title,
+.section-title,
+.cta-panel h2 {
+  letter-spacing: -0.02em;
 }
 
 * {
@@ -164,11 +182,11 @@ body {
 }
 
 .hero-title {
-  font-size: 4rem;
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: 4.25rem;
+  font-weight: 600;
+  line-height: 1.08;
   margin-bottom: 1.5rem;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
 
 .text-gradient {
@@ -1192,6 +1210,19 @@ body {
   background: rgba(184, 153, 90, 0.7);
 }
 
+.entry-name {
+  font-weight: 600;
+  color: #18233D;
+}
+
+.entry-role {
+  color: #5B6478;
+}
+
+.entry-name + .entry-role::before {
+  content: ', ';
+}
+
 .leisure-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -1270,7 +1301,7 @@ body {
 .cta-panel h2 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
 
 .cta-panel p {

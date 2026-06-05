@@ -18,10 +18,17 @@
 .editorial-title,
 .people-hero h1,
 .brief-hero h1 {
+    font-family: var(--font-display);
     font-size: 3.5rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 1rem;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
+}
+
+.content-block h2,
+.category-header h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
 }
 
 .editorial-subtitle,
@@ -98,6 +105,19 @@
 .category-list li {
     color: #5B6478;
     font-size: 0.95rem;
+}
+
+.category-list .entry-name {
+    font-weight: 600;
+    color: #18233D;
+}
+
+.category-list .entry-role {
+    color: #5B6478;
+}
+
+.category-list .entry-name + .entry-role::before {
+    content: ', ';
 }
 
 /* Brief Page */

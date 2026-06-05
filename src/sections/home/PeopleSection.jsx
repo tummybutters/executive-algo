@@ -41,7 +41,10 @@ export default function PeopleSection({ prefersReducedMotion }) {
               </div>
               <ul className="tracking-list">
                 {category.entries.map((entry) => (
-                  <li key={entry}>{entry}</li>
+                  <li key={entry.name}>
+                    <span className="entry-name">{entry.name}</span>
+                    <span className="entry-role">{entry.role}</span>
+                  </li>
                 ))}
               </ul>
             </motion.article>

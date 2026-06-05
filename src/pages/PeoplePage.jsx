@@ -60,7 +60,10 @@ export default function PeoplePage() {
                             </motion.div>
                             <motion.ul variants={itemVariants} className="category-list">
                                 {category.entries.map((person) => (
-                                    <li key={person}>{person}</li>
+                                    <li key={person.name}>
+                                        <span className="entry-name">{person.name}</span>
+                                        <span className="entry-role">{person.role}</span>
+                                    </li>
                                 ))}
                             </motion.ul>
                         </motion.div>

@@ -41,10 +41,10 @@ export default function GravityHeroSection({ prefersReducedMotion }) {
           Valuable Insights Are the <span className="text-gradient">Easiest to Miss.</span>
         </motion.h1>
         <motion.p className="hero-subtitle" variants={heroItem}>
-          The most important CEOs, researchers, and capital allocators share hours of insight now - too much for anyone to follow.
+          The people building AI, deploying capital, and shaping markets now speak for hours on long-form podcasts. Far too much for anyone to follow.
           <br />
           <br />
-          We track their convictions and distill them straight to your inbox.
+          We track what they actually believe, and how their conviction shifts over time, distilled to your inbox twice a week.
         </motion.p>
         <motion.div variants={heroItem}>
           <NewsletterForm

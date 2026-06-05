@@ -89,7 +89,7 @@ export default function MemoSection({ prefersReducedMotion }) {
             sharing their beliefs on technology, markets, and the future.
           </p>
           <p>Most people will never hear it. You're not most people.</p>
-          <p>We track what they believe - and where conviction is forming.</p>
+          <p>We track what they believe, and where conviction is forming.</p>
         </motion.div>
       </div>
     </section>

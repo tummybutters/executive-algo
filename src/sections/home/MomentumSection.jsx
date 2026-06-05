@@ -45,7 +45,7 @@ export default function MomentumSection({ prefersReducedMotion }) {
             <span className="reality-word">reality</span>.
           </h2>
           <p className="section-subtitle">
-            The best long-form conversations give you genuine insight into the shape of an uncertain future - what's actually
+            The best long-form conversations give you genuine insight into the shape of an uncertain future. What's actually
             shifting, and why it matters.
           </p>
           <p className="section-subtitle">
