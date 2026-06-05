@@ -338,7 +338,7 @@ body {
 
 .form-footer {
   font-size: 0.8rem;
-  color: #8A8472;
+  color: #6B6452;
   margin-top: 0.5rem;
 }
 
@@ -1579,11 +1579,58 @@ body {
 
 /* Footer */
 .footer {
-  padding: 4rem 0;
+  padding: 4rem 0 3rem;
   border-top: 1px solid rgba(24, 35, 61, 0.10);
-  text-align: center;
   font-size: 0.8rem;
   color: #8A8472;
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  text-align: left;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-heading {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5B6478;
+  margin-bottom: 0.3rem;
+}
+
+.footer-col a {
+  color: #243352;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer-col a:hover {
+  color: var(--accent-color);
+}
+
+.footer-copy {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #6B6452;
+}
+
+@media (max-width: 640px) {
+  .footer-nav {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    text-align: left;
+  }
 }
 
 /* Responsive */

@@ -33,7 +33,14 @@ function Tile({ person }) {
   return (
     <figure className="op-tile">
       <div className="op-tile-img">
-        <img src={webp(person.stem)} alt={person.name} loading="lazy" decoding="async" />
+        <img
+          src={webp(person.stem)}
+          alt={`${person.name}, ${person.role}, a leader tracked by The Conviction Index`}
+          loading="lazy"
+          decoding="async"
+          width="720"
+          height="540"
+        />
       </div>
       <figcaption className="op-tile-cap">
         <span className="op-tile-name">{person.name}</span>

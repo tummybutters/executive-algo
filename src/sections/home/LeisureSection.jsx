@@ -21,7 +21,7 @@ export default function LeisureSection({ prefersReducedMotion }) {
       id="join"
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.15 }}
       variants={containerVariants}
     >
       <div className="container leisure-grid">

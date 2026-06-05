@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node server.js",
     "dev:vite": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir .ssr-dist && node scripts/prerender.mjs",
+    "build:client": "vite build",
     "start": "NODE_ENV=production node server.js",
     "preview": "vite preview"
   },

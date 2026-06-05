@@ -21,7 +21,7 @@ export default function ValueSection({ prefersReducedMotion }) {
       id="what-you-get"
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.15 }}
       variants={containerVariants}
     >
       <div className="container">
