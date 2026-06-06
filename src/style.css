@@ -366,33 +366,28 @@ body {
   mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
 }
 
+.op-band.is-draggable {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.op-band.is-draggable.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .op-track {
   display: flex;
   gap: 1rem;
   width: max-content;
   padding: 0 0.5rem;
-  animation: op-marquee 80s linear infinite;
-}
-
-.op-track:hover {
-  animation-play-state: paused;
+  will-change: transform;
 }
 
 .op-track.is-static {
-  animation: none;
   flex-wrap: nowrap;
   overflow-x: auto;
   width: 100%;
-}
-
-@keyframes op-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 .op-tile {
