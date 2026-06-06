@@ -38,8 +38,8 @@ export const sciFiHighlights = [
 
 export const trackingCategories = [
   {
-    title: 'The Architects',
-    subtitle: 'Mega-cap tech leaders',
+    title: 'Big Tech',
+    subtitle: 'Mega-cap platform CEOs',
     entries: [
       { name: 'Jensen Huang', role: 'CEO, NVIDIA' },
       { name: 'Satya Nadella', role: 'CEO, Microsoft' },
@@ -51,8 +51,8 @@ export const trackingCategories = [
     ]
   },
   {
-    title: 'The Frontier',
-    subtitle: 'AI lab leaders and founders',
+    title: 'AI Labs',
+    subtitle: 'Frontier model lab leaders',
     entries: [
       { name: 'Sam Altman', role: 'CEO, OpenAI' },
       { name: 'Dario Amodei', role: 'CEO, Anthropic' },
@@ -65,8 +65,8 @@ export const trackingCategories = [
     ]
   },
   {
-    title: 'The Theorists',
-    subtitle: 'Researchers and technical architects',
+    title: 'Researchers',
+    subtitle: 'Scientists and technical leads',
     entries: [
       { name: 'Andrej Karpathy', role: 'Founder, Eureka Labs' },
       { name: 'Noam Brown', role: 'Research Scientist, OpenAI' },
@@ -79,8 +79,38 @@ export const trackingCategories = [
     ]
   },
   {
-    title: 'The Allocators',
-    subtitle: 'VCs and capital allocators',
+    title: 'Founders',
+    subtitle: 'Startup and consumer founders',
+    entries: [
+      { name: 'Michael Truell', role: 'Co-founder, Anysphere' },
+      { name: 'Anton Osika', role: 'Co-founder, Lovable' },
+      { name: 'Guillermo Rauch', role: 'CEO, Vercel' },
+      { name: 'Amjad Masad', role: 'CEO, Replit' },
+      { name: 'Eric Simons', role: 'CEO, StackBlitz' },
+      { name: 'Winston Weinberg', role: 'CEO, Harvey' },
+      { name: 'Arvind Jain', role: 'CEO, Glean' },
+      { name: 'Aravind Srinivas', role: 'CEO, Perplexity' },
+      { name: 'Mati Staniszewski', role: 'CEO, ElevenLabs' },
+      { name: 'Brian Chesky', role: 'CEO, Airbnb' },
+      { name: 'Reid Hoffman', role: 'Co-founder, LinkedIn' }
+    ]
+  },
+  {
+    title: 'Defense and Deep Tech',
+    subtitle: 'Hard tech and frontier industry',
+    entries: [
+      { name: 'Palmer Luckey', role: 'Founder, Anduril' },
+      { name: 'Trae Stephens', role: 'Executive Chairman, Anduril' },
+      { name: 'Brian Schimpf', role: 'CEO, Anduril' },
+      { name: 'Alex Karp', role: 'CEO, Palantir' },
+      { name: 'Gwynne Shotwell', role: 'President and COO, SpaceX' },
+      { name: 'Brett Adcock', role: 'CEO, Figure AI' },
+      { name: 'Tim Ellis', role: 'CEO, Relativity Space' }
+    ]
+  },
+  {
+    title: 'Investors and Finance',
+    subtitle: 'VCs, capital markets, and crypto',
     entries: [
       { name: 'Marc Andreessen', role: 'Co-founder, a16z' },
       { name: 'Ben Horowitz', role: 'Co-founder, a16z' },
@@ -94,51 +124,15 @@ export const trackingCategories = [
       { name: 'Chris Dixon', role: 'GP, a16z' },
       { name: 'Nat Friedman', role: 'Investor' },
       { name: 'Daniel Gross', role: 'Co-founder, Pioneer' },
-      { name: 'Elad Gil', role: 'Investor' }
-    ]
-  },
-  {
-    title: 'The Insurgents',
-    subtitle: 'Disruptive unicorns and neo-labs',
-    entries: [
-      { name: 'Michael Truell', role: 'Co-founder, Anysphere' },
-      { name: 'Anton Osika', role: 'Co-founder, Lovable' },
-      { name: 'Guillermo Rauch', role: 'CEO, Vercel' },
-      { name: 'Amjad Masad', role: 'CEO, Replit' },
-      { name: 'Eric Simons', role: 'CEO, StackBlitz' },
-      { name: 'Winston Weinberg', role: 'CEO, Harvey' },
-      { name: 'Arvind Jain', role: 'CEO, Glean' }
-    ]
-  },
-  {
-    title: 'The Builders',
-    subtitle: 'Defense and deep tech',
-    entries: [
-      { name: 'Palmer Luckey', role: 'Founder, Anduril' },
-      { name: 'Trae Stephens', role: 'Executive Chairman, Anduril' },
-      { name: 'Brian Schimpf', role: 'CEO, Anduril' },
-      { name: 'Alex Karp', role: 'CEO, Palantir' },
-      { name: 'Gwynne Shotwell', role: 'President and COO, SpaceX' },
-      { name: 'Brett Adcock', role: 'CEO, Figure AI' },
-      { name: 'Tim Ellis', role: 'CEO, Relativity Space' }
-    ]
-  },
-  {
-    title: 'The Establishment',
-    subtitle: 'Fortune 500 and finance',
-    entries: [
+      { name: 'Elad Gil', role: 'Investor' },
       { name: 'Jamie Dimon', role: 'CEO, JPMorgan Chase' },
       { name: 'Ray Dalio', role: 'Founder, Bridgewater' },
-      { name: 'Brian Armstrong', role: 'CEO, Coinbase' },
-      { name: 'Brian Chesky', role: 'CEO, Airbnb' },
-      { name: 'Reid Hoffman', role: 'Co-founder, LinkedIn' },
-      { name: 'Aravind Srinivas', role: 'CEO, Perplexity' },
-      { name: 'Mati Staniszewski', role: 'CEO, ElevenLabs' }
+      { name: 'Brian Armstrong', role: 'CEO, Coinbase' }
     ]
   },
   {
-    title: 'The Amplifiers',
-    subtitle: 'Cultural and infrastructure shapers',
+    title: 'Media',
+    subtitle: 'Podcast and cultural voices',
     entries: [
       { name: 'Lex Fridman', role: 'Host, Lex Fridman Podcast' },
       { name: 'Dwarkesh Patel', role: 'Host, Dwarkesh Podcast' },
