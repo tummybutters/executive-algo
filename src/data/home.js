@@ -139,7 +139,7 @@ export const trackingCategories = [
   {
     title: 'Media',
     subtitle: 'Podcast and cultural voices',
-    figurehead: '/hero/people-optimized-webp/chamath_palihapitiya.webp',
+    figurehead: '/hero/people-optimized-webp/tim_ferriss.webp',
     entries: [
       { name: 'Lex Fridman', role: 'Host, Lex Fridman Podcast' },
       { name: 'Dwarkesh Patel', role: 'Host, Dwarkesh Podcast' },
