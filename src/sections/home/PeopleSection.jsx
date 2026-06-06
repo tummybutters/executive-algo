@@ -7,10 +7,6 @@ const SWIPE_THRESHOLD = 50;
 
 export default function PeopleSection({ prefersReducedMotion }) {
   const count = trackingCategories.length;
-  const totalPeople = trackingCategories.reduce(
-    (sum, category) => sum + category.entries.length,
-    0
-  );
 
   // index + direction (1 = forward/right, -1 = back/left) for slide transitions
   const [[index, direction], setIndex] = useState([0, 0]);
@@ -77,11 +73,11 @@ export default function PeopleSection({ prefersReducedMotion }) {
       <div className="container">
         <div className="section-header">
           <p className="section-kicker">Who We Track</p>
-          <h2 className="section-title">Dramatis Personae</h2>
+          <h2 className="section-title">The people who move markets</h2>
           <p className="section-subtitle">
-            Not everyone. The {totalPeople} people shaping capital,
-            infrastructure, research, and the narrative itself — sorted into the
-            seven houses we follow.
+            Founders, investors, and operators shaping AI, capital, and
+            technology. We track their conviction every week and tell you what
+            changed.
           </p>
         </div>
 
