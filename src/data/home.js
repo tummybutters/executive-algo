@@ -40,6 +40,7 @@ export const trackingCategories = [
   {
     title: 'Big Tech',
     subtitle: 'Mega-cap platform CEOs',
+    figurehead: '/hero/people-optimized-webp/jensen.webp',
     entries: [
       { name: 'Jensen Huang', role: 'CEO, NVIDIA' },
       { name: 'Satya Nadella', role: 'CEO, Microsoft' },
@@ -53,6 +54,7 @@ export const trackingCategories = [
   {
     title: 'AI Labs',
     subtitle: 'Frontier model lab leaders',
+    figurehead: '/hero/people-optimized-webp/dario_amodei.webp',
     entries: [
       { name: 'Sam Altman', role: 'CEO, OpenAI' },
       { name: 'Dario Amodei', role: 'CEO, Anthropic' },
@@ -67,6 +69,7 @@ export const trackingCategories = [
   {
     title: 'Researchers',
     subtitle: 'Scientists and technical leads',
+    figurehead: '/hero/people-optimized-webp/ilya_sutskever.webp',
     entries: [
       { name: 'Andrej Karpathy', role: 'Founder, Eureka Labs' },
       { name: 'Noam Brown', role: 'Research Scientist, OpenAI' },
@@ -81,6 +84,7 @@ export const trackingCategories = [
   {
     title: 'Founders',
     subtitle: 'Startup and consumer founders',
+    figurehead: '/hero/people-optimized-webp/aravind_srinivas.webp',
     entries: [
       { name: 'Michael Truell', role: 'Co-founder, Anysphere' },
       { name: 'Anton Osika', role: 'Co-founder, Lovable' },
@@ -98,6 +102,7 @@ export const trackingCategories = [
   {
     title: 'Defense and Deep Tech',
     subtitle: 'Hard tech and frontier industry',
+    figurehead: '/hero/people-optimized-webp/karp.webp',
     entries: [
       { name: 'Palmer Luckey', role: 'Founder, Anduril' },
       { name: 'Trae Stephens', role: 'Executive Chairman, Anduril' },
@@ -111,6 +116,7 @@ export const trackingCategories = [
   {
     title: 'Investors and Finance',
     subtitle: 'VCs, capital markets, and crypto',
+    figurehead: '/hero/people-optimized-webp/marc_andreessen.webp',
     entries: [
       { name: 'Marc Andreessen', role: 'Co-founder, a16z' },
       { name: 'Ben Horowitz', role: 'Co-founder, a16z' },
@@ -133,6 +139,7 @@ export const trackingCategories = [
   {
     title: 'Media',
     subtitle: 'Podcast and cultural voices',
+    figurehead: '/hero/people-optimized-webp/chamath_palihapitiya.webp',
     entries: [
       { name: 'Lex Fridman', role: 'Host, Lex Fridman Podcast' },
       { name: 'Dwarkesh Patel', role: 'Host, Dwarkesh Podcast' },

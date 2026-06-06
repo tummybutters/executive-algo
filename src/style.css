@@ -1220,149 +1220,228 @@ body {
   background: rgba(184, 153, 90, 0.8);
 }
 
-.people-grid {
+/* Dramatis Personae carousel — one category panel at a time */
+.people-carousel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.6rem;
+  outline: none;
 }
 
-.people-card {
-  padding: 1.4rem 1.6rem;
-  border-radius: 16px;
-  border: 1px solid rgba(24, 35, 61, 0.1);
-  background: #FBF6EC;
-  display: grid;
-  gap: 0.3rem;
-  box-shadow:
-    0 20px 32px rgba(24, 35, 61, 0.10),
-    inset 0 0 0 1px rgba(184, 153, 90, 0.05);
+.people-carousel:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 12px;
+  border-radius: 24px;
 }
 
-.people-name {
-  font-weight: 600;
-  color: #18233D;
-}
-
-.people-title {
-  font-size: 0.85rem;
-  color: #5B6478;
-}
-
-.people-note {
-  margin-top: 3rem;
-  padding-top: 1.6rem;
-  border-top: 1px solid var(--hairline);
+.people-carousel-arrow {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface);
   color: var(--text-muted);
-  font-size: 0.82rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease,
+    background 0.25s ease, transform 0.2s ease;
 }
 
-/* Dramatis Personae masthead */
-.masthead {
-  display: grid;
-  gap: 3.6rem;
+.people-carousel-arrow svg {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
-.masthead-act {
+.people-carousel-arrow:hover,
+.people-carousel-arrow:focus-visible {
+  color: var(--accent-color);
+  border-color: var(--accent-light);
+  background: var(--surface-2);
+  outline: none;
+}
+
+.people-carousel-arrow:active {
+  transform: scale(0.94);
+}
+
+/* Stage holds a stable min-height so panels of different name-counts
+   (7 to 16 names) don't make the arrows/controls jump. */
+.people-carousel-stage {
   position: relative;
+  min-height: 480px;
+  display: flex;
 }
 
-.masthead-act-head {
+.people-panel {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 3rem;
+  align-items: start;
+}
+
+.people-panel-figure {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface-2);
+  box-shadow:
+    0 24px 44px rgba(24, 35, 61, 0.14),
+    inset 0 0 0 1px rgba(184, 153, 90, 0.08);
+  aspect-ratio: 4 / 5;
+  max-height: 460px;
+}
+
+.people-panel-figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 55%,
+    rgba(24, 35, 61, 0.18) 100%
+  );
+  pointer-events: none;
+}
+
+.people-panel-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: saturate(0.92) contrast(1.02);
+}
+
+.people-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.people-panel-head {
   display: flex;
   align-items: baseline;
-  gap: 1.4rem;
+  gap: 1.2rem;
   padding-bottom: 1.1rem;
-  margin-bottom: 1.6rem;
   border-bottom: 1px solid var(--hairline-strong);
 }
 
-.masthead-numeral {
+.people-panel-numeral {
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--accent-color);
   line-height: 1;
-  padding-top: 0.5rem;
-  min-width: 2.4rem;
+  min-width: 2.2rem;
 }
 
-.masthead-act-titles {
+.people-panel-titles {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 1.2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.masthead-act-title {
+.people-panel-title {
   font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.05;
+  line-height: 1.02;
   color: var(--text-color);
 }
 
-.masthead-act-dek {
+.people-panel-dek {
   font-size: 0.72rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-.masthead-roster {
+.people-panel-roster {
   list-style: none;
-  column-count: 3;
-  column-gap: 2.6rem;
   margin: 0;
   padding: 0;
+  columns: 2;
+  column-gap: 2.4rem;
 }
 
-.masthead-person {
+.people-panel-person {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin-bottom: 0.85rem;
+  margin-bottom: 1rem;
 }
 
-.masthead-name {
+.people-panel-name {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.18rem;
+  font-size: 1.12rem;
   font-weight: 500;
   line-height: 1.25;
   color: var(--text-color);
-  transition: color 0.25s ease;
 }
 
-.masthead-role {
+.people-panel-role {
   display: block;
-  overflow: hidden;
-  max-height: 0;
-  margin-top: 0;
+  margin-top: 0.12rem;
   font-family: var(--font-main);
   font-size: 0.78rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   line-height: 1.3;
   color: var(--text-muted);
-  opacity: 0;
-  transform: translateY(-2px);
-  transition: max-height 0.32s ease, opacity 0.25s ease,
-    transform 0.25s ease, margin-top 0.25s ease;
 }
 
-.masthead-person:hover .masthead-name,
-.masthead-person:focus-within .masthead-name {
-  color: var(--accent-color);
+.people-carousel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  margin-top: 2.6rem;
 }
 
-.masthead-person:hover .masthead-role,
-.masthead-person:focus-within .masthead-role {
-  max-height: 3rem;
-  margin-top: 0.18rem;
-  opacity: 1;
-  transform: translateY(0);
+.people-carousel-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.people-carousel-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.people-carousel-dot:hover {
+  background: var(--accent-light);
+}
+
+.people-carousel-dot.is-active {
+  background: var(--accent-color);
+  transform: scale(1.25);
+}
+
+.people-carousel-dot:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.people-carousel-counter {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
 }
 
 .leisure-grid {
@@ -1676,9 +1755,24 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .masthead-roster {
-    column-count: 2;
-    column-gap: 2rem;
+  .people-panel {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    justify-items: center;
+    text-align: left;
+  }
+
+  .people-panel-figure {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .people-panel-body {
+    width: 100%;
+  }
+
+  .people-carousel-stage {
+    min-height: 0;
   }
 
   .slop-panel,
@@ -1795,28 +1889,30 @@ body {
     gap: 2rem;
   }
 
-  .masthead {
-    gap: 2.8rem;
+  .people-carousel {
+    gap: 0.6rem;
   }
 
-  .masthead-roster {
-    column-count: 1;
+  .people-carousel-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  .masthead-act-head {
-    gap: 1rem;
+  .people-carousel-arrow svg {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
-  .masthead-numeral {
-    min-width: 1.8rem;
+  .people-panel-roster {
+    columns: 1;
   }
 
-  /* No hover on touch: reveal the role as a permanent muted line */
-  .masthead-role {
-    max-height: 3rem;
-    margin-top: 0.18rem;
-    opacity: 1;
-    transform: none;
+  .people-panel-head {
+    gap: 0.9rem;
+  }
+
+  .people-panel-numeral {
+    min-width: 1.6rem;
   }
 
   .cta-panel {
@@ -1853,8 +1949,6 @@ body {
   }
 
   .value-card,
-  .people-card,
-  .tracking-card,
   .slop-item,
   .leisure-ritual div {
     padding: 0.9rem 1rem;
