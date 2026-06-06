@@ -69,7 +69,7 @@ export const trackingCategories = [
   {
     title: 'Researchers',
     subtitle: 'Scientists and technical leads',
-    figurehead: '/hero/people-optimized-webp/ilya_sutskever.webp',
+    figurehead: '/hero/people-optimized-webp/karp.webp',
     entries: [
       { name: 'Andrej Karpathy', role: 'Founder, Eureka Labs' },
       { name: 'Noam Brown', role: 'Research Scientist, OpenAI' },
@@ -102,7 +102,7 @@ export const trackingCategories = [
   {
     title: 'Defense and Deep Tech',
     subtitle: 'Hard tech and frontier industry',
-    figurehead: '/hero/people-optimized-webp/karp.webp',
+    figurehead: '/hero/people-optimized-webp/palmer_luckey.webp',
     entries: [
       { name: 'Palmer Luckey', role: 'Founder, Anduril' },
       { name: 'Trae Stephens', role: 'Executive Chairman, Anduril' },
