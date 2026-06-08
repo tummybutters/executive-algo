@@ -172,7 +172,7 @@ body {
   justify-content: space-between;
   text-align: center;
   overflow: hidden;
-  padding-top: calc(clamp(4.5rem, 10vh, 7rem) + 25px);
+  padding-top: clamp(3rem, 7vh, 5rem);
   padding-bottom: 0;
 }
 
@@ -185,10 +185,10 @@ body {
 }
 
 .hero-title {
-  font-size: 4.25rem;
+  font-size: clamp(2.8rem, 5.5vw, 3.6rem);
   font-weight: 600;
   line-height: 1.08;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
 }
 
@@ -202,13 +202,13 @@ body {
 .hero-subtitle {
   font-size: 1.25rem;
   color: #5B6478;
-  margin-bottom: 3rem;
+  margin-bottom: 1.25rem;
   font-weight: 300;
 }
 
 .hero-form {
   max-width: 500px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 1rem;
 }
 
 .input-group {
@@ -346,7 +346,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 1.75rem;
-  margin-top: 2.25rem;
+  margin-top: 1rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
   font-weight: 400;
@@ -570,6 +570,15 @@ body {
   pointer-events: none;
   box-shadow: 0 8px 32px rgba(24, 35, 61, 0.08);
   z-index: 10;
+}
+
+/* Direction A: secondary (dual-row) lane */
+.hero-carousel-lane[data-lane='secondary'] .hero-carousel-track {
+  height: clamp(260px, 36vh, 480px);
+}
+
+.hero-carousel-lane[data-lane='secondary'] {
+  bottom: calc(clamp(320px, 44vh, 620px) - 28px);
 }
 
 @media (prefers-reduced-motion: reduce) {

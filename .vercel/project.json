@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_1YuO1v3dlr3JfcngWbxCNLmEFqpB",
+  "orgId": "team_kancTfSNeCzD0N5rvypuJ6DZ",
+  "projectName": "conviction-index",
+  "settings": {
+    "createdAt": 1780934944100,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

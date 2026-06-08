@@ -4,7 +4,7 @@ import { motion, useReducedMotion, useTransform } from 'motion/react';
 import { useEffect, useMemo, useRef } from 'react';
 import { clamp } from '../utils.js';
 
-const featuredBottomOffsetPx = 28;
+const featuredBottomOffsetPx = 0;
 
 const optimizedBase = '/hero/people-optimized';
 const optimized = (name) => `${optimizedBase}/${name}.png`;
@@ -96,13 +96,16 @@ const hashToUnit = (str) => {
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
-export default function HeroCarousel({ people: peopleOverride, scrollYProgress, prefersReducedMotion: prefersReducedMotionProp }) {
+export default function HeroCarousel({ people: peopleOverride, scrollYProgress, prefersReducedMotion: prefersReducedMotionProp, dualRow = false }) {
   const prefersReducedMotionHook = useReducedMotion();
   const prefersReducedMotion = prefersReducedMotionProp ?? prefersReducedMotionHook;
   const sceneRef = useRef(null);
   const laneRef = useRef(null);
+  const laneRef2 = useRef(null);
   const itemRefs = useRef([]);
   const imgRefs = useRef([]);
+  const itemRefs2 = useRef([]);
+  const imgRefs2 = useRef([]);
 
   const sourceList = useMemo(
     () => (peopleOverride && peopleOverride.length > 0 ? peopleOverride : heroPeople),
@@ -133,19 +136,37 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     });
   }, [sourceList]);
 
-  useEffect(() => {
-    const scene = sceneRef.current;
-    const lane = laneRef.current;
-    if (!scene || !lane) return;
+  // Secondary row: last 14 of heroPeople reversed, smaller heights 300–400px
+  const secondaryPeople = useMemo(() => {
+    if (!dualRow) return [];
+    const secondarySources = [...heroPeople].slice(-14).reverse();
+    return secondarySources.map((src, index) => {
+      const unit = hashToUnit(src + 'secondary');
+      const height = Math.round(lerp(300, 400, unit));
+      const scale = Number(lerp(0.78, 1.0, unit).toFixed(3));
+      const shiftX = Math.round(lerp(-40, 40, unit));
+      const y = Math.round(lerp(-8, 16, unit));
+      return {
+        id: `secondary-${src}-${index}`,
+        src,
+        y,
+        scale,
+        height,
+        shiftX
+      };
+    });
+  }, [dualRow]);
 
-    const track = lane.querySelector('.hero-carousel-track');
-    if (!track) return;
+  // Shared lane setup helper — returns a cleanup function
+  const setupLane = (laneEl, laneItems, direction, itemRefsArr, imgRefsArr, scene, prefersReducedMotionFlag) => {
+    const track = laneEl.querySelector('.hero-carousel-track');
+    if (!track) return () => {};
 
     const laneState = {
-      lane,
+      lane: laneEl,
       track,
       duration: 86,
-      direction: 'normal',
+      direction,
       gap: 180,
       items: [],
       offset: 0,
@@ -166,19 +187,12 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
       laneState.duration = durationForWidth(window.innerWidth);
     };
 
-    laneState.items = people
+    laneState.items = laneItems
       .map((person, index) => {
-        const el = itemRefs.current[index];
-        const img = imgRefs.current[index];
+        const el = itemRefsArr.current[index];
+        const img = imgRefsArr.current[index];
         if (!el || !img) return null;
-        return {
-          ...person,
-          el,
-          img,
-          x: 0,
-          width: 0,
-          baseX: 0
-        };
+        return { ...person, el, img, x: 0, width: 0, baseX: 0 };
       })
       .filter(Boolean);
 
@@ -189,10 +203,8 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
       laneState.items.forEach((item) => {
         let x = (item.baseX ?? 0) + (item.shiftX ?? 0) + laneState.offset;
-
         while (x + item.width < -buffer) x += total;
         while (x > viewportW + buffer) x -= total;
-
         item.x = x;
         item.el.style.setProperty('--x', `${x}px`);
       });
@@ -242,35 +254,24 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     let relayoutRaf = 0;
     const imgLoadHandlers = [];
     const frameInterval = lowPower ? 1000 / 30 : 0;
-    const dragState = {
-      dragging: false,
-      pointerId: null,
-      startX: 0,
-      laneOffset: 0
-    };
 
     const tick = (now) => {
       if (frameInterval && now - lastFrame < frameInterval) {
         rafId = requestAnimationFrame(tick);
         return;
       }
-
       const dt = Math.min(0.05, (now - lastT) / 1000);
       lastT = now;
       lastFrame = now;
-
-      if (!dragState.dragging) {
-        const dir = laneState.direction === 'reverse' ? 1 : -1;
-        const dx = dir * laneState.speed * dt;
-        laneState.offset += dx;
-        positionLane();
-      }
-
+      const dir = laneState.direction === 'reverse' ? 1 : -1;
+      const dx = dir * laneState.speed * dt;
+      laneState.offset += dx;
+      positionLane();
       rafId = requestAnimationFrame(tick);
     };
 
     const start = () => {
-      if (prefersReducedMotion || rafId || !isReady || !inView) return;
+      if (prefersReducedMotionFlag || rafId || !isReady || !inView) return;
       lastT = performance.now();
       lastFrame = 0;
       rafId = requestAnimationFrame(tick);
@@ -304,101 +305,107 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
     track.classList.add('is-ready');
     scheduleStart();
 
-    const onResize = () => {
-      scheduleRelayout();
-    };
+    const onResize = () => scheduleRelayout();
 
     const onPointerDown = (event) => {
-      if (prefersReducedMotion) return;
+      if (prefersReducedMotionFlag) return;
       if (event.button !== 0 && event.pointerType !== 'touch') return;
       if (!(event.target instanceof Element)) return;
       if (!event.target.closest('.hero-carousel-lane')) return;
-
-      dragState.dragging = true;
-      dragState.pointerId = event.pointerId;
-      dragState.startX = event.clientX;
-      dragState.laneOffset = laneState.offset;
-      scene.setPointerCapture(event.pointerId);
+      laneState._drag = {
+        dragging: true,
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        laneOffset: laneState.offset
+      };
+      if (scene) scene.setPointerCapture(event.pointerId);
     };
 
     const onPointerMove = (event) => {
-      if (!dragState.dragging) return;
-      if (dragState.pointerId !== event.pointerId) return;
-
-      const deltaX = event.clientX - dragState.startX;
-      laneState.offset = dragState.laneOffset + deltaX;
+      if (!laneState._drag?.dragging) return;
+      if (laneState._drag.pointerId !== event.pointerId) return;
+      const deltaX = event.clientX - laneState._drag.startX;
+      laneState.offset = laneState._drag.laneOffset + deltaX;
       positionLane();
     };
 
     const endDrag = (event) => {
-      if (!dragState.dragging) return;
-      if (dragState.pointerId !== event.pointerId) return;
-      dragState.dragging = false;
-      dragState.pointerId = null;
+      if (!laneState._drag?.dragging) return;
+      if (laneState._drag.pointerId !== event.pointerId) return;
+      laneState._drag.dragging = false;
+      laneState._drag.pointerId = null;
       lastT = performance.now();
-      try {
-        scene.releasePointerCapture(event.pointerId);
-      } catch {
-        // ignore
-      }
+      try { if (scene) scene.releasePointerCapture(event.pointerId); } catch { /* ignore */ }
     };
 
     const onVisibility = () => {
       if (document.hidden) stop();
-      else {
-        scheduleRelayout();
-        start();
-      }
+      else { scheduleRelayout(); start(); }
     };
 
     const observer =
       typeof IntersectionObserver !== 'undefined'
         ? new IntersectionObserver(
           (entries) => {
-            const visible = entries.some((entry) => entry.isIntersecting);
+            const visible = entries.some((e) => e.isIntersecting);
             inView = visible;
-            if (visible) {
-              scheduleRelayout();
-              start();
-            } else stop();
+            if (visible) { scheduleRelayout(); start(); } else stop();
           },
           { threshold: 0.15 }
         )
         : null;
 
-    if (observer) observer.observe(scene);
+    if (observer && scene) observer.observe(scene);
 
     laneState.items.forEach((item) => {
       if (!item.img || item.img.complete) return;
-      const handler = () => {
-        scheduleRelayout();
-      };
+      const handler = () => scheduleRelayout();
       item.img.addEventListener('load', handler, { once: true });
       imgLoadHandlers.push([item.img, handler]);
     });
 
     window.addEventListener('resize', onResize, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
-    scene.addEventListener('pointerdown', onPointerDown);
-    scene.addEventListener('pointermove', onPointerMove);
-    scene.addEventListener('pointerup', endDrag);
-    scene.addEventListener('pointercancel', endDrag);
+    if (scene) {
+      scene.addEventListener('pointerdown', onPointerDown);
+      scene.addEventListener('pointermove', onPointerMove);
+      scene.addEventListener('pointerup', endDrag);
+      scene.addEventListener('pointercancel', endDrag);
+    }
 
     return () => {
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
-      scene.removeEventListener('pointerdown', onPointerDown);
-      scene.removeEventListener('pointermove', onPointerMove);
-      scene.removeEventListener('pointerup', endDrag);
-      scene.removeEventListener('pointercancel', endDrag);
+      if (scene) {
+        scene.removeEventListener('pointerdown', onPointerDown);
+        scene.removeEventListener('pointermove', onPointerMove);
+        scene.removeEventListener('pointerup', endDrag);
+        scene.removeEventListener('pointercancel', endDrag);
+      }
       if (observer) observer.disconnect();
       if (relayoutRaf) cancelAnimationFrame(relayoutRaf);
-      imgLoadHandlers.forEach(([img, handler]) => {
-        img.removeEventListener('load', handler);
-      });
+      imgLoadHandlers.forEach(([img, handler]) => img.removeEventListener('load', handler));
       stop();
     };
-  }, [people, prefersReducedMotion]);
+  };
+
+  useEffect(() => {
+    const scene = sceneRef.current;
+    const lane = laneRef.current;
+    if (!scene || !lane) return;
+
+    const cleanup1 = setupLane(lane, people, 'normal', itemRefs, imgRefs, scene, prefersReducedMotion);
+
+    let cleanup2 = () => {};
+    if (dualRow && laneRef2.current && secondaryPeople.length > 0) {
+      cleanup2 = setupLane(laneRef2.current, secondaryPeople, 'reverse', itemRefs2, imgRefs2, scene, prefersReducedMotion);
+    }
+
+    return () => {
+      cleanup1();
+      cleanup2();
+    };
+  }, [people, secondaryPeople, dualRow, prefersReducedMotion]);
 
   // Gravity well transforms for entire carousel container
   const gravityScale = useTransform(
@@ -419,6 +426,47 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
 
   const applyGravity = scrollYProgress && !prefersReducedMotion;
 
+  const renderPersonCard = (person, index, refsArr, imgRefsArr) => (
+    <motion.div
+      className="hero-person"
+      key={person.id}
+      ref={(el) => { refsArr.current[index] = el; }}
+      style={{
+        '--x': '0px',
+        '--y': `${person.y}px`,
+        '--r': '0deg',
+        '--s': person.scale,
+        '--h': `${person.height}px`
+      }}
+      whileHover="hover"
+      initial="rest"
+    >
+      <picture>
+        <source media="(max-width: 640px)" srcSet={toWebp(person.src, 'mobile')} type="image/webp" />
+        <source srcSet={toWebp(person.src, 'desktop')} type="image/webp" />
+        <img
+          src={person.src}
+          alt=""
+          loading={index < 6 ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchPriority={index < 4 ? 'high' : 'low'}
+          draggable={false}
+          ref={(el) => { imgRefsArr.current[index] = el; }}
+        />
+      </picture>
+      <motion.div
+        className="person-tooltip"
+        variants={{
+          rest: { opacity: 0, y: 10, scale: 0.9 },
+          hover: { opacity: 1, y: 0, scale: 1 }
+        }}
+        transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+      >
+        {personTitles[person.src] || ''}
+      </motion.div>
+    </motion.div>
+  );
+
   return (
     <motion.div
       className="parallax-container"
@@ -433,6 +481,20 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
         opacity: gravityOpacity
       } : undefined}
     >
+      {dualRow && (
+        <div
+          className="hero-carousel-lane"
+          ref={laneRef2}
+          data-lane="secondary"
+          style={{ zIndex: 4 }}
+        >
+          <div className="hero-carousel-track">
+            {secondaryPeople.map((person, index) =>
+              renderPersonCard(person, index, itemRefs2, imgRefs2)
+            )}
+          </div>
+        </div>
+      )}
       <div
         className="hero-carousel-lane"
         ref={laneRef}
@@ -440,50 +502,9 @@ export default function HeroCarousel({ people: peopleOverride, scrollYProgress, 
         style={{ bottom: `-${featuredBottomOffsetPx}px`, zIndex: 5 }}
       >
         <div className="hero-carousel-track">
-          {people.map((person, index) => (
-            <motion.div
-              className="hero-person"
-              key={person.id}
-              ref={(el) => {
-                itemRefs.current[index] = el;
-              }}
-              style={{
-                '--x': '0px',
-                '--y': `${person.y}px`,
-                '--r': '0deg',
-                '--s': person.scale,
-                '--h': `${person.height}px`
-              }}
-              whileHover="hover"
-              initial="rest"
-            >
-              <picture>
-                <source media="(max-width: 640px)" srcSet={toWebp(person.src, 'mobile')} type="image/webp" />
-                <source srcSet={toWebp(person.src, 'desktop')} type="image/webp" />
-                <img
-                  src={person.src}
-                  alt=""
-                  loading={index < 6 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  fetchPriority={index < 4 ? 'high' : 'low'}
-                  draggable={false}
-                  ref={(el) => {
-                    imgRefs.current[index] = el;
-                  }}
-                />
-              </picture>
-              <motion.div
-                className="person-tooltip"
-                variants={{
-                  rest: { opacity: 0, y: 10, scale: 0.9 },
-                  hover: { opacity: 1, y: 0, scale: 1 }
-                }}
-                transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
-              >
-                {personTitles[person.src] || ''}
-              </motion.div>
-            </motion.div>
-          ))}
+          {people.map((person, index) =>
+            renderPersonCard(person, index, itemRefs, imgRefs)
+          )}
         </div>
       </div>
     </motion.div>

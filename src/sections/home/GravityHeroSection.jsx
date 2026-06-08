@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { useRef } from 'react';
-import HeroPortraitBand from '../../components/HeroPortraitBand.jsx';
+import HeroCarousel from '../../components/HeroCarousel.jsx';
 import NewsletterForm from '../../components/NewsletterForm.jsx';
 
 export default function GravityHeroSection({ prefersReducedMotion }) {
@@ -48,7 +48,7 @@ export default function GravityHeroSection({ prefersReducedMotion }) {
         </motion.div>
       </motion.div>
 
-      <HeroPortraitBand prefersReducedMotion={prefersReducedMotion} />
+      <HeroCarousel prefersReducedMotion={prefersReducedMotion} dualRow={true} />
     </section>
   );
 }
